@@ -1,0 +1,69 @@
+import 'dart:convert';
+
+List<AttachmentsModel> attachmentsModelFromJson(String str) => List<AttachmentsModel>.from(
+    json.decode(str).map((x) => AttachmentsModel.fromJson(x))
+);
+
+String attachmentsModelToJson(List<AttachmentsModel> data) => json.encode(
+    List<dynamic>.from(data.map((x) => x.toJson()))
+);
+
+class AttachmentsModel {
+  AttachmentsModel({
+    required this.patientAttachmentId,
+    required this.patientId,
+    required this.attachmentPath,
+    required this.attachmentThumbnail,
+    required this.attachmentType,
+    required this.comments,
+    required this.createUserId,
+    this.modifiedId,
+    this.attachmentFile,
+    this.attachmentFileThumb,
+    required this.createdOn,
+    this.modifiedon,
+  });
+
+  String patientAttachmentId;
+  String patientId;
+  String attachmentPath;
+  String attachmentThumbnail;
+  String attachmentType;
+  String comments;
+  String createUserId;
+  dynamic modifiedId;
+  dynamic attachmentFile;
+  dynamic attachmentFileThumb;
+  DateTime createdOn;
+  dynamic modifiedon;
+
+  factory AttachmentsModel.fromJson(Map<String, dynamic> json) => AttachmentsModel(
+    patientAttachmentId: json["patientAttachmentId"] ?? '',
+    patientId: json["patientId"] ?? '',
+    attachmentPath: json["attachmentPath"] ?? '',
+    attachmentThumbnail: json["attachmentThumbnail"] ?? '',
+    attachmentType: json["attachmentType"] ?? '',
+    comments: json["comments"] ?? '',
+    createUserId: json["createUserId"] ?? '',
+    modifiedId: json["modifiedId"],
+    attachmentFile: json["attachmentFile"],
+    attachmentFileThumb: json["attachmentFileThumb"],
+    createdOn: json["createdOn"] == null ? DateTime.now() : DateTime.parse(json["createdOn"]),
+    modifiedon: json["modifiedon"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "patientAttachmentId": patientAttachmentId,
+    "patientId": patientId,
+    "attachmentPath": attachmentPath,
+    "attachmentThumbnail": attachmentThumbnail,
+    "attachmentType": attachmentType,
+    "comments": comments,
+    "createUserId": createUserId,
+    "modifiedId": modifiedId,
+    "attachmentFile": attachmentFile,
+    "attachmentFileThumb": attachmentFileThumb,
+    "createdOn": createdOn.toIso8601String(),
+    "modifiedon": modifiedon,
+  };
+}
