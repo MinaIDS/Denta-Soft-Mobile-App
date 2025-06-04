@@ -55,8 +55,8 @@ class AddPatientViewModel extends BaseNotifier {
   }
 
   Future<void> getMedicalInsurances() async {
-    final companies =
-        await InsuranceCompanyController().getInsuranceCompanies();
+    final companies = await InsuranceCompanyController()
+        .getInsuranceCompanies();
     insuranceCompanies = companies;
     selectedInsurance = insuranceCompanies.firstWhere(
       (i) => i.isDefault ?? false,
@@ -101,10 +101,9 @@ class AddPatientViewModel extends BaseNotifier {
       "gender": gender,
       "occupation": occupation.text,
       "email": email.text,
-      "houseHeadNumber":
-          houseHeadPhone.text.isEmpty ?? true
-              ? null
-              : houseHeadPhoneCode + houseHeadPhone.text,
+      "houseHeadNumber": houseHeadPhone.text.isEmpty
+          ? null
+          : houseHeadPhoneCode + houseHeadPhone.text,
       "createUserId": GlobalData.accountData!.objectData.userId,
       "comments": comment.text,
       "employer": null,
@@ -112,47 +111,39 @@ class AddPatientViewModel extends BaseNotifier {
       "dateOfBirth": dateOfBirth.text,
       "photoJson": null,
       "nationalId": nationalId.text,
-      "mobile":
-          phoneNumber.text.isEmpty ?? true
-              ? null
-              : phoneCode + phoneNumber.text,
+      "mobile": phoneNumber.text.isEmpty ? null : phoneCode + phoneNumber.text,
       "medicalInsuranceComments": "",
       "MedicalInsuranceNumber": insuranceNo.text,
       "medicalInsuranceId": selectedInsurance?.medicalInsuranceId,
       "houseHolderName": houseHeadName.text,
       "address": address.text,
-      "phoneWork":
-          phoneWork.text.isEmpty ?? true
-              ? null
-              : phoneWorkCode + phoneWork.text,
+      "phoneWork": phoneWork.text.isEmpty
+          ? null
+          : phoneWorkCode + phoneWork.text,
       "nationailityId": 16,
       "faxNumber": "",
       "payments": [],
-      "productViewModels":
-          drugsList
-              .map(
-                (d) => {
-                  "productEn": null,
-                  "productAr": null,
-                  "productId": d.productId,
-                  "patientId": null,
-                  "pDieseasId": null,
-                },
-              )
-              .toList(),
-      "dieases":
-          addedDisease
-              .map(
-                (d) => {
-                  "diseaseTypeId": d.diseaseId,
-                  "comments": d.comment.text,
-                  "updateUserId":
-                      GlobalData.accountData!.objectData.updateUserId,
-                  "createUserId":
-                      GlobalData.accountData!.objectData.currentUserId,
-                },
-              )
-              .toList(),
+      "productViewModels": drugsList
+          .map(
+            (d) => {
+              "productEn": null,
+              "productAr": null,
+              "productId": d.productId,
+              "patientId": null,
+              "pDieseasId": null,
+            },
+          )
+          .toList(),
+      "dieases": addedDisease
+          .map(
+            (d) => {
+              "diseaseTypeId": d.diseaseId,
+              "comments": d.comment.text,
+              "updateUserId": GlobalData.accountData!.objectData.updateUserId,
+              "createUserId": GlobalData.accountData!.objectData.currentUserId,
+            },
+          )
+          .toList(),
     });
     isLoading = false;
     setState();
@@ -160,36 +151,34 @@ class AddPatientViewModel extends BaseNotifier {
       await showDialog(
         context: context,
         barrierDismissible: false,
-        builder:
-            (ctx) => AlertDialog(
-              title: Text(S().Patientaddedsuccessfully),
-              titleTextStyle: TextStyle(color: Colors.green, fontSize: 16),
-              actions: [
-                CustomTextButton(
-                  text: 'Ok',
-                  onPressed: () {
-                    Navigator.of(ctx).pop();
-                  },
-                ),
-              ],
+        builder: (ctx) => AlertDialog(
+          title: Text(S().Patientaddedsuccessfully),
+          titleTextStyle: TextStyle(color: Colors.green, fontSize: 16),
+          actions: [
+            CustomTextButton(
+              text: 'Ok',
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
             ),
+          ],
+        ),
       ).then((_) => Navigator.of(context).pop());
     } else {
       await showDialog(
         context: context,
-        builder:
-            (ctx) => AlertDialog(
-              title: Text(S().Sometingwronghappend),
-              titleTextStyle: TextStyle(color: Colors.red, fontSize: 16),
-              actions: [
-                CustomTextButton(
-                  text: S().Ok,
-                  onPressed: () {
-                    Navigator.of(ctx).pop();
-                  },
-                ),
-              ],
+        builder: (ctx) => AlertDialog(
+          title: Text(S().Sometingwronghappend),
+          titleTextStyle: TextStyle(color: Colors.red, fontSize: 16),
+          actions: [
+            CustomTextButton(
+              text: S().Ok,
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
             ),
+          ],
+        ),
       );
     }
   }
@@ -208,9 +197,9 @@ class AddPatientViewModel extends BaseNotifier {
     houseHeadName.dispose();
     houseHeadPhone.dispose();
     address.dispose();
-    addedDisease.forEach((d) {
+    for (var d in addedDisease) {
       d.comment.dispose();
-    });
+    }
     super.dispose();
   }
 }

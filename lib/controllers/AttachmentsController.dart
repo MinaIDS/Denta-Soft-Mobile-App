@@ -24,13 +24,12 @@ class AttachmentsController extends ChangeNotifier {
       }
 
       attachmentsModel = await AttachmentsServices().getAttachments(patientId);
-      print('test ${attachmentsModel.length}');
 
       if (attachmentsModel.isNotEmpty) {
         // Handle logic if necessary
       }
 
-      attachmentsModel.forEach((element) {
+      for (var element in attachmentsModel) {
         switch (element.attachmentType) {
           case 'XRay':
             attachmentsXRay.add(element);
@@ -44,7 +43,7 @@ class AttachmentsController extends ChangeNotifier {
           default:
             break;
         }
-      });
+      }
 
       return attachmentsModel;
     } catch (e) {
@@ -89,7 +88,7 @@ class AttachmentsController extends ChangeNotifier {
       if (model == null) return false;
 
       bool status = await AttachmentsServices().deleteAttachments(
-        AttachmentId: model.patientAttachmentId!,
+        AttachmentId: model.patientAttachmentId,
       );
       if (status) {
         switch (model.attachmentType) {
@@ -163,9 +162,9 @@ class AttachmentsController extends ChangeNotifier {
 
   @override
   void dispose() {
-    addedDisease.forEach((d) {
+    for (var d in addedDisease) {
       d.comment.dispose();
-    });
+    }
     super.dispose();
   }
 }

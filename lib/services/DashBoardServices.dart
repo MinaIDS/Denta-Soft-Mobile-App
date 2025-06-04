@@ -6,16 +6,16 @@ class DashBoardServices {
   Future<String> getDailyWorkedHours() async {
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-          ApiRoutes.getDailyWorkedHours +
-              "?branchId=" +
-              GlobalData.accountData!.objectData.branchId!,
-          contentTypeHeader: "application/json",
-          authorizationHeader: GlobalData.accountData!.token);
+        "${ApiRoutes.getDailyWorkedHours}?branchId=${GlobalData.accountData!.objectData.branchId!}",
+        contentTypeHeader: "application/json",
+        authorizationHeader: GlobalData.accountData!.token,
+      );
 
       if (response.statusCode == 200) {
         return response.body!;
-      } else
+      } else {
         return "erorr";
+      }
     } catch (e) {
       print(e);
       return "erorr";
@@ -25,16 +25,16 @@ class DashBoardServices {
   Future<String> getDailyAppointmentAsyncs() async {
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-          ApiRoutes.getDailyAppointmentAsyncs +
-              "?branchId=" +
-              GlobalData.accountData!.objectData.branchId!,
-          contentTypeHeader: "application/json",
-          authorizationHeader: GlobalData.accountData!.token);
+        "${ApiRoutes.getDailyAppointmentAsyncs}?branchId=${GlobalData.accountData!.objectData.branchId!}",
+        contentTypeHeader: "application/json",
+        authorizationHeader: GlobalData.accountData!.token,
+      );
 
       if (response.statusCode == 200) {
         return response.body!;
-      } else
+      } else {
         return "erorr";
+      }
     } catch (e) {
       print(e);
       return "erorr";

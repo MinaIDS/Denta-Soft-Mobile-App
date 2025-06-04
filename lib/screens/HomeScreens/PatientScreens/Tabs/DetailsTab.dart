@@ -14,7 +14,7 @@ import '../../../../widgets/OnceFutureBuilder.dart';
 class DetailsTab extends StatefulWidget {
   final PatientModel patientModel;
 
-  const DetailsTab({Key? key, required this.patientModel}) : super(key: key);
+  const DetailsTab({super.key, required this.patientModel});
 
   @override
   _DetailsTabState createState() => _DetailsTabState();
@@ -49,37 +49,34 @@ class _DetailsTabState extends State<DetailsTab> {
     phoneC.text = widget.patientModel.mobile ?? '';
     age.text = widget.patientModel.age?.toString() ?? '';
     MaritalStatusKey.text = widget.patientModel.maritalStatus ?? '';
-    MaritalStatus.text =
-        widget.patientModel.maritalStatus == "MS1"
-            ? "Single"
-            : widget.patientModel.maritalStatus == "MS2"
-            ? "Married"
-            : widget.patientModel.maritalStatus == "MS3"
-            ? "Divorced"
-            : widget.patientModel.maritalStatus == "MS4"
-            ? "Widow"
-            : "";
+    MaritalStatus.text = widget.patientModel.maritalStatus == "MS1"
+        ? "Single"
+        : widget.patientModel.maritalStatus == "MS2"
+        ? "Married"
+        : widget.patientModel.maritalStatus == "MS3"
+        ? "Divorced"
+        : widget.patientModel.maritalStatus == "MS4"
+        ? "Widow"
+        : "";
     Occupation.text = widget.patientModel.occupation ?? '';
     Title.text = widget.patientModel.title ?? '';
     PatientTypeKey.text = widget.patientModel.patientType ?? '';
-    PatientType.text =
-        widget.patientModel.patientType == "PT1"
-            ? "Standard"
-            : widget.patientModel.patientType == "PT2"
-            ? "VIP"
-            : widget.patientModel.patientType == "PT3"
-            ? "Blacklist"
-            : "";
+    PatientType.text = widget.patientModel.patientType == "PT1"
+        ? "Standard"
+        : widget.patientModel.patientType == "PT2"
+        ? "VIP"
+        : widget.patientModel.patientType == "PT3"
+        ? "Blacklist"
+        : "";
     Address.text = widget.patientModel.address ?? '';
     Email.text = widget.patientModel.email ?? '';
     nationailityId.text = widget.patientModel.nationailityId ?? '';
     GenderKey.text = widget.patientModel.gender ?? '';
-    Gender.text =
-        widget.patientModel.gender == "Male"
-            ? "Male"
-            : widget.patientModel.gender == "Female"
-            ? "Female"
-            : "";
+    Gender.text = widget.patientModel.gender == "Male"
+        ? "Male"
+        : widget.patientModel.gender == "Female"
+        ? "Female"
+        : "";
     PatientCode.text = widget.patientModel.patientCode ?? '';
     phoneWork.text = widget.patientModel.phoneWork ?? '';
     houseHeadNumber.text = widget.patientModel.houseHeadNumber ?? '';
@@ -96,13 +93,12 @@ class _DetailsTabState extends State<DetailsTab> {
             );
           },
           child: OnceFutureBuilder<PatientModel>(
-            future:
-                () => PatientController().getPatientDetails(
-                  patientId: widget.patientModel.patientId ?? '',
-                ),
+            future: () => PatientController().getPatientDetails(
+              patientId: widget.patientModel.patientId ?? '',
+            ),
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
-                return Container(
+                return SizedBox(
                   height: SizeandStyleUtills().screenHeight,
                   child: Center(child: CircularProgressIndicator()),
                 );
@@ -135,7 +131,7 @@ class _DetailsTabState extends State<DetailsTab> {
                           children: [
                             Row(
                               children: [
-                                Container(
+                                SizedBox(
                                   width: SizeandStyleUtills()
                                       .getProportionalHeight(height: 100),
                                   height: SizeandStyleUtills()
@@ -143,19 +139,19 @@ class _DetailsTabState extends State<DetailsTab> {
                                   child: CircleAvatar(
                                     child:
                                         snapshot.data?.photoJson!.isNotEmpty ??
-                                                false
-                                            ? Image.network(
-                                              ApiRoutes.patientImagePath +
-                                                  GlobalData
-                                                      .patientData!
-                                                      .photoJson!,
-                                            )
-                                            : Text(
-                                              GlobalData
-                                                  .patientData!
-                                                  .patientCode!,
-                                              style: TextStyle(fontSize: 26),
-                                            ),
+                                            false
+                                        ? Image.network(
+                                            ApiRoutes.patientImagePath +
+                                                GlobalData
+                                                    .patientData!
+                                                    .photoJson!,
+                                          )
+                                        : Text(
+                                            GlobalData
+                                                .patientData!
+                                                .patientCode!,
+                                            style: TextStyle(fontSize: 26),
+                                          ),
                                   ),
                                 ),
                                 Expanded(
@@ -200,13 +196,13 @@ class _DetailsTabState extends State<DetailsTab> {
                                   widget.patientModel.maritalStatus == "MS1"
                                       ? S.S().MS1
                                       : widget.patientModel.maritalStatus ==
-                                          "MS2"
+                                            "MS2"
                                       ? S.S().MS2
                                       : widget.patientModel.maritalStatus ==
-                                          "MS3"
+                                            "MS3"
                                       ? S.S().MS3
                                       : widget.patientModel.maritalStatus ==
-                                          "MS4"
+                                            "MS4"
                                       ? S.S().MS4
                                       : "",
                                   overflow: TextOverflow.ellipsis,

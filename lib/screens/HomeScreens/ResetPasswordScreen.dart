@@ -8,6 +8,8 @@ import '../../utils/ToastM.dart';
 import '../ThemeColors.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({super.key});
+
   @override
   _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
 }
@@ -57,7 +59,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   validator: (value) {
                     return value!.isEmpty
                         ? S()
-                            .FieldsRequired //"Username is required"
+                              .FieldsRequired //"Username is required"
                         : null;
                   },
                 ),
@@ -81,8 +83,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       },
                       child: Icon(
                         _obscureText ? Icons.visibility : Icons.visibility_off,
-                        semanticLabel:
-                            _obscureText ? 'show password' : 'hide password',
+                        semanticLabel: _obscureText
+                            ? 'show password'
+                            : 'hide password',
                       ),
                     ),
                   ),
@@ -111,8 +114,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       },
                       child: Icon(
                         _obscureText ? Icons.visibility : Icons.visibility_off,
-                        semanticLabel:
-                            _obscureText ? 'show password' : 'hide password',
+                        semanticLabel: _obscureText
+                            ? 'show password'
+                            : 'hide password',
                       ),
                     ),
                   ),
@@ -141,8 +145,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       },
                       child: Icon(
                         _obscureText ? Icons.visibility : Icons.visibility_off,
-                        semanticLabel:
-                            _obscureText ? 'show password' : 'hide password',
+                        semanticLabel: _obscureText
+                            ? 'show password'
+                            : 'hide password',
                       ),
                     ),
                   ),
@@ -158,73 +163,75 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 SpaceHeight_XL,
                 isLoading
                     ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: ThemeColors.primary,
-                      ),
-                      padding: EdgeInsets.all(8),
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.white,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          ThemeColors.primary,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: ThemeColors.primary,
                         ),
-                      ),
-                    )
-                    : ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                          (Set<WidgetState> states) {
-                            // if (states.contains(MaterialState.pressed))
-                            return ThemeColors.primary;
-                            // return null; // Use the component's default.
-                          },
-                        ),
-                      ),
-                      onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-
-                        if (_formKey.currentState!.validate()) {
-                          bool status = await AccountController().resetPassword(
-                            userNameController.text.trim(),
-                            oldPasswordController.text.trim(),
-                            newPasswordController.text.trim(),
-                          );
-                          if (status) {
-                            ToastM.show(S().Password_Change_Successfully);
-                            Navigator.pop(context);
-                          } else {
-                            ToastM.show(S().Error_Data);
-                          }
-
-                          print("Validate");
-                        } else {
-                          ToastM.show(S().Error_Validation);
-                        }
-                        isLoading = false;
-                        setState(() {});
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: SizeWidth_L,
-                            vertical: SizeHeight_XS,
+                        padding: EdgeInsets.all(8),
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            ThemeColors.primary,
                           ),
-                          child: Text(
-                            S().ResetPassword,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              height: 2,
-                              fontSize: 16,
-                              color: ThemeColors.white,
+                        ),
+                      )
+                    : ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStateProperty.resolveWith<Color>((
+                                Set<WidgetState> states,
+                              ) {
+                                // if (states.contains(MaterialState.pressed))
+                                return ThemeColors.primary;
+                                // return null; // Use the component's default.
+                              }),
+                        ),
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          if (_formKey.currentState!.validate()) {
+                            bool status = await AccountController()
+                                .resetPassword(
+                                  userNameController.text.trim(),
+                                  oldPasswordController.text.trim(),
+                                  newPasswordController.text.trim(),
+                                );
+                            if (status) {
+                              ToastM.show(S().Password_Change_Successfully);
+                              Navigator.pop(context);
+                            } else {
+                              ToastM.show(S().Error_Data);
+                            }
+
+                            print("Validate");
+                          } else {
+                            ToastM.show(S().Error_Validation);
+                          }
+                          isLoading = false;
+                          setState(() {});
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizeWidth_L,
+                              vertical: SizeHeight_XS,
+                            ),
+                            child: Text(
+                              S().ResetPassword,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                height: 2,
+                                fontSize: 16,
+                                color: ThemeColors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
               ],
             ),
           ),

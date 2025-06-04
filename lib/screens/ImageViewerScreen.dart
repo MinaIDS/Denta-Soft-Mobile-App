@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
+// ignore: must_be_immutable
 class ImageViewerScreen extends StatefulWidget {
   List<AttachmentsModel>? sliderImages = [];
   int selectedImage;
 
-  ImageViewerScreen({this.sliderImages, this.selectedImage = 0});
+  ImageViewerScreen({super.key, this.sliderImages, this.selectedImage = 0});
 
   @override
   _ImageViewerScreenState createState() => _ImageViewerScreenState();
@@ -44,20 +45,17 @@ class _ImageViewerScreenState extends State<ImageViewerScreen> {
               });
             },
             itemCount: widget.sliderImages!.length,
-            loadingBuilder:
-                (context, event) => Center(
-                  child: Container(
-                    width: 20.0,
-                    height: 20.0,
-                    child: CircularProgressIndicator(
-                      value:
-                          event == null
-                              ? 0
-                              : event.cumulativeBytesLoaded /
-                                  event.expectedTotalBytes!,
-                    ),
-                  ),
+            loadingBuilder: (context, event) => Center(
+              child: SizedBox(
+                width: 20.0,
+                height: 20.0,
+                child: CircularProgressIndicator(
+                  value: event == null
+                      ? 0
+                      : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
                 ),
+              ),
+            ),
             // backgroundDecoration: widget.backgroundDecoration,
             pageController: pageController,
             // onPageChanged: onPageChanged,

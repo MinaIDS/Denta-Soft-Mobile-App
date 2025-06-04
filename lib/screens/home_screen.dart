@@ -10,6 +10,8 @@ import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'tabIcon_data.dart';
 
 class MyHomePageScreen extends StatefulWidget {
+  const MyHomePageScreen({super.key});
+
   @override
   _MyHomePageScreenState createState() => _MyHomePageScreenState();
 }
@@ -23,9 +25,9 @@ class _MyHomePageScreenState extends State<MyHomePageScreen>
 
   @override
   void initState() {
-    TabIconData.tabIconsList.forEach((TabIconData tab) {
+    for (var tab in TabIconData.tabIconsList) {
       tab.isSelected = false;
-    });
+    }
     TabIconData.tabIconsList[0].isSelected = false;
 
     // animationController = AnimationController(
@@ -63,7 +65,7 @@ class _MyHomePageScreenState extends State<MyHomePageScreen>
         body: Stack(
           children: [
             Column(children: [tabBody]),
-            Align(child: bottomBar(), alignment: Alignment.bottomCenter),
+            Align(alignment: Alignment.bottomCenter, child: bottomBar()),
           ],
         ),
       ),
@@ -123,9 +125,9 @@ class _MyHomePageScreenState extends State<MyHomePageScreen>
               tabBody = CalendarScreen();
               homeTitle = "Calendar";
             });
-            TabIconData.tabIconsList.forEach((TabIconData tab) {
+            for (var tab in TabIconData.tabIconsList) {
               tab.isSelected = false;
-            });
+            }
             TabIconData.tabIconsList[0].isSelected = false;
           },
           changeIndex: (int index) {

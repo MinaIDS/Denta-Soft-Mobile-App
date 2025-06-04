@@ -16,7 +16,7 @@ class CustomAppBar {
         textAlign: TextAlign.center,
         style: TextStyle(
           color: ThemeColors.primary,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w200,
         ),
       ),
       bottom: bottom,

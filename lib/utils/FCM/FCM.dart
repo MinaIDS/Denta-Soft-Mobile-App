@@ -20,14 +20,12 @@ pushCustomNotification(RemoteMessage message) {
       channelKey: 'PentaCors_Notification',
       title: message.data['title'],
       body: message.data['body'],
-      bigPicture:
-          message.data['image'] != null
-              ? 'https://protocoderspoint.com/wp-content/uploads/2021/05/Monitize-flutter-app-with-google-admob-min-741x486.png'
-              : "",
-      notificationLayout:
-          message.data['image'] != null
-              ? NotificationLayout.BigPicture
-              : NotificationLayout.BigText,
+      bigPicture: message.data['image'] != null
+          ? 'https://protocoderspoint.com/wp-content/uploads/2021/05/Monitize-flutter-app-with-google-admob-min-741x486.png'
+          : "",
+      notificationLayout: message.data['image'] != null
+          ? NotificationLayout.BigPicture
+          : NotificationLayout.BigText,
     ),
   );
 }
@@ -49,6 +47,7 @@ class FCM {
         }
       });
 
+      // ignore: unused_local_variable
       NotificationSettings settings = await messaging.requestPermission(
         alert: true,
         announcement: false,

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../app_theme.dart';
 
 class HelpScreen extends StatefulWidget {
+  const HelpScreen({super.key});
+
   @override
   _HelpScreenState createState() => _HelpScreenState();
 }
@@ -23,7 +25,7 @@ class _HelpScreenState extends State<HelpScreen> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 30,
-            color: Colors.white,
+            color: Colors.pink.shade300,
             fontWeight: FontWeight.w600,
           ),
         ),

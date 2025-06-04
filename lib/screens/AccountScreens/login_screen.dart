@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:denta_soft/components/or_divider.dart';
@@ -18,6 +20,8 @@ import '../ThemeColors.dart';
 import 'forget_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -27,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController clinicNameController;
   late TextEditingController usernameController;
   late TextEditingController passwordController;
-  bool _obscureText = true;
+  final bool _obscureText = true;
   bool isLoading = false;
 
   @override
@@ -40,6 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Padding(

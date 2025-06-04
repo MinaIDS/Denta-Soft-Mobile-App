@@ -6,10 +6,10 @@ class SocalIcon extends StatelessWidget {
   final VoidCallback press; // Use VoidCallback instead of Function
 
   const SocalIcon({
-    Key? key, // Mark key as nullable
+    super.key, // Mark key as nullable
     required this.iconSrc, // Make iconSrc required
     required this.press, // Make press required
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

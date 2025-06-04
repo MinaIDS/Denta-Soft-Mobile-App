@@ -8,12 +8,14 @@ import '../../../widgets/buttons/accent_button.dart';
 import '../../../widgets/custom_password_text_field.dart';
 
 class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
+
   @override
   _ChangePasswordState createState() => _ChangePasswordState();
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  var _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   String? oldPass;
   String? newPass;
   String? confirmedPass;
@@ -98,9 +100,8 @@ class _ChangePasswordState extends State<ChangePassword> {
       if (newPass != confirmedPass) {
         showDialog(
           context: context,
-          builder:
-              (context) =>
-                  AlertDialog(content: Text(S().Two_passwords_dont_match)),
+          builder: (context) =>
+              AlertDialog(content: Text(S().Two_passwords_dont_match)),
         );
         return;
       }

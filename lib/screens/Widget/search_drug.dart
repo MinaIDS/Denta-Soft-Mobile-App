@@ -1,5 +1,5 @@
 import 'package:denta_soft/models/SearchProductModel.dart';
-import 'package:denta_soft/services/SearchProductServices.dart';
+
 import 'package:denta_soft/utils/SizeandStyleUtills.dart';
 import 'package:denta_soft/widgets/buttons/accent_button.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ class SearchDrug extends StatefulWidget {
   final ValueSetter<List<SearchProductModel>>? onSearch;
   final List<SearchProductModel>? drugs;
 
-  const SearchDrug({Key? key, this.onSearch, this.drugs}) : super(key: key);
+  const SearchDrug({super.key, this.onSearch, this.drugs});
 
   @override
   _SearchDrugState createState() => _SearchDrugState();
@@ -39,36 +39,32 @@ class _SearchDrugState extends State<SearchDrug> {
           Padding(
             padding: const EdgeInsets.only(top: 90, bottom: 65),
             child: ListView(
-              children:
-                  selectedDrugs
-                      .map(
-                        (d) => Card(
-                          elevation: 0.5,
-                          margin: EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 10,
-                          ),
-                          child: ListTile(
-                            dense: true,
-                            leading: Text(
-                              (selectedDrugs.indexOf(d) + 1).toString(),
-                            ),
-                            title: Text(d.productEn!),
-                            trailing: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedDrugs.remove(d);
-                                });
-                              },
-                              child: Icon(
-                                Icons.delete_forever,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
+              children: selectedDrugs
+                  .map(
+                    (d) => Card(
+                      elevation: 0.5,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 10,
+                      ),
+                      child: ListTile(
+                        dense: true,
+                        leading: Text(
+                          (selectedDrugs.indexOf(d) + 1).toString(),
                         ),
-                      )
-                      .toList(),
+                        title: Text(d.productEn!),
+                        trailing: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedDrugs.remove(d);
+                            });
+                          },
+                          child: Icon(Icons.delete_forever, color: Colors.red),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
           ),
           Positioned(

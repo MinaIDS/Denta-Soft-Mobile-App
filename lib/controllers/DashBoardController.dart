@@ -20,7 +20,6 @@ class DashBoardController {
       }
       return dataList;
     } catch (e) {
-      print("Error in getDailyWorkedHours: $e");
       return dataList;
     }
   }
@@ -42,18 +41,17 @@ class DashBoardController {
       }
       return dataList;
     } catch (e) {
-      print("Error in getDailyAppointmentAsyncs: $e");
       return dataList;
     }
   }
 
   // Get all dashboard data by combining the daily worked hours and daily appointments async data
   Future<Map<String, dynamic>> getAllDashboardData() async {
-    List<Map<String, dynamic>> _dailyWorkedHours = await getDailyWorkedHours();
-    List<Map<String, dynamic>> _dailyAppointmentAsyncs =
+    List<Map<String, dynamic>> dailyWorkedHours = await getDailyWorkedHours();
+    List<Map<String, dynamic>> dailyAppointmentAsyncs =
         await getDailyAppointmentAsyncs();
 
-    double _dailyWorkedHoursMAXVALUE =
+    double dailyWorkedHoursMAXVALUE =
         50; // Default max value for daily worked hours
 
     String dailyWorkedHoursKey = '';
@@ -62,7 +60,7 @@ class DashBoardController {
     String dailyAppointmentAsyncsValue = '';
 
     // Process the daily worked hours
-    for (var element in _dailyWorkedHours) {
+    for (var element in dailyWorkedHours) {
       var key = element['key'];
       var value = element['value'];
 
@@ -70,14 +68,14 @@ class DashBoardController {
         dailyWorkedHoursKey += " '${convertDateFormat(DateTime.parse(key))}' ,";
         dailyWorkedHoursValue += " $value ,";
 
-        if (_dailyWorkedHoursMAXVALUE < value) {
-          _dailyWorkedHoursMAXVALUE = value + 20;
+        if (dailyWorkedHoursMAXVALUE < value) {
+          dailyWorkedHoursMAXVALUE = value + 20;
         }
       }
     }
 
     // Process the daily appointment asyncs
-    for (var element in _dailyAppointmentAsyncs) {
+    for (var element in dailyAppointmentAsyncs) {
       var key = element['key'];
       var value = element['value'];
 
@@ -95,7 +93,7 @@ class DashBoardController {
       "dailyWorkedHoursValue": dailyWorkedHoursValue,
       "dailyAppointmentAsyncsKey": dailyAppointmentAsyncsKey,
       "dailyAppointmentAsyncsValue": dailyAppointmentAsyncsValue,
-      "dailyWorkedHoursMAXVALUE": _dailyWorkedHoursMAXVALUE.toString()
+      "dailyWorkedHoursMAXVALUE": dailyWorkedHoursMAXVALUE.toString(),
     };
 
     return allData;

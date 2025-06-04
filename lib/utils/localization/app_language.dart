@@ -64,8 +64,8 @@ class AppLanguage extends ChangeNotifier {
   // this in change language screen
   LanguageSite language = LanguageSite.en;
 
-  setLanguage(LanguageSite _language) {
-    language = _language;
+  setLanguage(LanguageSite language) {
+    language = language;
     notifyListeners();
   }
 }

@@ -12,6 +12,8 @@ import 'custom_drawer/home_drawer.dart';
 import 'home_screen.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
+  const NavigationHomeScreen({super.key});
+
   @override
   _NavigationHomeScreenState createState() => _NavigationHomeScreenState();
 }

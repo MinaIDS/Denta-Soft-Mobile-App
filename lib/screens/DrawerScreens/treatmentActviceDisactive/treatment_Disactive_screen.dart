@@ -1,4 +1,3 @@
-import 'package:denta_soft/controllers/InsuranceCompanyController.dart';
 import 'package:denta_soft/controllers/TreatmentController.dart';
 import 'package:denta_soft/generated/l10n.dart';
 import 'package:denta_soft/items/ConfirmShowModalBottomSheet.dart';
@@ -13,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TreatmentDisactiveScreen extends StatefulWidget {
+  const TreatmentDisactiveScreen({super.key});
+
   @override
   _TreatmentDisactiveScreenState createState() =>
       _TreatmentDisactiveScreenState();
@@ -26,86 +27,83 @@ class _TreatmentDisactiveScreenState extends State<TreatmentDisactiveScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-      "DDD::" + GlobalData.accountData!.objectData.branchId! ?? 'No Branch',
-    );
+    print("DDD::${GlobalData.accountData!.objectData.branchId!}");
     return ChangeNotifierProvider.value(
       value: TreatmentController(),
       child: Consumer<TreatmentController>(
-        builder:
-            (context, model, child) => RefreshIndicator(
-              onRefresh: () async {
-                await model.getTreatmentInactiveList();
-              },
-              child: OnceFutureBuilder(
-                future: () => model.getTreatmentInactiveList(),
-                builder: (ctx, snapShot) {
-                  if (snapShot.connectionState != ConnectionState.done) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  return Scaffold(
-                    backgroundColor: AppTheme.nearlyWhite,
-                    body: SafeArea(
-                      child: ListView(
-                        children: [
-                          SizedBox(height: 12),
-                          ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (ctx, index) {
-                              return TreatmentItemWidget(
-                                treatmentModel: model.treatments[index],
-                                onAddProcedure: () async {},
-                                onUpdate: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    builder: (BuildContext context) {
-                                      return ShowModalSheetConfirmation(
-                                        title: "",
-                                        mainTitle:
-                                            "Are you sure Active This Treatment",
-                                        onTapFunction: () async {
-                                          print('confirm');
-                                          Navigator.pop(context);
-                                          model.changeStatusTreatmentBranch(
-                                            model: model.treatments[index],
-                                            statusTreat: true,
-                                          );
-                                        },
+        builder: (context, model, child) => RefreshIndicator(
+          onRefresh: () async {
+            await model.getTreatmentInactiveList();
+          },
+          child: OnceFutureBuilder(
+            future: () => model.getTreatmentInactiveList(),
+            builder: (ctx, snapShot) {
+              if (snapShot.connectionState != ConnectionState.done) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return Scaffold(
+                backgroundColor: AppTheme.nearlyWhite,
+                body: SafeArea(
+                  child: ListView(
+                    children: [
+                      SizedBox(height: 12),
+                      ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (ctx, index) {
+                          return TreatmentItemWidget(
+                            treatmentModel: model.treatments[index],
+                            onAddProcedure: () async {},
+                            onUpdate: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (BuildContext context) {
+                                  return ShowModalSheetConfirmation(
+                                    title: "",
+                                    mainTitle:
+                                        "Are you sure Active This Treatment",
+                                    onTapFunction: () async {
+                                      print('confirm');
+                                      Navigator.pop(context);
+                                      model.changeStatusTreatmentBranch(
+                                        model: model.treatments[index],
+                                        statusTreat: true,
                                       );
                                     },
                                   );
                                 },
-                                onProcedureList: () {},
-                                isActive: false,
                               );
                             },
-                            shrinkWrap: true,
-                            itemCount: model.treatments.length,
-                          ),
-                          SizedBox(
-                            height: SizeHeight_XXXXXL + SizeHeight_XXXXXL,
-                          ),
-                        ],
+                            onProcedureList: () {},
+                            isActive: false,
+                          );
+                        },
+                        shrinkWrap: true,
+                        itemCount: model.treatments.length,
                       ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                      SizedBox(height: SizeHeight_XXXXXL + SizeHeight_XXXXXL),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
 }
 
+// ignore: must_be_immutable
 class EditInsuranceBottomSheet extends StatefulWidget {
   String type;
   InsuranceModel insurance;
   Function onSave;
 
-  EditInsuranceBottomSheet(this.type, this.insurance, this.onSave);
+  EditInsuranceBottomSheet(this.type, this.insurance, this.onSave, {super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditInsuranceBottomSheetState createState() =>
       _EditInsuranceBottomSheetState();
 }
@@ -125,7 +123,7 @@ class _EditInsuranceBottomSheetState extends State<EditInsuranceBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * .95,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: SizeWidth_L),
@@ -169,8 +167,9 @@ class _EditInsuranceBottomSheetState extends State<EditInsuranceBottomSheet> {
               textInputType: TextInputType.number,
               controller: toleranceRatioController,
               onChangeText: (newValue) {
-                widget.insurance.toleranceRatio =
-                    newValue.isNotEmpty ? double.parse(newValue) : 0.0;
+                widget.insurance.toleranceRatio = newValue.isNotEmpty
+                    ? double.parse(newValue)
+                    : 0.0;
               },
             ),
             SizedBox(height: WidgetSize_XS),
@@ -179,8 +178,6 @@ class _EditInsuranceBottomSheetState extends State<EditInsuranceBottomSheet> {
               children: [
                 TextButton(
                   onPressed: () async {
-                    bool status = await InsuranceCompanyController()
-                        .saveInsuranceCompany(insurances: widget.insurance);
                     widget.onSave();
                     Navigator.pop(context);
                   },

@@ -11,6 +11,8 @@ import 'HomeScreens/PatientScreens/PatientsScreen.dart';
 import 'HomeScreens/profile/ProfileScreen.dart';
 
 class HomeIndex extends StatefulWidget {
+  const HomeIndex({super.key});
+
   @override
   _HomeIndexState createState() => _HomeIndexState();
 }
@@ -37,10 +39,9 @@ class _HomeIndexState extends State<HomeIndex> {
   Widget build(BuildContext context) {
     GlobalData.globalContext = context;
     return Scaffold(
-      appBar:
-          (pageNumber == 4 || pageNumber == 3)
-              ? null
-              : CustomAppBar.customAppBar(title: appBarTitle[pageNumber]),
+      appBar: (pageNumber == 4 || pageNumber == 3)
+          ? null
+          : CustomAppBar.customAppBar(title: appBarTitle[pageNumber]),
       drawer: AppDrawer(),
       backgroundColor: Colors.white,
       body: PageView(

@@ -12,8 +12,7 @@ class PatientItemWidget extends StatelessWidget {
   final PatientModel patientModel;
 
   // Making patientModel required
-  const PatientItemWidget({Key? key, required this.patientModel})
-    : super(key: key);
+  const PatientItemWidget({super.key, required this.patientModel});
 
   @override
   Widget build(BuildContext context) {
@@ -32,29 +31,29 @@ class PatientItemWidget extends StatelessWidget {
           children: [
             patientModel.photoJson == null
                 ? Container(
-                  child: Text(
-                    patientModel.patientName!.isNotEmpty
-                        ? patientModel.patientName![0].toString()
-                        : 'N/A',
-                    style: TextStyle(
-                      fontSize: SizeHeight_XXXL,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  width: 100,
-                  height: 100,
-                )
-                : ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  child: Image.network(
-                    ApiRoutes.server_url + patientModel.photoJson!,
+                    alignment: Alignment.center,
                     width: 100,
                     height: 100,
-                    fit: BoxFit.cover,
+                    child: Text(
+                      patientModel.patientName!.isNotEmpty
+                          ? patientModel.patientName![0].toString()
+                          : 'N/A',
+                      style: TextStyle(
+                        fontSize: SizeHeight_XXXL,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    child: Image.network(
+                      ApiRoutes.server_url + patientModel.photoJson!,
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(
@@ -95,35 +94,34 @@ class PatientItemWidget extends StatelessWidget {
                     patientModel.occupation?.isEmpty ?? true
                         ? Container()
                         : Text(
-                          patientModel.occupation ?? "",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.blue,
+                            patientModel.occupation ?? "",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.blue,
+                            ),
                           ),
-                        ),
                     patientModel.occupation?.isEmpty ?? true
                         ? Container()
                         : SpaceHeight_XS,
                     patientModel.phoneWork?.isEmpty ?? true
                         ? Container()
                         : Text(
-                          "${S().PhoneNumber}: " +
-                              (patientModel.phoneWork ?? ""),
-                          style: TextStyle(color: Color(0xffCBCBCB)),
-                        ),
+                            "${S().PhoneNumber}: " +
+                                (patientModel.phoneWork ?? ""),
+                            style: TextStyle(color: Color(0xffCBCBCB)),
+                          ),
                     SpaceHeight_XS,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "${S().Gender}: " + (patientModel.gender ?? 'N/A'),
+                          "${S().Gender}: ${patientModel.gender ?? 'N/A'}",
                           style: TextStyle(color: Color(0xffCBCBCB)),
                         ),
                         SpaceWidth_L,
                         Text(
-                          "${S().Age}: " +
-                              (patientModel.age?.toString() ?? 'N/A'),
+                          "${S().Age}: ${patientModel.age?.toString() ?? 'N/A'}",
                           style: TextStyle(color: Color(0xffCBCBCB)),
                         ),
                       ],
@@ -131,13 +129,13 @@ class PatientItemWidget extends StatelessWidget {
                     SpaceHeight_XS,
                     patientModel.lastVisit?.isEmpty ?? true
                         ? Text(
-                          "${S().LastVisit}: xx:xx:xx",
-                          style: TextStyle(color: Color(0xffCBCBCB)),
-                        )
+                            "${S().LastVisit}: xx:xx:xx",
+                            style: TextStyle(color: Color(0xffCBCBCB)),
+                          )
                         : Text(
-                          "${S().LastVisit}: " +
-                              (patientModel.lastVisit ?? "N/A"),
-                        ),
+                            "${S().LastVisit}: " +
+                                (patientModel.lastVisit ?? "N/A"),
+                          ),
                   ],
                 ),
               ),

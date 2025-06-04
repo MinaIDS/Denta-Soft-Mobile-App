@@ -13,12 +13,14 @@ import '../../../widgets/custom_drop_down_Button_field.dart';
 import '../../../widgets/custom_text_form_field.dart';
 
 class AddUserScreen extends StatefulWidget {
+  const AddUserScreen({super.key});
+
   @override
   _AddUserScreenState createState() => _AddUserScreenState();
 }
 
 class _AddUserScreenState extends State<AddUserScreen> {
-  var _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   ObjectData userData = ObjectData();
 
   TextEditingController? _fullNameController;
@@ -91,17 +93,16 @@ class _AddUserScreenState extends State<AddUserScreen> {
                   onChanged: (String? v) {
                     _accountType = v;
                   },
-                  items:
-                      accountType
-                          .map(
-                            (a) => DropdownMenuItem(
-                              child: Text(
-                                AppLocalizations.of(context)!.translate(a),
-                              ),
-                              value: a,
-                            ),
-                          )
-                          .toList(),
+                  items: accountType
+                      .map(
+                        (a) => DropdownMenuItem(
+                          value: a,
+                          child: Text(
+                            AppLocalizations.of(context)!.translate(a),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
                 SpaceHeight_M,
                 _buildTitle(S().CalendarView, isRequired: true),
@@ -119,12 +120,9 @@ class _AddUserScreenState extends State<AddUserScreen> {
                   onChanged: (String? v) {
                     _calendarView = v;
                   },
-                  items:
-                      calendarType
-                          .map(
-                            (c) => DropdownMenuItem(child: Text(c), value: c),
-                          )
-                          .toList(),
+                  items: calendarType
+                      .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                      .toList(),
                 ),
                 SpaceHeight_M,
                 // Email
@@ -203,7 +201,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
           TextSpan(text: title),
           if (isRequired) ...[
             TextSpan(text: '  '),
-            TextSpan(text: '*', style: TextStyle(color: Colors.red)),
+            TextSpan(
+              text: '*',
+              style: TextStyle(color: Colors.red),
+            ),
           ],
         ],
       ),

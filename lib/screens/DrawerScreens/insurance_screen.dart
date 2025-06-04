@@ -15,6 +15,8 @@ import '../ThemeColors.dart';
 import '../app_theme.dart';
 
 class InsuranceScreen extends StatefulWidget {
+  const InsuranceScreen({super.key});
+
   @override
   _InsuranceScreenState createState() => _InsuranceScreenState();
 }
@@ -30,8 +32,8 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
   @override
   void initState() {
     super.initState();
-    getInsuranceCompanies =
-        InsuranceCompanyController().getInsuranceCompanies();
+    getInsuranceCompanies = InsuranceCompanyController()
+        .getInsuranceCompanies();
   }
 
   @override
@@ -56,20 +58,18 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
           InsuranceModel insuranceModel = InsuranceModel();
           showMaterialModalBottomSheet(
             context: context,
-            builder:
-                (context) => SingleChildScrollView(
-                  controller: ModalScrollController.of(context),
-                  child: EditInsuranceBottomSheet(
-                    S().Add,
-                    insuranceModel,
-                    () async {
-                      insurances =
-                          await InsuranceCompanyController()
-                              .getInsuranceCompanies();
-                      setState(() {});
-                    },
-                  ),
-                ),
+            builder: (context) => SingleChildScrollView(
+              controller: ModalScrollController.of(context),
+              child: EditInsuranceBottomSheet(
+                S().Add,
+                insuranceModel,
+                () async {
+                  insurances = await InsuranceCompanyController()
+                      .getInsuranceCompanies();
+                  setState(() {});
+                },
+              ),
+            ),
           );
         },
         child: Icon(Icons.add, color: Colors.white),
@@ -88,9 +88,8 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
               }
               return RefreshIndicator(
                 onRefresh: () async {
-                  insurances =
-                      await InsuranceCompanyController()
-                          .getInsuranceCompanies();
+                  insurances = await InsuranceCompanyController()
+                      .getInsuranceCompanies();
                   setState(() {});
                 },
                 child: ListView(
@@ -98,92 +97,89 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                     SizedBox(height: 12),
                     insurances.isEmpty
                         ? Center(
-                          child: Stack(
-                            children: [
-                              EmptyScreenWidget(
-                                assetPath: AssetsRoutes.noBoxDataAvailable,
-                              ),
-                            ],
-                          ),
-                        )
-                        : ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (ctx, index) {
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
+                            child: Stack(
                               children: [
-                                InsuranceItemWidget(
-                                  insuranceModel: insurances[index],
-                                  onDelete: () async {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      builder: (BuildContext context) {
-                                        return ShowModalSheetConfirmation(
-                                          title: S().All,
-                                          onTapFunction: () async {
-                                            print('confirm');
-                                            Navigator.pop(context);
-                                            bool status =
-                                                await InsuranceCompanyController()
-                                                    .deleteInsuranceCompany(
-                                                      branchId:
-                                                          insurances[index]
-                                                              .branchId!,
-                                                      id:
-                                                          insurances[index]
-                                                              .medicalInsuranceId!,
-                                                    );
-                                            if (status) {
-                                              setState(() {
-                                                insurances.remove(
-                                                  insurances[index],
-                                                );
-                                              });
-                                            } else {}
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                  onUpdate: () {
-                                    InsuranceModel insuranceModel =
-                                        InsuranceModel();
-                                    insuranceModel.medicalInsuranceId =
-                                        insurances[index].medicalInsuranceId;
-                                    insuranceModel.toleranceRatio =
-                                        insurances[index].toleranceRatio;
-                                    insuranceModel.medicalCompany =
-                                        insurances[index].medicalCompany;
-
-                                    showMaterialModalBottomSheet(
-                                      context: context,
-                                      builder:
-                                          (context) => SingleChildScrollView(
-                                            controller:
-                                                ModalScrollController.of(
-                                                  context,
-                                                ),
-                                            child: EditInsuranceBottomSheet(
-                                              S().Update,
-                                              insuranceModel,
-                                              () async {
-                                                insurances =
-                                                    await InsuranceCompanyController()
-                                                        .getInsuranceCompanies();
-                                                setState(() {});
-                                              },
-                                            ),
-                                          ),
-                                    );
-                                  },
+                                EmptyScreenWidget(
+                                  assetPath: AssetsRoutes.noBoxDataAvailable,
                                 ),
                               ],
-                            );
-                          },
-                          shrinkWrap: true,
-                          itemCount: insurances.length,
-                        ),
+                            ),
+                          )
+                        : ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (ctx, index) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  InsuranceItemWidget(
+                                    insuranceModel: insurances[index],
+                                    onDelete: () async {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        builder: (BuildContext context) {
+                                          return ShowModalSheetConfirmation(
+                                            title: S().All,
+                                            onTapFunction: () async {
+                                              print('confirm');
+                                              Navigator.pop(context);
+                                              bool status =
+                                                  await InsuranceCompanyController()
+                                                      .deleteInsuranceCompany(
+                                                        branchId:
+                                                            insurances[index]
+                                                                .branchId!,
+                                                        id: insurances[index]
+                                                            .medicalInsuranceId!,
+                                                      );
+                                              if (status) {
+                                                setState(() {
+                                                  insurances.remove(
+                                                    insurances[index],
+                                                  );
+                                                });
+                                              } else {}
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                    onUpdate: () {
+                                      InsuranceModel insuranceModel =
+                                          InsuranceModel();
+                                      insuranceModel.medicalInsuranceId =
+                                          insurances[index].medicalInsuranceId;
+                                      insuranceModel.toleranceRatio =
+                                          insurances[index].toleranceRatio;
+                                      insuranceModel.medicalCompany =
+                                          insurances[index].medicalCompany;
+
+                                      showMaterialModalBottomSheet(
+                                        context: context,
+                                        builder: (context) => SingleChildScrollView(
+                                          controller: ModalScrollController.of(
+                                            context,
+                                          ),
+                                          child: EditInsuranceBottomSheet(
+                                            S().Update,
+                                            insuranceModel,
+                                            () async {
+                                              insurances =
+                                                  await InsuranceCompanyController()
+                                                      .getInsuranceCompanies();
+                                              setState(() {});
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                            shrinkWrap: true,
+                            itemCount: insurances.length,
+                          ),
                     SizedBox(height: SizeHeight_XXXXXL + SizeHeight_XXXXXL),
                   ],
                 ),
@@ -196,12 +192,13 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
   }
 }
 
+// ignore: must_be_immutable
 class EditInsuranceBottomSheet extends StatefulWidget {
   String type;
   InsuranceModel insurance;
   Function onSave;
 
-  EditInsuranceBottomSheet(this.type, this.insurance, this.onSave);
+  EditInsuranceBottomSheet(this.type, this.insurance, this.onSave, {super.key});
 
   @override
   _EditInsuranceBottomSheetState createState() =>
@@ -283,8 +280,6 @@ class _EditInsuranceBottomSheetState extends State<EditInsuranceBottomSheet> {
                     }),
                   ),
                   onPressed: () async {
-                    bool status = await InsuranceCompanyController()
-                        .saveInsuranceCompany(insurances: widget.insurance);
                     widget.onSave();
                     Navigator.pop(context);
                   },

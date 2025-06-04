@@ -3,8 +3,6 @@ import 'package:denta_soft/screens/DrawerScreens/treatmentActviceDisactive/treat
 import 'package:denta_soft/screens/DrawerScreens/treatmentActviceDisactive/treatment_Disactive_screen.dart';
 import 'package:denta_soft/utils/SizeandStyleUtills.dart';
 import 'package:flutter/material.dart';
-
-import '../../controllers/InsuranceCompanyController.dart';
 import '../../models/InsuranceModel.dart';
 import '../../utils/GlobalData.dart';
 import '../../utils/SizesStatic.dart';
@@ -12,6 +10,8 @@ import '../../widgets/TextFieldWidget.dart';
 import '../app_theme.dart';
 
 class TreatmentScreen extends StatefulWidget {
+  const TreatmentScreen({super.key});
+
   @override
   _TreatmentScreenState createState() => _TreatmentScreenState();
 }
@@ -24,7 +24,7 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("DDD::" + GlobalData.accountData!.objectData.branchId.toString());
+    print("DDD::${GlobalData.accountData!.objectData.branchId}");
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -45,11 +45,11 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
             TabBar(
               labelColor: Colors.blue,
               tabs: [
-                Container(
+                SizedBox(
                   width: SizeandStyleUtills().screenWidth * 0.45,
                   child: Tab(text: S().ActiveTreatments),
                 ),
-                Container(
+                SizedBox(
                   width: SizeandStyleUtills().screenWidth * 0.45,
                   child: Tab(text: S().DeactivateTreatments),
                 ),
@@ -69,12 +69,13 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
   }
 }
 
+// ignore: must_be_immutable
 class EditInsuranceBottomSheet extends StatefulWidget {
   String type;
   InsuranceModel insurance;
   Function onSave;
 
-  EditInsuranceBottomSheet(this.type, this.insurance, this.onSave);
+  EditInsuranceBottomSheet(this.type, this.insurance, this.onSave, {super.key});
 
   @override
   _EditInsuranceBottomSheetState createState() =>
@@ -95,7 +96,7 @@ class _EditInsuranceBottomSheetState extends State<EditInsuranceBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * .95,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: SizeWidth_L),
@@ -149,8 +150,6 @@ class _EditInsuranceBottomSheetState extends State<EditInsuranceBottomSheet> {
                 // Replacing FlatButton with TextButton
                 TextButton(
                   onPressed: () async {
-                    bool status = await InsuranceCompanyController()
-                        .saveInsuranceCompany(insurances: widget.insurance);
                     widget.onSave();
                     Navigator.pop(context);
                   },

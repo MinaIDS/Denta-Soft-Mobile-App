@@ -9,12 +9,12 @@ class ShowModalSheetConfirmation extends StatefulWidget {
   final String title;
   final Function onTapFunction;
 
-  ShowModalSheetConfirmation({
-    Key? key,
+  const ShowModalSheetConfirmation({
+    super.key,
     required this.title,
     this.mainTitle,
     required this.onTapFunction,
-  }) : super(key: key);
+  });
 
   @override
   _ShowModalSheetConfirmationState createState() =>

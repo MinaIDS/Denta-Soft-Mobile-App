@@ -13,15 +13,17 @@ class FinancialServices {
     jsonValues.addAll({
       "dateFrom": from,
       "dateto": to,
-      "branchId": GlobalData.accountData!.objectData.branchId
+      "branchId": GlobalData.accountData!.objectData.branchId,
     });
     var body = jsonEncode(jsonValues);
 
     try {
-      GlobalHttpResponse response = await GlobalHttp.post(ApiRoutes.getIOComes,
-          body: body,
-          contentTypeHeader: "application/json",
-          authorizationHeader: GlobalData.accountData!.token);
+      GlobalHttpResponse response = await GlobalHttp.post(
+        ApiRoutes.getIOComes,
+        body: body,
+        contentTypeHeader: "application/json",
+        authorizationHeader: GlobalData.accountData!.token,
+      );
 
       // OK 200
       if (response.statusCode == 200) {
@@ -34,8 +36,9 @@ class FinancialServices {
   }
 
   Future<bool> saveIOCome({IOComeModel? selectedIOCome}) async {
-    if (selectedIOCome == null)
+    if (selectedIOCome == null) {
       return false; // Return false if selectedIOCome is null
+    }
 
     Map<String, dynamic> jsonValues = {};
     bool status = false;
@@ -54,15 +57,17 @@ class FinancialServices {
           selectedIOCome.happenDate?.toString() ?? "", // Handle null value
       "updateUserId": GlobalData.accountData!.objectData.userId,
       "comments": selectedIOCome.comments,
-      "createUserId": selectedIOCome.createUserId
+      "createUserId": selectedIOCome.createUserId,
     });
     var body = jsonEncode(jsonValues);
 
     try {
-      GlobalHttpResponse response = await GlobalHttp.post(ApiRoutes.saveIOCome,
-          body: body,
-          contentTypeHeader: "application/json",
-          authorizationHeader: GlobalData.accountData!.token);
+      GlobalHttpResponse response = await GlobalHttp.post(
+        ApiRoutes.saveIOCome,
+        body: body,
+        contentTypeHeader: "application/json",
+        authorizationHeader: GlobalData.accountData!.token,
+      );
 
       // OK 200
       if (response.statusCode == 200) {
@@ -79,10 +84,11 @@ class FinancialServices {
 
     try {
       GlobalHttpResponse response = await GlobalHttp.delete(
-          ApiRoutes.deleteIOCome,
-          body: [id],
-          contentTypeHeader: "application/json",
-          authorizationHeader: GlobalData.accountData!.token);
+        ApiRoutes.deleteIOCome,
+        body: [id],
+        contentTypeHeader: "application/json",
+        authorizationHeader: GlobalData.accountData!.token,
+      );
 
       // OK 200
       if (response.statusCode == 200) {

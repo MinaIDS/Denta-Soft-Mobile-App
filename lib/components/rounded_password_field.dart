@@ -9,11 +9,11 @@ class RoundedPasswordField extends StatefulWidget {
   final TextEditingController? controller; // Make controller nullable
 
   const RoundedPasswordField({
-    Key? key, // Mark key as nullable
+    super.key, // Mark key as nullable
     this.onChanged,
     this.validator,
     this.controller,
-  }) : super(key: key);
+  });
 
   @override
   _RoundedPasswordFieldState createState() => _RoundedPasswordFieldState();
@@ -45,7 +45,6 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
             onTap: () {
               setState(() {
                 _obscureText = !_obscureText;
-                print(_obscureText);
               });
             },
             child: Icon(

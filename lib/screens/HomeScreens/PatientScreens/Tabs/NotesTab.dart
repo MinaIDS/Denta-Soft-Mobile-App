@@ -16,7 +16,7 @@ import '../../../ThemeColors.dart';
 class NotesTab extends StatefulWidget {
   final PatientModel? patient;
 
-  const NotesTab({Key? key, this.patient}) : super(key: key);
+  const NotesTab({super.key, this.patient});
 
   @override
   _NotesTabState createState() => _NotesTabState();
@@ -34,157 +34,149 @@ class _NotesTabState extends State<NotesTab> {
     return ChangeNotifierProvider.value(
       value: NoteController(),
       child: Consumer<NoteController>(
-        builder:
-            (context, model, child) => Scaffold(
-              body: SingleChildScrollView(
-                child: Container(
-                  child: RefreshIndicator(
-                    onRefresh: () async {
-                      await model.getNotes(widget.patient?.patientId ?? '');
-                    },
-                    child: OnceFutureBuilder(
-                      future:
-                          () => model.getNotes(widget.patient?.patientId ?? ''),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState != ConnectionState.done) {
-                          return Container(
-                            height: SizeandStyleUtills().screenHeight,
-                            child: Center(child: CircularProgressIndicator()),
-                          );
-                        } else {
-                          model.notes = snapshot.data as List<NoteModel>;
-                          return SingleChildScrollView(
-                            child: Container(
-                              child: Column(
-                                children: [listOFData(context, model)],
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              bottomNavigationBar: Form(
-                key: _formKey,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 50,
-                        margin: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 10,
+        builder: (context, model, child) => Scaffold(
+          body: SingleChildScrollView(
+            child: Container(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await model.getNotes(widget.patient?.patientId ?? '');
+                },
+                child: OnceFutureBuilder(
+                  future: () => model.getNotes(widget.patient?.patientId ?? ''),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return SizedBox(
+                        height: SizeandStyleUtills().screenHeight,
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    } else {
+                      model.notes = snapshot.data as List<NoteModel>;
+                      return SingleChildScrollView(
+                        child: Container(
+                          child: Column(children: [listOFData(context, model)]),
                         ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(color: Colors.blue),
-                        ),
-                        child: Row(
-                          children: [
-                            Flexible(
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                  contentPadding: EdgeInsets.only(
-                                    left: 15,
-                                    bottom: 11,
-                                    top: 11,
-                                    right: 15,
-                                  ),
-                                  hintText: S().Notes,
-                                ),
-                                controller: model.noteController,
-                                validator: (value) {
-                                  return value?.isEmpty ?? true
-                                      ? "Add note First"
-                                      : null;
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    model.isLoading
-                        ? Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: ThemeColors.primary,
-                          ),
-                          padding: EdgeInsets.all(8),
-                          margin: EdgeInsets.all(8),
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.white,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              ThemeColors.primary,
-                            ),
-                          ),
-                        )
-                        : Container(
-                          margin: EdgeInsets.all(8),
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                NoteModel noteModel = NoteModel();
-                                noteModel.comments = model.noteController.text;
-                                setState(() {
-                                  model.isLoading = true;
-                                });
-                                bool status = await NoteController().saveNotes(
-                                  note: noteModel,
-                                  patientId: widget.patient?.patientId ?? '',
-                                );
-                                if (status) {
-                                  model.notes.clear();
-                                  model.noteController.clear();
-                                  model.notes.addAll(
-                                    await model.getNotes(
-                                      widget.patient?.patientId ?? '',
-                                    ),
-                                  );
-                                  model.isLoading = false;
-                                  setState(() {});
-                                }
-                              }
-                            },
-                            child: Icon(Icons.send_rounded),
-                          ),
-                        ),
-                  ],
+                      );
+                    }
+                  },
                 ),
               ),
             ),
+          ),
+          bottomNavigationBar: Form(
+            key: _formKey,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 50,
+                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      border: Border.all(color: Colors.blue),
+                    ),
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                left: 15,
+                                bottom: 11,
+                                top: 11,
+                                right: 15,
+                              ),
+                              hintText: S().Notes,
+                            ),
+                            controller: model.noteController,
+                            validator: (value) {
+                              return value?.isEmpty ?? true
+                                  ? "Add note First"
+                                  : null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                model.isLoading
+                    ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: ThemeColors.primary,
+                        ),
+                        padding: EdgeInsets.all(8),
+                        margin: EdgeInsets.all(8),
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            ThemeColors.primary,
+                          ),
+                        ),
+                      )
+                    : Container(
+                        margin: EdgeInsets.all(8),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              NoteModel noteModel = NoteModel();
+                              noteModel.comments = model.noteController.text;
+                              setState(() {
+                                model.isLoading = true;
+                              });
+                              bool status = await NoteController().saveNotes(
+                                note: noteModel,
+                                patientId: widget.patient?.patientId ?? '',
+                              );
+                              if (status) {
+                                model.notes.clear();
+                                model.noteController.clear();
+                                model.notes.addAll(
+                                  await model.getNotes(
+                                    widget.patient?.patientId ?? '',
+                                  ),
+                                );
+                                model.isLoading = false;
+                                setState(() {});
+                              }
+                            }
+                          },
+                          child: Icon(Icons.send_rounded),
+                        ),
+                      ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 
   Widget listOFData(context, NoteController model) {
-    return Container(
+    return SizedBox(
       height: scrennSize.height,
-      child:
-          model.isLoading
-              ? Center(child: CircularProgressIndicator())
-              : model.notes.isEmpty
-              ? Center(
-                child: EmptyScreenWidget(
-                  assetPath: AssetsRoutes.noBoxDataAvailable,
-                ),
-              )
-              : ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.symmetric(vertical: 15),
-                itemCount: model.notes.length,
-                itemBuilder: (context, index) {
-                  NoteModel modeln = model.notes[index];
-                  return itemWidget(modeln);
-                },
+      child: model.isLoading
+          ? Center(child: CircularProgressIndicator())
+          : model.notes.isEmpty
+          ? Center(
+              child: EmptyScreenWidget(
+                assetPath: AssetsRoutes.noBoxDataAvailable,
               ),
+            )
+          : ListView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(vertical: 15),
+              itemCount: model.notes.length,
+              itemBuilder: (context, index) {
+                NoteModel modeln = model.notes[index];
+                return itemWidget(modeln);
+              },
+            ),
     );
   }
 
@@ -214,7 +206,7 @@ class _NotesTabState extends State<NotesTab> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   SpaceHeight_XS,
-                  Container(
+                  SizedBox(
                     width: SizeandStyleUtills().getProportionalWidth(
                       width: 300,
                     ),

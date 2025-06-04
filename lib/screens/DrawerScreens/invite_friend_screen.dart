@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../app_theme.dart';
 
 class InviteFriend extends StatefulWidget {
+  const InviteFriend({super.key});
+
   @override
   _InviteFriendState createState() => _InviteFriendState();
 }
@@ -23,7 +25,7 @@ class _InviteFriendState extends State<InviteFriend> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 30,
-            color: Colors.white,
+            color: Colors.pink.shade300,
             fontWeight: FontWeight.w600,
           ),
         ),

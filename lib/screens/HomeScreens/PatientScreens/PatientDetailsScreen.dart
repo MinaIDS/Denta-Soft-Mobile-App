@@ -14,7 +14,7 @@ import 'Tabs/TimeLineTab.dart';
 class PatientDetailsScreen extends StatefulWidget {
   final PatientModel? patientModel;
 
-  const PatientDetailsScreen({Key? key, this.patientModel}) : super(key: key);
+  const PatientDetailsScreen({super.key, this.patientModel});
 
   @override
   ProfilePageState createState() => ProfilePageState();
@@ -33,10 +33,9 @@ class ProfilePageState extends State<PatientDetailsScreen> {
           );
         },
         child: OnceFutureBuilder(
-          future:
-              () => PatientController().getPatientDetails(
-                patientId: widget.patientModel!.patientId,
-              ),
+          future: () => PatientController().getPatientDetails(
+            patientId: widget.patientModel!.patientId,
+          ),
           builder: (ctx, snapShot) {
             if (snapShot.connectionState != ConnectionState.done) {
               return Center(child: CircularProgressIndicator());
@@ -73,7 +72,7 @@ class ProfilePageState extends State<PatientDetailsScreen> {
                       children: [
                         OverviewTab(
                           // patientModel: widget.patientModel,
-                          patientModel: snapShot.data as PatientModel?,
+                          patientModel: snapShot.data,
                         ),
                         DetailsTab(patientModel: widget.patientModel!),
                         TimeLineTab(patientModel: widget.patientModel!),

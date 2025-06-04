@@ -50,7 +50,7 @@ class AccountServices {
       }
       return status;
     } catch (e) {
-      print("DDDD:" + e.toString());
+      print("DDDD:$e");
       return status;
     }
   }
@@ -234,7 +234,7 @@ class AccountServices {
   Future<bool> getUserData(String userId) async {
     bool status = false;
 
-    final url = ApiRoutes.getUserData + "UserId=$userId";
+    final url = "${ApiRoutes.getUserData}UserId=$userId";
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
         url,
@@ -246,7 +246,7 @@ class AccountServices {
         final respnseJson = json.decode(response.body!);
         GlobalData.accountData!.objectData = ObjectData.fromJson(respnseJson);
         SharedPrafranceManager().setData(
-          SecureStorageKeys.accountData!,
+          SecureStorageKeys.accountData,
           json.encode(GlobalData.accountData!.toJson()),
         );
         status = true;
@@ -255,7 +255,7 @@ class AccountServices {
       }
       return status;
     } catch (e) {
-      print("DDDD:" + e.toString());
+      print("DDDD:$e");
       return status;
     }
   }

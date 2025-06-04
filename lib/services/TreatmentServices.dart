@@ -13,23 +13,22 @@ class TreatmentServices {
     List<TreatmentModel> treatments = [];
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getTreatments +
-            "?branchId=${GlobalData.accountData!.objectData.branchId}",
+        "${ApiRoutes.getTreatments}?branchId=${GlobalData.accountData!.objectData.branchId}",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
 
-      print("QQQ::" + response.body!);
-      print("objectData::" + GlobalData.accountData!.objectData.clinicId!);
+      print("QQQ::${response.body!}");
+      print("objectData::${GlobalData.accountData!.objectData.clinicId!}");
 
       // OK 200
       if (response.statusCode == 200) {
         List<dynamic> object = jsonDecode(response.body!);
-        object.forEach((value) {
+        for (var value in object) {
           treatments.add(TreatmentModel.fromJson(value));
-        });
+        }
       }
-      print("WEWE::" + treatments.length.toString());
+      print("WEWE::${treatments.length}");
 
       return treatments;
     } catch (e) {
@@ -50,7 +49,7 @@ class TreatmentServices {
       "updateUserId": GlobalData.accountData!.objectData.userId,
     });
     var body = jsonEncode(jsonValues);
-    print("QQQQ::" + body);
+    print("QQQQ::$body");
     try {
       GlobalHttpResponse response = await GlobalHttp.post(
         ApiRoutes.saveInsuranceCompany,
@@ -73,7 +72,7 @@ class TreatmentServices {
   Future<bool> deleteInsuranceCompany({required String id}) async {
     try {
       GlobalHttpResponse response = await GlobalHttp.delete(
-        ApiRoutes.deleteInsuranceCompany + "?id=$id",
+        "${ApiRoutes.deleteInsuranceCompany}?id=$id",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
@@ -129,7 +128,7 @@ class TreatmentServices {
       "clinicId": GlobalData.accountData!.objectData.clinicId,
     });
     var body = jsonEncode(jsonValues);
-    print("QQQQ::" + body);
+    print("QQQQ::$body");
     try {
       GlobalHttpResponse response = await GlobalHttp.post(
         ApiRoutes.saveProcedure,
@@ -154,7 +153,7 @@ class TreatmentServices {
     List<GetProceduresModel> getProceduresModel = [];
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getProcedures + "?treatmentbranchId=$treatmentbranchId",
+        "${ApiRoutes.getProcedures}?treatmentbranchId=$treatmentbranchId",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
@@ -165,7 +164,7 @@ class TreatmentServices {
       }
       return getProceduresModel;
     } catch (e) {
-      print("QQQQ::: " + e.toString());
+      print("QQQQ::: $e");
 
       return getProceduresModel;
     }

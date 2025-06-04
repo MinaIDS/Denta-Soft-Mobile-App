@@ -11,6 +11,8 @@ import 'add_patient_viewModel.dart';
 import 'patient_details.dart';
 
 class AddPatientScreen extends StatelessWidget {
+  const AddPatientScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +23,13 @@ class AddPatientScreen extends StatelessWidget {
           m.getMedicalInsurances();
           m.getDieasesList();
         },
-        builder:
-            (context, model, local, _) => Column(
-              children: [
-                _buildIndicator(model),
-                _buildbody(model),
-                _buildFooter(model, context),
-              ],
-            ),
+        builder: (context, model, local, _) => Column(
+          children: [
+            _buildIndicator(model),
+            _buildbody(model),
+            _buildFooter(model, context),
+          ],
+        ),
       ),
     );
   }
@@ -69,58 +70,56 @@ class AddPatientScreen extends StatelessWidget {
   _buildFooter(AddPatientViewModel model, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child:
-          model.currentPage == 0
-              ? Align(
-                alignment: AlignmentDirectional.bottomEnd,
-                child: CustomTextButton(
-                  text: S().Next,
-                  textColor: Colors.orange,
-                  onPressed: () {
-                    if (model.patientDetailsKey.currentState!.validate()) {
+      child: model.currentPage == 0
+          ? Align(
+              alignment: AlignmentDirectional.bottomEnd,
+              child: CustomTextButton(
+                text: S().Next,
+                textColor: Colors.orange,
+                onPressed: () {
+                  if (model.patientDetailsKey.currentState!.validate()) {
+                    model.pageController.animateToPage(
+                      model.currentPage + 1,
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.linear,
+                    );
+                  }
+                },
+              ),
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: CustomTextButton(
+                    text: S().Previous,
+                    textColor: Colors.orange,
+                    onPressed: () {
                       model.pageController.animateToPage(
-                        model.currentPage + 1,
+                        model.currentPage - 1,
                         duration: Duration(milliseconds: 200),
                         curve: Curves.linear,
                       );
-                    }
-                  },
+                    },
+                  ),
                 ),
-              )
-              : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: CustomTextButton(
-                      text: S().Previous,
-                      textColor: Colors.orange,
-                      onPressed: () {
-                        model.pageController.animateToPage(
-                          model.currentPage - 1,
-                          duration: Duration(milliseconds: 200),
-                          curve: Curves.linear,
-                        );
-                      },
-                    ),
-                  ),
-                  Spacer(flex: 1),
-                  Expanded(
-                    flex: 2,
-                    child:
-                        model.isLoading
-                            ? Center(child: CircularProgressIndicator())
-                            : AccentButton(
-                              text: S().AddPatient,
-                              height: 40,
-                              width: 150,
-                              onPressed: () {
-                                model.addPatient(context);
-                              },
-                            ),
-                  ),
-                ],
-              ),
+                Spacer(flex: 1),
+                Expanded(
+                  flex: 2,
+                  child: model.isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : AccentButton(
+                          text: S().AddPatient,
+                          height: 40,
+                          width: 150,
+                          onPressed: () {
+                            model.addPatient(context);
+                          },
+                        ),
+                ),
+              ],
+            ),
     );
   }
 }

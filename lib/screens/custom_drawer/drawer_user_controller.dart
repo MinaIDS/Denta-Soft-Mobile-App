@@ -4,7 +4,7 @@ import 'home_drawer.dart';
 
 class DrawerUserController extends StatefulWidget {
   const DrawerUserController({
-    Key? key,
+    super.key,
     this.drawerWidth = 250,
     this.onDrawerCall,
     required this.screenView,
@@ -12,7 +12,7 @@ class DrawerUserController extends StatefulWidget {
     this.menuView,
     this.drawerIsOpen,
     this.screenIndex,
-  }) : super(key: key);
+  });
 
   final double drawerWidth;
   final Function(DrawerIndex)? onDrawerCall;
@@ -38,20 +38,26 @@ class _DrawerUserControllerState extends State<DrawerUserController>
     super.initState();
     // Animation controller for the icon
     iconAnimationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 0));
+      vsync: this,
+      duration: const Duration(milliseconds: 0),
+    );
 
     // Animation controller for drawer sliding
     animationController = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this);
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
 
-    iconAnimationController
-      ..animateTo(1.0,
-          duration: const Duration(milliseconds: 0),
-          curve: Curves.fastOutSlowIn);
+    iconAnimationController.animateTo(
+      1.0,
+      duration: const Duration(milliseconds: 0),
+      curve: Curves.fastOutSlowIn,
+    );
 
     // Initialize the scroll controller with drawer width
-    scrollController =
-        ScrollController(initialScrollOffset: widget.drawerWidth);
+    scrollController = ScrollController(
+      initialScrollOffset: widget.drawerWidth,
+    );
 
     // Listen to scroll events to manage the drawer state
     scrollController.addListener(() {
@@ -62,15 +68,18 @@ class _DrawerUserControllerState extends State<DrawerUserController>
             widget.drawerIsOpen?.call(true);
           });
         }
-        iconAnimationController.animateTo(0.0,
-            duration: const Duration(milliseconds: 0),
-            curve: Curves.fastOutSlowIn);
+        iconAnimationController.animateTo(
+          0.0,
+          duration: const Duration(milliseconds: 0),
+          curve: Curves.fastOutSlowIn,
+        );
       } else if (scrollController.offset > 0 &&
           scrollController.offset < widget.drawerWidth.floor()) {
         iconAnimationController.animateTo(
-            (scrollController.offset * 100 / (widget.drawerWidth)) / 100,
-            duration: const Duration(milliseconds: 0),
-            curve: Curves.fastOutSlowIn);
+          (scrollController.offset * 100 / (widget.drawerWidth)) / 100,
+          duration: const Duration(milliseconds: 0),
+          curve: Curves.fastOutSlowIn,
+        );
       } else {
         if (scrollOffset != 0.0) {
           setState(() {
@@ -78,9 +87,11 @@ class _DrawerUserControllerState extends State<DrawerUserController>
             widget.drawerIsOpen?.call(false);
           });
         }
-        iconAnimationController.animateTo(1.0,
-            duration: const Duration(milliseconds: 0),
-            curve: Curves.fastOutSlowIn);
+        iconAnimationController.animateTo(
+          1.0,
+          duration: const Duration(milliseconds: 0),
+          curve: Curves.fastOutSlowIn,
+        );
       }
     });
 
@@ -104,12 +115,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width + widget.drawerWidth,
-          child: Row(
-            children: <Widget>[
-              _buildDrawer(),
-              _buildMainScreen(),
-            ],
-          ),
+          child: Row(children: <Widget>[_buildDrawer(), _buildMainScreen()]),
         ),
       ),
     );
@@ -123,8 +129,11 @@ class _DrawerUserControllerState extends State<DrawerUserController>
         animation: iconAnimationController,
         builder: (BuildContext context, Widget? child) {
           return Transform(
-            transform:
-                Matrix4.translationValues(scrollController.offset, 0.0, 0.0),
+            transform: Matrix4.translationValues(
+              scrollController.offset,
+              0.0,
+              0.0,
+            ),
             child: HomeDrawer(
               screenIndex: widget.screenIndex ?? DrawerIndex.HOME,
               iconAnimationController: iconAnimationController,
@@ -156,26 +165,26 @@ class _DrawerUserControllerState extends State<DrawerUserController>
               ignoring: scrollOffset == 1 || false,
               child: widget.screenView,
             ),
-            if (scrollOffset == 1.0)
-              InkWell(
-                onTap: () => onDrawerClick(),
-              ),
+            if (scrollOffset == 1.0) InkWell(onTap: () => onDrawerClick()),
             Padding(
               padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top + 8, left: 8),
+                top: MediaQuery.of(context).padding.top + 8,
+                left: 8,
+              ),
               child: SizedBox(
                 width: AppBar().preferredSize.height - 8,
                 height: AppBar().preferredSize.height - 8,
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    borderRadius:
-                        BorderRadius.circular(AppBar().preferredSize.height),
+                    borderRadius: BorderRadius.circular(
+                      AppBar().preferredSize.height,
+                    ),
                     child: Center(
-                      child: widget.menuView ??
+                      child:
+                          widget.menuView ??
                           AnimatedIcon(
-                            icon: widget.animatedIconData ??
-                                AnimatedIcons.arrow_menu,
+                            icon: widget.animatedIconData,
                             progress: iconAnimationController,
                             color: Colors.white,
                           ),

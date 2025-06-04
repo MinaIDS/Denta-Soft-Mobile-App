@@ -5,9 +5,9 @@ class TextFieldContainer extends StatelessWidget {
   final Widget? child; // Make child nullable
 
   const TextFieldContainer({
-    Key? key, // Mark key as nullable
+    super.key, // Mark key as nullable
     this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

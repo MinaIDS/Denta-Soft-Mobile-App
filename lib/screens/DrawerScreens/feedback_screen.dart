@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../app_theme.dart';
 
 class FeedbackScreen extends StatefulWidget {
+  const FeedbackScreen({super.key});
+
   @override
   _FeedbackScreenState createState() => _FeedbackScreenState();
 }

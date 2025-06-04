@@ -13,21 +13,23 @@ import '../../../widgets/custom_drop_down_Button_field.dart';
 import '../../../widgets/custom_text_form_field.dart';
 
 class EditProfileInfo extends StatefulWidget {
+  const EditProfileInfo({super.key});
+
   @override
   _EditProfileInfoState createState() => _EditProfileInfoState();
 }
 
 class _EditProfileInfoState extends State<EditProfileInfo> {
-  var _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   ObjectData? userData;
 
-  TextEditingController _fullNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _workPhoneController = TextEditingController();
-  TextEditingController _idController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _codeController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _workPhoneController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
   String? _accountType;
   String? _calendarView;
 
@@ -97,17 +99,16 @@ class _EditProfileInfoState extends State<EditProfileInfo> {
                   onChanged: (v) {
                     _accountType = v as String;
                   },
-                  items:
-                      accountType
-                          .map(
-                            (a) => DropdownMenuItem(
-                              child: Text(
-                                AppLocalizations.of(context)!.translate(a),
-                              ),
-                              value: a,
-                            ),
-                          )
-                          .toList(),
+                  items: accountType
+                      .map(
+                        (a) => DropdownMenuItem(
+                          value: a,
+                          child: Text(
+                            AppLocalizations.of(context)!.translate(a),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
 
                 SpaceHeight_M,
@@ -127,12 +128,9 @@ class _EditProfileInfoState extends State<EditProfileInfo> {
                   onChanged: (v) {
                     _calendarView = v as String;
                   },
-                  items:
-                      calendarType
-                          .map(
-                            (c) => DropdownMenuItem(child: Text(c), value: c),
-                          )
-                          .toList(),
+                  items: calendarType
+                      .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                      .toList(),
                 ),
 
                 SpaceHeight_M,
@@ -224,7 +222,10 @@ class _EditProfileInfoState extends State<EditProfileInfo> {
           TextSpan(text: title),
           if (isRequired) ...[
             TextSpan(text: '  '),
-            TextSpan(text: '*', style: TextStyle(color: Colors.red)),
+            TextSpan(
+              text: '*',
+              style: TextStyle(color: Colors.red),
+            ),
           ],
         ],
       ),

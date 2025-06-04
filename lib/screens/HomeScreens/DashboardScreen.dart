@@ -8,39 +8,51 @@ import '../../utils/SizesStatic.dart';
 import '../../widgets/OnceFutureBuilder.dart';
 
 class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return OnceFutureBuilder(
       future: () => DashBoardController().getAllDashboardData(),
       builder: (ctx, snapshot) {
-        Map<String, dynamic> dataList = snapshot.data as Map<String, dynamic>;
-        print(dataList);
-        return snapshot.connectionState != ConnectionState.done
-            ? Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: SizeandStyleUtills().getProportionalHeight(
-                      height: 12,
-                    ),
-                  ),
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
 
-                  // Daily Working Hours For Week
-                  Text(
-                    S().DailyWorkedHours,
-                    style: SizeandStyleUtills().getTextStyleRegular(
-                      fontsize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[600]!,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Echarts(
-                      option: '''
+        if (!snapshot.hasData || snapshot.data == null) {
+          return Center(child: Text('No data available'));
+        }
+
+        final dataList = snapshot.data as Map<String, dynamic>;
+
+        return SingleChildScrollView(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: SizeandStyleUtills().getProportionalHeight(height: 12),
+              ),
+
+              // Daily Working Hours For Week
+              Text(
+                S().DailyWorkedHours,
+                style: SizeandStyleUtills().getTextStyleRegular(
+                  fontsize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[600]!,
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                height: 320,
+                child: Echarts(
+                  option:
+                      '''
                 {
                       tooltip: {
                             trigger: 'axis',
@@ -96,36 +108,33 @@ class DashboardScreen extends StatelessWidget {
                       ]
                   }
               ''',
-                      theme: "light",
-                    ),
-                    width: double.infinity,
-                    height: 320,
-                  ),
+                  theme: "light",
+                ),
+              ),
 
-                  SizedBox(
-                    height: SizeandStyleUtills().getProportionalHeight(
-                      height: 20,
-                    ),
-                  ),
+              SizedBox(
+                height: SizeandStyleUtills().getProportionalHeight(height: 20),
+              ),
 
-                  // Appointments Per Week
-                  Text(
-                    S().DailyAppointmentsForWeek,
-                    style: SizeandStyleUtills().getTextStyleRegular(
-                      fontsize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[600]!,
-                    ),
-                  ),
-                  SizedBox(
-                    height: SizeandStyleUtills().getProportionalHeight(
-                      height: 8,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Echarts(
-                      option: '''
+              // Appointments Per Week
+              Text(
+                S().DailyAppointmentsForWeek,
+                style: SizeandStyleUtills().getTextStyleRegular(
+                  fontsize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[600]!,
+                ),
+              ),
+              SizedBox(
+                height: SizeandStyleUtills().getProportionalHeight(height: 8),
+              ),
+              Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                height: 320,
+                child: Echarts(
+                  option:
+                      '''
                           {
                       tooltip: {
                             trigger: 'axis',
@@ -181,16 +190,14 @@ class DashboardScreen extends StatelessWidget {
                       ]
                   } 
                     ''',
-                      theme: "light",
-                    ),
-                    width: double.infinity,
-                    height: 320,
-                  ),
-
-                  SpaceHeight_XXXXXL,
-                ],
+                  theme: "light",
+                ),
               ),
-            );
+
+              SpaceHeight_XXXXXL,
+            ],
+          ),
+        );
       },
     );
   }

@@ -12,11 +12,11 @@ class ProceduresItemWidget extends StatelessWidget {
 
   // Marking the parameters as required to avoid null issues.
   const ProceduresItemWidget({
-    Key? key,
+    super.key,
     required this.procedureModel,
     required this.onDelete,
     required this.onUpdate,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +41,8 @@ class ProceduresItemWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          procedureModel.procedureName ??
-                              'No Procedure Name', // Default text in case it's null
+                          procedureModel
+                              .procedureName, // Default text in case it's null
                           style: TextStyle(
                             fontSize: SizeHeight_L,
                             fontWeight: FontWeight.w600,
@@ -64,7 +64,7 @@ class ProceduresItemWidget extends StatelessWidget {
               children: [
                 OutlinedButton(
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),

@@ -32,13 +32,13 @@ class InsuranceModel {
   // Method to convert InsuranceModel instance into a JSON object
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['medicalInsuranceId'] = this.medicalInsuranceId;
-    data['medicalCompany'] = this.medicalCompany;
-    data['toleranceRatio'] = this.toleranceRatio;
-    data['updateUserId'] = this.updateUserId;
-    data['createUserId'] = this.createUserId;
-    data['branchId'] = this.branchId;
-    data['isDefault'] = this.isDefault;
+    data['medicalInsuranceId'] = medicalInsuranceId;
+    data['medicalCompany'] = medicalCompany;
+    data['toleranceRatio'] = toleranceRatio;
+    data['updateUserId'] = updateUserId;
+    data['createUserId'] = createUserId;
+    data['branchId'] = branchId;
+    data['isDefault'] = isDefault;
     return data;
   }
 }

@@ -11,6 +11,8 @@ import '../../utils/assets_routes.dart';
 import '../ThemeColors.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
+  const ForgetPasswordScreen({super.key});
+
   @override
   _ForgetPasswordScreenState createState() => _ForgetPasswordScreenState();
 }

@@ -9,16 +9,16 @@ class BaseWidget<T extends ChangeNotifier> extends StatefulWidget {
   final void Function(T)? initState;
 
   final Widget Function(BuildContext context, T model, S local, Widget? child)?
-      builder;
+  builder;
 
   // Making sure that initState and builder are nullable with null safety
-  BaseWidget({
-    Key? key,
+  const BaseWidget({
+    super.key,
     this.model,
     this.builder,
     this.initState,
     this.child,
-  }) : super(key: key);
+  });
 
   @override
   _BaseWidgetState<T> createState() => _BaseWidgetState<T>();
@@ -26,7 +26,7 @@ class BaseWidget<T extends ChangeNotifier> extends StatefulWidget {
 
 class _BaseWidgetState<T extends ChangeNotifier> extends State<BaseWidget<T>> {
   late T
-      model; // `late` indicates that the variable is non-nullable but will be initialized later
+  model; // `late` indicates that the variable is non-nullable but will be initialized later
 
   @override
   void initState() {

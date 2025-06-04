@@ -6,17 +6,17 @@ class CustomPasswordTextField extends StatefulWidget {
   final TextEditingController? controller;
   final void Function(String)? onChanged; // onChanged can be nullable
   final FormFieldSetter<String>?
-      onSave; // onSave is of type FormFieldSetter<String>
+  onSave; // onSave is of type FormFieldSetter<String>
   final FormFieldValidator<String>?
-      validator; // Fixed: Changed validator to FormFieldValidator<String>
+  validator; // Fixed: Changed validator to FormFieldValidator<String>
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final bool noborder;
   final String label;
   final bool obSecure;
 
-  CustomPasswordTextField({
-    Key? key,
+  const CustomPasswordTextField({
+    super.key,
     this.controller,
     this.hint = '',
     this.suffixIcon,
@@ -28,7 +28,7 @@ class CustomPasswordTextField extends StatefulWidget {
     this.label = '',
     this.obSecure = false,
     this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   _CustomPasswordTextFieldState createState() =>
@@ -68,8 +68,10 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
           prefixIcon: widget.prefixIcon,
           hintText: widget.hint,
           labelText: widget.label,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: 18,
+          ),
           border: OutlineInputBorder(
             borderSide: widget.noborder
                 ? BorderSide.none

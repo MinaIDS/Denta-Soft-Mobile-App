@@ -13,7 +13,7 @@ import '../../../../widgets/OnceFutureBuilder.dart';
 class TimeLineTab extends StatefulWidget {
   final PatientModel? patientModel;
 
-  const TimeLineTab({Key? key, this.patientModel}) : super(key: key);
+  const TimeLineTab({super.key, this.patientModel});
 
   @override
   _TimeLineTabState createState() => _TimeLineTabState();
@@ -72,20 +72,20 @@ class _TimeLineTabState extends State<TimeLineTab> {
                               Column(
                                 children: [
                                   CircleAvatar(
+                                    backgroundColor: Color(
+                                      int.parse("0xff$color"),
+                                    ),
                                     child: Icon(
                                       Icons.date_range,
                                       color: Colors.white,
                                     ),
-                                    backgroundColor: Color(
-                                      int.parse("0xff$color"),
-                                    ),
                                   ),
                                   index != snapshot.data!.length - 1
                                       ? Container(
-                                        height: 80,
-                                        width: 3,
-                                        color: Colors.grey[200],
-                                      )
+                                          height: 80,
+                                          width: 3,
+                                          color: Colors.grey[200],
+                                        )
                                       : Container(),
                                 ],
                               ),
@@ -103,7 +103,7 @@ class _TimeLineTabState extends State<TimeLineTab> {
                                     ),
                                   ),
                                   SpaceHeight_XS,
-                                  Container(
+                                  SizedBox(
                                     width: SizeandStyleUtills()
                                         .getProportionalWidth(width: 300),
                                     child: Text(

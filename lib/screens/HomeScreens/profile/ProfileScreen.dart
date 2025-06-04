@@ -13,6 +13,8 @@ import 'change_password.dart';
 import 'edit_profile_info.dart';
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -25,7 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return RefreshIndicator(
       onRefresh: () async {
         await AccountServices().getUserData(
-          GlobalData.accountData!.objectData?.userId ?? '',
+          GlobalData.accountData!.objectData.userId ?? '',
         );
         setState(() {});
       },
@@ -58,11 +60,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   GoTo.screen(context, ChangePassword());
                 }
               },
-              itemBuilder:
-                  (context) => [
-                    PopupMenuItem(child: Text(S.S().Edit_info), value: 1),
-                    PopupMenuItem(child: Text(S.S().ChangePassword), value: 2),
-                  ],
+              itemBuilder: (context) => [
+                PopupMenuItem(value: 1, child: Text(S.S().Edit_info)),
+                PopupMenuItem(value: 2, child: Text(S.S().ChangePassword)),
+              ],
             ),
           ),
         ],
@@ -96,64 +97,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(15.0)),
-                    child:
-                        GlobalData.accountData!.objectData?.photoJson == null
-                            ? Container()
-                            : CachedNetworkImage(
-                              imageUrl:
-                                  ApiRoutes.userImagePath +
-                                  (GlobalData
-                                          .accountData!
-                                          .objectData
-                                          ?.photoJson ??
-                                      ''),
-                              fit: BoxFit.cover,
-                              placeholder:
-                                  (context, url) => Container(
-                                    padding: EdgeInsets.all(15),
-                                    child: Image.asset(
-                                      'assets/images/loading.gif',
-                                    ),
-                                  ),
-                              errorWidget:
-                                  (context, url, error) => Icon(
-                                    Icons.error,
-                                    size: 35,
-                                    color: Colors.grey,
-                                  ),
+                    child: GlobalData.accountData!.objectData.photoJson == null
+                        ? Container()
+                        : CachedNetworkImage(
+                            imageUrl:
+                                ApiRoutes.userImagePath +
+                                (GlobalData.accountData!.objectData.photoJson ??
+                                    ''),
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              padding: EdgeInsets.all(15),
+                              child: Image.asset('assets/images/loading.gif'),
                             ),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error, size: 35, color: Colors.grey),
+                          ),
                   ),
                 ),
                 PositionedDirectional(
                   end: -5,
                   bottom: -5,
                   child: GestureDetector(
+                    onTap: isLoadingImage
+                        ? null
+                        : () {
+                            showSheet(
+                              UpdateImageSheet(onSave: _changeProfileImage),
+                            );
+                          },
                     child: CircleAvatar(
                       radius: 16,
                       backgroundColor: Colors.grey[300],
-                      child:
-                          isLoadingImage
-                              ? SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
-                              : Icon(
-                                Icons.camera_alt_outlined,
-                                size: 17,
-                                color: Colors.blue,
-                              ),
+                      child: isLoadingImage
+                          ? SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Icon(
+                              Icons.camera_alt_outlined,
+                              size: 17,
+                              color: Colors.blue,
+                            ),
                     ),
-                    onTap:
-                        isLoadingImage
-                            ? null
-                            : () {
-                              showSheet(
-                                UpdateImageSheet(onSave: _changeProfileImage),
-                              );
-                            },
                   ),
                 ),
               ],
@@ -163,21 +149,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  GlobalData.accountData!.objectData?.fullName ?? '',
+                  GlobalData.accountData!.objectData.fullName ?? '',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 3),
-                Text(GlobalData.accountData!.objectData?.clinicName ?? ''),
+                Text(GlobalData.accountData!.objectData.clinicName ?? ''),
               ],
             ),
           ],
         ),
         SizedBox(height: 20),
-        infoItem(Icons.phone, GlobalData.accountData!.objectData?.mobile ?? ''),
+        infoItem(Icons.phone, GlobalData.accountData!.objectData.mobile ?? ''),
         SizedBox(height: 8),
         infoItem(
           Icons.mail,
-          GlobalData.accountData!.objectData?.emailAddress ?? '',
+          GlobalData.accountData!.objectData.emailAddress ?? '',
         ),
       ],
     );
@@ -185,20 +171,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _changeProfileImage(image) async {
     final userData = GlobalData.accountData!.objectData;
-    if (userData != null) {
-      setState(() {
-        isLoadingImage = true;
-      });
+    setState(() {
+      isLoadingImage = true;
+    });
 
-      await AccountController().updateProfileImage(
-        userData.userId!,
-        image,
-        true,
-      );
-      setState(() {
-        isLoadingImage = false;
-      });
-    }
+    await AccountController().updateProfileImage(userData.userId!, image, true);
+    setState(() {
+      isLoadingImage = false;
+    });
   }
 
   Row infoItem(IconData icon, String title) {
@@ -233,42 +213,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           bodyRow(
             '${S.S().UserName}:',
-            GlobalData.accountData!.objectData?.userName ?? '',
+            GlobalData.accountData!.objectData.userName ?? '',
           ),
           bodyRow(
             '${S.S().Country}:',
             AppLocalizations.of(
               context,
-            )!.translate(GlobalData.accountData!.objectData?.countryId ?? ''),
+            )!.translate(GlobalData.accountData!.objectData.countryId ?? ''),
           ),
           bodyRow(
             '${S.S().City}:',
             AppLocalizations.of(
               context,
-            )!.translate(GlobalData.accountData!.objectData?.cityId ?? ''),
+            )!.translate(GlobalData.accountData!.objectData.cityId ?? ''),
           ),
           bodyRow(
             '${S.S().Address}:',
-            GlobalData.accountData!.objectData?.address ?? '',
+            GlobalData.accountData!.objectData.address ?? '',
           ),
           bodyRow(
             '${S.S().Title}:',
-            GlobalData.accountData!.objectData?.title ?? '',
+            GlobalData.accountData!.objectData.title ?? '',
           ),
           bodyRow(
             '${S.S().BranchName}:',
-            GlobalData.accountData!.objectData?.branchName ?? '',
+            GlobalData.accountData!.objectData.branchName ?? '',
           ),
           bodyRow(
             'Role Id:',
-            AppLocalizations.of(context)!.translate(
-                  GlobalData.accountData!.objectData?.userRole ?? '',
-                ) ??
-                "",
+            AppLocalizations.of(
+              context,
+            )!.translate(GlobalData.accountData!.objectData.userRole ?? ''),
           ),
           bodyRow(
             '${S.S().CalendarView}:',
-            GlobalData.accountData!.objectData?.calendarView ?? "",
+            GlobalData.accountData!.objectData.calendarView ?? "",
           ),
         ],
       ),

@@ -8,7 +8,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../utils/GoTo.dart';
 import '../../../utils/api_routes.dart';
 import '../../../utils/localization/Localizations.dart';
@@ -18,7 +17,7 @@ import 'EditUserProfileInfo.dart';
 class UserProfileScreen extends StatefulWidget {
   final ObjectData? userData; // Make userData nullable
 
-  UserProfileScreen({Key? key, this.userData}) : super(key: key);
+  const UserProfileScreen({super.key, this.userData});
 
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
@@ -70,11 +69,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 }
               }
             },
-            itemBuilder:
-                (context) => [
-                  PopupMenuItem(child: Text(S().Edit_info), value: 1),
-                  PopupMenuItem(child: Text(S().ChangePassword), value: 2),
-                ],
+            itemBuilder: (context) => [
+              PopupMenuItem(value: 1, child: Text(S().Edit_info)),
+              PopupMenuItem(value: 2, child: Text(S().ChangePassword)),
+            ],
           ),
         ),
       ],
@@ -107,60 +105,48 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(15.0)),
-                    child:
-                        widget.userData?.photoJson == null
-                            ? Container()
-                            : CachedNetworkImage(
-                              imageUrl:
-                                  ApiRoutes.userImagePath +
-                                  (widget.userData?.photoJson ?? ''),
-                              fit: BoxFit.cover,
-                              placeholder:
-                                  (context, url) => Container(
-                                    padding: EdgeInsets.all(15),
-                                    child: Image.asset(
-                                      'assets/images/loading.gif',
-                                    ),
-                                  ),
-                              errorWidget:
-                                  (context, url, error) => Icon(
-                                    Icons.error,
-                                    size: 35,
-                                    color: Colors.grey,
-                                  ),
+                    child: widget.userData?.photoJson == null
+                        ? Container()
+                        : CachedNetworkImage(
+                            imageUrl:
+                                ApiRoutes.userImagePath +
+                                (widget.userData?.photoJson ?? ''),
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              padding: EdgeInsets.all(15),
+                              child: Image.asset('assets/images/loading.gif'),
                             ),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error, size: 35, color: Colors.grey),
+                          ),
                   ),
                 ),
                 PositionedDirectional(
                   end: -5,
                   bottom: -5,
                   child: GestureDetector(
+                    onTap: isLoadingImage
+                        ? null
+                        : () {
+                            showSheet(
+                              UpdateImageSheet(onSave: _changeProfileImage),
+                            );
+                          },
                     child: CircleAvatar(
                       radius: 16,
                       backgroundColor: Colors.grey[300],
-                      child:
-                          isLoadingImage
-                              ? SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
-                              : Icon(
-                                Icons.camera_alt_outlined,
-                                size: 17,
-                                color: Colors.blue,
-                              ),
+                      child: isLoadingImage
+                          ? SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Icon(
+                              Icons.camera_alt_outlined,
+                              size: 17,
+                              color: Colors.blue,
+                            ),
                     ),
-                    onTap:
-                        isLoadingImage
-                            ? null
-                            : () {
-                              showSheet(
-                                UpdateImageSheet(onSave: _changeProfileImage),
-                              );
-                            },
                   ),
                 ),
               ],
@@ -276,9 +262,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           bodyRow(
             'Role Id:',
             AppLocalizations.of(
-                  context,
-                )!.translate(widget.userData?.userRole ?? '') ??
-                '',
+              context,
+            )!.translate(widget.userData?.userRole ?? ''),
           ),
           bodyRow('${S().CalendarView}:', widget.userData?.calendarView ?? ''),
           SizedBox(height: 20),
@@ -313,7 +298,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     // Navigator.of(context).pop();
                   }
                 },
-              )..show();
+              ).show();
             },
           ),
           SizedBox(height: 20),
@@ -348,7 +333,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     Navigator.of(context).pop();
                   }
                 },
-              )..show();
+              ).show();
             },
           ),
         ],

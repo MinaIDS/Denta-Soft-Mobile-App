@@ -15,24 +15,23 @@ class ProcedureServices {
     List<ProcedureModel> procedures = [];
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getProceduresByBranch +
-            "?branchId=${GlobalData.accountData!.objectData.branchId}",
+        "${ApiRoutes.getProceduresByBranch}?branchId=${GlobalData.accountData!.objectData.branchId}",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
 
-      print("QQQ::" + response.body!);
+      print("QQQ::${response.body!}");
 
       // OK 200
       if (response.statusCode == 200) {
         List<dynamic> object = jsonDecode(response.body!);
-        object.forEach((value) {
+        for (var value in object) {
           // print("LL::" + value.toString());
           // print("length::" + object.length.toString());
           procedures.add((ProcedureModel.fromJson(value)));
-        });
+        }
       }
-      print("WEWE::" + procedures.length.toString());
+      print("WEWE::${procedures.length}");
 
       return procedures;
     } catch (e) {
@@ -42,7 +41,7 @@ class ProcedureServices {
 
   // edit/update insurance company
   Future<bool> saveInsuranceCompany({required TreatmentModel treatment}) async {
-    Map<String, dynamic> jsonValues = new Map<String, dynamic>();
+    Map<String, dynamic> jsonValues = <String, dynamic>{};
 
     jsonValues.addAll({
       "branchId": GlobalData.accountData!.objectData.branchId,
@@ -53,7 +52,7 @@ class ProcedureServices {
       "updateUserId": GlobalData.accountData!.objectData.userId,
     });
     var body = jsonEncode(jsonValues);
-    print("QQQQ::" + body);
+    print("QQQQ::$body");
     try {
       GlobalHttpResponse response = await GlobalHttp.post(
         ApiRoutes.saveInsuranceCompany,
@@ -76,7 +75,7 @@ class ProcedureServices {
   Future<bool> deleteInsuranceCompany({required String id}) async {
     try {
       GlobalHttpResponse response = await GlobalHttp.delete(
-        ApiRoutes.deleteInsuranceCompany + "?id=$id",
+        "${ApiRoutes.deleteInsuranceCompany}?id=$id",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
@@ -92,7 +91,7 @@ class ProcedureServices {
   }
 
   Future<bool> deleteProcedure({required String ProcedureId}) async {
-    var body = jsonEncode(["$ProcedureId"]);
+    var body = jsonEncode([ProcedureId]);
     try {
       GlobalHttpResponse response = await GlobalHttp.delete(
         ApiRoutes.deleteProcedure,
@@ -108,7 +107,7 @@ class ProcedureServices {
       }
       return false;
     } catch (e) {
-      print("QQQQ::: " + e.toString());
+      print("QQQQ::: $e");
 
       return false;
     }
@@ -118,7 +117,7 @@ class ProcedureServices {
     GetProceduresModel getProceduresModel = GetProceduresModel();
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getSingleProcedure + "?id=$id",
+        "${ApiRoutes.getSingleProcedure}?id=$id",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
@@ -129,7 +128,7 @@ class ProcedureServices {
       }
       return getProceduresModel;
     } catch (e) {
-      print("QQQQ::: " + e.toString());
+      print("QQQQ::: $e");
 
       return getProceduresModel;
     }

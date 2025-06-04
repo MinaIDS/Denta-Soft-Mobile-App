@@ -22,8 +22,8 @@ class CustomTextFormField extends StatelessWidget {
   final double fontSize;
   final void Function()? onTap;
 
-  CustomTextFormField({
-    Key? key,
+  const CustomTextFormField({
+    super.key,
     this.controller,
     this.hint = '',
     this.initialValue = '',
@@ -60,7 +60,7 @@ class CustomTextFormField extends StatelessWidget {
         style: TextStyle(color: textColor, fontSize: fontSize),
         readOnly: readOnly,
         onTap: onTap,
-        initialValue: initialValue,
+        initialValue: controller == null ? initialValue : null,
         decoration: InputDecoration(
           fillColor: filledColor,
           filled: filled,
@@ -69,8 +69,10 @@ class CustomTextFormField extends StatelessWidget {
           hintText: hint,
           labelText: label,
           hintStyle: TextStyle(color: hintColor),
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: 18,
+          ),
           border: OutlineInputBorder(
             borderSide: noborder ? BorderSide.none : const BorderSide(),
             borderRadius: BorderRadius.circular(8),

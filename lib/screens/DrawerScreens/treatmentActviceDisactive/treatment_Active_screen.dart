@@ -16,6 +16,8 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class TreatmentActiveScreen extends StatefulWidget {
+  const TreatmentActiveScreen({super.key});
+
   @override
   _TreatmentActiveScreenState createState() => _TreatmentActiveScreenState();
 }
@@ -30,102 +32,96 @@ class _TreatmentActiveScreenState extends State<TreatmentActiveScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("DDD::" + GlobalData.accountData!.objectData.branchId!);
+    print("DDD::${GlobalData.accountData!.objectData.branchId!}");
     return ChangeNotifierProvider.value(
       value: TreatmentController(),
       child: Consumer<TreatmentController>(
-        builder:
-            (context, model, child) => RefreshIndicator(
-              onRefresh: () async {
-                await model.getTreatmentActiveList();
-              },
-              child: OnceFutureBuilder(
-                future: () => model.getTreatmentActiveList(),
-                builder: (ctx, snapShot) {
-                  if (snapShot.connectionState != ConnectionState.done) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  return Scaffold(
-                    backgroundColor: AppTheme.nearlyWhite,
-                    body: SafeArea(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            SizedBox(height: 12),
-                            ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (ctx, index) {
-                                final treatment = model.treatments[index];
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    TreatmentItemWidget(
-                                      treatmentModel: treatment,
-                                      onAddProcedure: () async {
-                                        showMaterialModalBottomSheet(
-                                          context: context,
-                                          builder:
-                                              (
-                                                context,
-                                              ) => SingleChildScrollView(
-                                                controller:
-                                                    ModalScrollController.of(
-                                                      context,
-                                                    ),
-                                                child: EditInsuranceBottomSheet(
-                                                  model: model,
-                                                  modelData: treatment,
+        builder: (context, model, child) => RefreshIndicator(
+          onRefresh: () async {
+            await model.getTreatmentActiveList();
+          },
+          child: OnceFutureBuilder(
+            future: () => model.getTreatmentActiveList(),
+            builder: (ctx, snapShot) {
+              if (snapShot.connectionState != ConnectionState.done) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return Scaffold(
+                backgroundColor: AppTheme.nearlyWhite,
+                body: SafeArea(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 12),
+                        ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (ctx, index) {
+                            final treatment = model.treatments[index];
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TreatmentItemWidget(
+                                  treatmentModel: treatment,
+                                  onAddProcedure: () async {
+                                    showMaterialModalBottomSheet(
+                                      context: context,
+                                      builder: (context) =>
+                                          SingleChildScrollView(
+                                            controller:
+                                                ModalScrollController.of(
+                                                  context,
                                                 ),
-                                              ),
-                                        );
-                                      },
-                                      onUpdate: () {
-                                        showModalBottomSheet(
-                                          context: context,
-                                          isScrollControlled: true,
-                                          builder: (BuildContext context) {
-                                            return ShowModalSheetConfirmation(
-                                              title: "",
-                                              mainTitle:
-                                                  "Are you sure you want to DisActive This Treatment",
-                                              onTapFunction: () async {
-                                                print('confirm');
-                                                Navigator.pop(context);
-                                                model
-                                                    .changeStatusTreatmentBranch(
-                                                      model: treatment,
-                                                      statusTreat: false,
-                                                    );
-                                              },
+                                            child: EditInsuranceBottomSheet(
+                                              model: model,
+                                              modelData: treatment,
+                                            ),
+                                          ),
+                                    );
+                                  },
+                                  onUpdate: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      builder: (BuildContext context) {
+                                        return ShowModalSheetConfirmation(
+                                          title: "",
+                                          mainTitle:
+                                              "Are you sure you want to DisActive This Treatment",
+                                          onTapFunction: () async {
+                                            print('confirm');
+                                            Navigator.pop(context);
+                                            model.changeStatusTreatmentBranch(
+                                              model: treatment,
+                                              statusTreat: false,
                                             );
                                           },
                                         );
                                       },
-                                      onProcedureList: () {
-                                        GoTo.screen(
-                                          context,
-                                          ProcedureListScreen(model: treatment),
-                                        );
-                                      },
-                                      isActive: true,
-                                    ),
-                                  ],
-                                );
-                              },
-                              shrinkWrap: true,
-                              itemCount: model.treatments.length,
-                            ),
-                            SizedBox(
-                              height: SizeHeight_XXXXXL + SizeHeight_XXXXXL,
-                            ),
-                          ],
+                                    );
+                                  },
+                                  onProcedureList: () {
+                                    GoTo.screen(
+                                      context,
+                                      ProcedureListScreen(model: treatment),
+                                    );
+                                  },
+                                  isActive: true,
+                                ),
+                              ],
+                            );
+                          },
+                          shrinkWrap: true,
+                          itemCount: model.treatments.length,
                         ),
-                      ),
+                        SizedBox(height: SizeHeight_XXXXXL + SizeHeight_XXXXXL),
+                      ],
                     ),
-                  );
-                },
-              ),
-            ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
@@ -136,10 +132,10 @@ class EditInsuranceBottomSheet extends StatefulWidget {
   final TreatmentModel modelData;
 
   const EditInsuranceBottomSheet({
-    Key? key,
+    super.key,
     required this.model,
     required this.modelData,
-  }) : super(key: key);
+  });
 
   @override
   _EditInsuranceBottomSheetState createState() =>

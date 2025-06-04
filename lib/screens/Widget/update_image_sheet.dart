@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 class UpdateImageSheet extends StatefulWidget {
   final ValueSetter<File> onSave;
 
-  const UpdateImageSheet({required this.onSave});
+  const UpdateImageSheet({super.key, required this.onSave});
 
   @override
   _UpdateImageSheetState createState() => _UpdateImageSheetState();

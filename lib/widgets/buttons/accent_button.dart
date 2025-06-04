@@ -12,7 +12,7 @@ class AccentButton extends StatelessWidget {
   final double fontSize;
 
   const AccentButton({
-    Key? key,
+    super.key,
     this.busy = false,
     this.width,
     this.height = 50.0,
@@ -22,7 +22,7 @@ class AccentButton extends StatelessWidget {
     this.textColor = Colors.white,
     this.circular = 13.0,
     this.fontSize = 16.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +52,15 @@ class AccentButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(circular),
                 ),
               ),
+              onPressed: busy ? null : onPressed,
               child: Text(
                 text,
                 style: TextStyle(
-                    fontSize: fontSize,
-                    color: textColor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: fontSize,
+                  color: textColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              onPressed: busy ? null : onPressed,
             ),
     );
   }

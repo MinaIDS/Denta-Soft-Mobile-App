@@ -22,6 +22,8 @@ import 'invite_friend_screen.dart';
 import 'treatment_screen.dart';
 
 class AppDrawer extends StatelessWidget {
+  const AppDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
     AppLanguage lang = Provider.of<AppLanguage>(context, listen: true);
@@ -195,27 +197,23 @@ class AppDrawer extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(60.0)),
-              child:
-                  GlobalData.accountData!.objectData.photoJson == null
-                      ? Image.asset(
-                        'assets/images/place_holder.jpg',
-                        color: Colors.grey,
-                      )
-                      : CachedNetworkImage(
-                        imageUrl:
-                            ApiRoutes.userImagePath +
-                            (GlobalData.accountData!.objectData.photoJson ??
-                                ''),
-                        fit: BoxFit.cover,
-                        placeholder:
-                            (context, url) => Container(
-                              padding: EdgeInsets.all(15),
-                              child: Image.asset('assets/images/loading.gif'),
-                            ),
-                        errorWidget:
-                            (context, url, error) =>
-                                Icon(Icons.error, size: 35, color: Colors.grey),
+              child: GlobalData.accountData!.objectData.photoJson == null
+                  ? Image.asset(
+                      'assets/images/place_holder.jpg',
+                      color: Colors.grey,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl:
+                          ApiRoutes.userImagePath +
+                          (GlobalData.accountData!.objectData.photoJson ?? ''),
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        padding: EdgeInsets.all(15),
+                        child: Image.asset('assets/images/loading.gif'),
                       ),
+                      errorWidget: (context, url, error) =>
+                          Icon(Icons.error, size: 35, color: Colors.grey),
+                    ),
             ),
           ),
           SpaceWidth_L,

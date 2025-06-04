@@ -27,11 +27,11 @@ class PatientServices {
       "houseHeadNumber": searchModel.houseHeadNumber ?? '',
       "houseHeadName": searchModel.houseHeadName ?? '',
       "medicalInsuranceId": searchModel.medicalInsuranceId ?? '',
-      "isActive": searchModel.isActive ?? true,
+      "isActive": searchModel.isActive,
     });
 
     var body = jsonEncode(jsonValues);
-    print("QQQQ::" + body.toString());
+    print("QQQQ::$body");
 
     try {
       GlobalHttpResponse response = await GlobalHttp.post(
@@ -44,23 +44,23 @@ class PatientServices {
       if (response.statusCode == 200) {
         List<dynamic> object = jsonDecode(response.body!);
         for (var value in object) {
-          print("LL::" + value.toString());
+          print("LL::$value");
           patientsList.add(PatientModel.fromJson(value));
         }
       }
       return patientsList;
     } catch (e) {
-      print("QQQQ::" + e.toString());
+      print("QQQQ::$e");
       return patientsList;
     }
   }
 
   Future<PatientModel> getPatientDetails(String patientId) async {
     PatientModel patientDetails = PatientModel();
-    print(ApiRoutes.getPatientDetials + "?id=$patientId");
+    print("${ApiRoutes.getPatientDetials}?id=$patientId");
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getPatientDetials + "?id=$patientId",
+        "${ApiRoutes.getPatientDetials}?id=$patientId",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
@@ -73,7 +73,7 @@ class PatientServices {
       }
       return patientDetails;
     } catch (e) {
-      print("QQQQ::" + e.toString());
+      print("QQQQ::$e");
       return patientDetails;
     }
   }
@@ -81,11 +81,11 @@ class PatientServices {
   Future<List<CalendarViewModel>> getPatientCalendars({
     required String patientId,
   }) async {
-    print(ApiRoutes.getPatientDetials + "?id=$patientId");
+    print("${ApiRoutes.getPatientDetials}?id=$patientId");
     List<CalendarViewModel> calendarsList = [];
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getPatientDetials + "?id=$patientId",
+        "${ApiRoutes.getPatientDetials}?id=$patientId",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
@@ -100,7 +100,7 @@ class PatientServices {
       }
       return calendarsList;
     } catch (e) {
-      print("calender list error::" + e.toString());
+      print("calender list error::$e");
       return calendarsList;
     }
   }
@@ -108,11 +108,11 @@ class PatientServices {
   Future<List<PatientProcedureViewModel>> getPatientProcedure({
     required String patientId,
   }) async {
-    print(ApiRoutes.getPatientDetials + "?id=$patientId");
+    print("${ApiRoutes.getPatientDetials}?id=$patientId");
     List<PatientProcedureViewModel> patientProcedureView = [];
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getPatientDetials + "?id=$patientId",
+        "${ApiRoutes.getPatientDetials}?id=$patientId",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
@@ -127,17 +127,17 @@ class PatientServices {
       }
       return patientProcedureView;
     } catch (e) {
-      print("patientProcedureView list error::" + e.toString());
+      print("patientProcedureView list error::$e");
       return patientProcedureView;
     }
   }
 
   Future<List<Diease>> getPatientDiseases({required String patientId}) async {
-    print(ApiRoutes.getPatientDetials + "?id=$patientId");
+    print("${ApiRoutes.getPatientDetials}?id=$patientId");
     List<Diease> diseasesList = [];
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getPatientDetials + "?id=$patientId",
+        "${ApiRoutes.getPatientDetials}?id=$patientId",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
@@ -152,7 +152,7 @@ class PatientServices {
       }
       return diseasesList;
     } catch (e) {
-      print("diseases list error::" + e.toString());
+      print("diseases list error::$e");
       return diseasesList;
     }
   }
@@ -160,11 +160,11 @@ class PatientServices {
   Future<List<ProductViewModel>> getPatientProducts({
     required String patientId,
   }) async {
-    print(ApiRoutes.getPatientDetials + "?id=$patientId");
+    print("${ApiRoutes.getPatientDetials}?id=$patientId");
     List<ProductViewModel> productList = [];
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getPatientDetials + "?id=$patientId",
+        "${ApiRoutes.getPatientDetials}?id=$patientId",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
@@ -179,7 +179,7 @@ class PatientServices {
       }
       return productList;
     } catch (e) {
-      print("products list error::" + e.toString());
+      print("products list error::$e");
       return productList;
     }
   }
@@ -236,7 +236,7 @@ class PatientServices {
       }
       return false;
     } catch (e) {
-      print("QQQQ::" + e.toString());
+      print("QQQQ::$e");
       return false;
     }
   }

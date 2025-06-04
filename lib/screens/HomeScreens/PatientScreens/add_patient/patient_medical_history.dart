@@ -12,7 +12,7 @@ import 'add_patient_viewModel.dart';
 
 class PatientMedicalHistory extends StatelessWidget {
   final AddPatientViewModel model;
-  const PatientMedicalHistory(this.model);
+  const PatientMedicalHistory(this.model, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -95,21 +95,19 @@ class PatientMedicalHistory extends StatelessWidget {
                           topRight: Radius.circular(13),
                         ),
                       ),
-                      builder:
-                          (ctx) => DraggableScrollableSheet(
-                            maxChildSize: 0.95,
-                            initialChildSize: 0.95,
-                            builder:
-                                (ctx, scrollController) => SearchDrug(
-                                  drugs: model.drugsList,
-                                  onSearch: (v) {
-                                    if (v.isNotEmpty) {
-                                      model.drugsList = v;
-                                      model.setState();
-                                    }
-                                  },
-                                ),
-                          ),
+                      builder: (ctx) => DraggableScrollableSheet(
+                        maxChildSize: 0.95,
+                        initialChildSize: 0.95,
+                        builder: (ctx, scrollController) => SearchDrug(
+                          drugs: model.drugsList,
+                          onSearch: (v) {
+                            if (v.isNotEmpty) {
+                              model.drugsList = v;
+                              model.setState();
+                            }
+                          },
+                        ),
+                      ),
                     );
                   },
                   icon: Icon(Icons.add),
@@ -144,6 +142,7 @@ class DieasesCard extends StatelessWidget {
   final TextEditingController commentController;
 
   const DieasesCard({
+    super.key,
     required this.onSelectDieases,
     required this.commentController,
     required this.selectedDieases,
@@ -181,15 +180,12 @@ class DieasesCard extends StatelessWidget {
                   }
                   return "";
                 },
-                items:
-                    diseasesList
-                        .map(
-                          (d) => DropdownMenuItem(
-                            child: Text(d.value!),
-                            value: d.id,
-                          ),
-                        )
-                        .toList(),
+                items: diseasesList
+                    .map(
+                      (d) =>
+                          DropdownMenuItem(value: d.id, child: Text(d.value!)),
+                    )
+                    .toList(),
               ),
               SpaceHeight_L,
               CustomTextFormField(

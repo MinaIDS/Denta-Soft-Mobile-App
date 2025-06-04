@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarScreen extends StatefulWidget {
+  const CalendarScreen({super.key});
+
   @override
   CalendarScreenState createState() => CalendarScreenState();
 }
@@ -39,28 +41,26 @@ class CalendarScreenState extends State<CalendarScreen> {
                 },
                 dataSource: model.events,
                 onTap: (details) => model.onCalendarTapped(details, context),
-                onLongPress:
-                    (details) => model.onCalendarLongTapped(details, context),
+                onLongPress: (details) =>
+                    model.onCalendarLongTapped(details, context),
                 onViewChanged: (v) => model.onCalendarViewChange(v),
-                loadMoreWidgetBuilder: (
-                  BuildContext context,
-                  LoadMoreCallback getAppointments,
-                ) {
-                  return FutureBuilder<void>(
-                    future: getAppointments(),
-                    builder: (context, snapShot) {
-                      return Container(
-                        height: double.infinity,
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(Colors.blue),
-                          backgroundColor: Colors.grey,
-                        ),
+                loadMoreWidgetBuilder:
+                    (BuildContext context, LoadMoreCallback getAppointments) {
+                      return FutureBuilder<void>(
+                        future: getAppointments(),
+                        builder: (context, snapShot) {
+                          return Container(
+                            height: double.infinity,
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(Colors.blue),
+                              backgroundColor: Colors.grey,
+                            ),
+                          );
+                        },
                       );
                     },
-                  );
-                },
                 showNavigationArrow: true,
                 showCurrentTimeIndicator: true,
 

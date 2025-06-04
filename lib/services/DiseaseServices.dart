@@ -14,16 +14,16 @@ class DiseaseServices {
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
-      print("Diseases::" + response.body!);
+      print("Diseases::${response.body!}");
 
       // OK 200
       if (response.statusCode == 200) {
         List<dynamic> object = jsonDecode(response.body!);
-        object.forEach((value) {
+        for (var value in object) {
           diseases.add((DiseaseModel.fromJson(value)));
-        });
+        }
       }
-      print("diseaseLength::" + diseases.length.toString());
+      print("diseaseLength::${diseases.length}");
 
       return diseases;
     } catch (e) {
@@ -31,10 +31,12 @@ class DiseaseServices {
     }
   }
 
-// add diease
-  Future<bool> saveDiease(
-      {DiseaseModel? diseaseModel, String? patientId}) async {
-    Map<String, dynamic> jsonValues = new Map<String, dynamic>();
+  // add diease
+  Future<bool> saveDiease({
+    DiseaseModel? diseaseModel,
+    String? patientId,
+  }) async {
+    Map<String, dynamic> jsonValues = <String, dynamic>{};
     jsonValues.addAll({
       "diseaseId": "",
       "comments": "",
@@ -42,17 +44,19 @@ class DiseaseServices {
       "patientId": patientId,
       "updateUserId": GlobalData.accountData!.objectData.userId,
       "createUserId": GlobalData.accountData!.objectData.userId,
-      "dieasesName": diseaseModel.value
+      "dieasesName": diseaseModel.value,
     });
 
     var body = jsonEncode([jsonValues]);
     print("add diease body $body");
 
     // try {
-    GlobalHttpResponse response = await GlobalHttp.post(ApiRoutes.addDiease,
-        body: body,
-        contentTypeHeader: "application/json",
-        authorizationHeader: GlobalData.accountData!.token);
+    GlobalHttpResponse response = await GlobalHttp.post(
+      ApiRoutes.addDiease,
+      body: body,
+      contentTypeHeader: "application/json",
+      authorizationHeader: GlobalData.accountData!.token,
+    );
 
     if (response.statusCode == 200) {
       print("response:${response.body}");

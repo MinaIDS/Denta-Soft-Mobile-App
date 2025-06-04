@@ -17,7 +17,7 @@ class MedicalScreen extends StatelessWidget {
   final AttachmentsController? model;
   final PatientModel? patientModel;
 
-  const MedicalScreen({this.model, this.patientModel});
+  const MedicalScreen({super.key, this.model, this.patientModel});
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +40,9 @@ class MedicalScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: Wrap(
                 spacing: 10,
-                children:
-                    model!.drugsList.map((e) => _drugCard(e, model!)).toList(),
+                children: model!.drugsList
+                    .map((e) => _drugCard(e, model!))
+                    .toList(),
               ),
             ),
             Align(
@@ -61,20 +62,18 @@ class MedicalScreen extends StatelessWidget {
                           topRight: Radius.circular(13),
                         ),
                       ),
-                      builder:
-                          (ctx) => DraggableScrollableSheet(
-                            maxChildSize: 0.95,
-                            initialChildSize: 0.95,
-                            builder:
-                                (ctx, scrollController) => SearchDrug(
-                                  drugs: model!.drugsList,
-                                  onSearch: (v) {
-                                    if (v.isNotEmpty) {
-                                      model!.updatedrugsList(v);
-                                    }
-                                  },
-                                ),
-                          ),
+                      builder: (ctx) => DraggableScrollableSheet(
+                        maxChildSize: 0.95,
+                        initialChildSize: 0.95,
+                        builder: (ctx, scrollController) => SearchDrug(
+                          drugs: model!.drugsList,
+                          onSearch: (v) {
+                            if (v.isNotEmpty) {
+                              model!.updatedrugsList(v);
+                            }
+                          },
+                        ),
+                      ),
                     );
                   },
                   icon: Icon(Icons.add),
@@ -89,11 +88,12 @@ class MedicalScreen extends StatelessWidget {
                   "pDieseasId": null,
                   "productId": null,
                   "comments": null,
-                  "productIds":
-                      model!.drugsList.map((d) => d.productId).toList(),
+                  "productIds": model!.drugsList
+                      .map((d) => d.productId)
+                      .toList(),
                 });
 
-                print("editProfile request body::" + body);
+                print("editProfile request body::$body");
                 PatientController().saveProductDiseaseProfile(context, body);
               },
               child: Container(
@@ -136,6 +136,7 @@ class DieasesCard extends StatelessWidget {
   final TextEditingController commentController;
 
   const DieasesCard({
+    super.key,
     required this.onSelectDieases,
     required this.commentController,
     required this.selectedDieases,
@@ -173,15 +174,12 @@ class DieasesCard extends StatelessWidget {
                   }
                   return "";
                 },
-                items:
-                    diseasesList
-                        .map(
-                          (d) => DropdownMenuItem(
-                            child: Text(d.value!),
-                            value: d.id,
-                          ),
-                        )
-                        .toList(),
+                items: diseasesList
+                    .map(
+                      (d) =>
+                          DropdownMenuItem(value: d.id, child: Text(d.value!)),
+                    )
+                    .toList(),
               ),
               SpaceHeight_L,
               CustomTextFormField(

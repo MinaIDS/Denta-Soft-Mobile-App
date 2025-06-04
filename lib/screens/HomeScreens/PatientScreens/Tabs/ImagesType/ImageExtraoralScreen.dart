@@ -1,18 +1,14 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:io';
-import 'dart:convert'; // for json encoding
+// for json encoding
 
 import 'package:denta_soft/controllers/AttachmentsController.dart';
-import 'package:denta_soft/controllers/PatientController.dart';
-import 'package:denta_soft/generated/l10n.dart';
+
 import 'package:denta_soft/models/PatientModel.dart';
-import 'package:denta_soft/screens/ImageViewerScreen.dart';
+
 import 'package:denta_soft/utils/GlobalData.dart';
-import 'package:denta_soft/utils/GoTo.dart';
-import 'package:denta_soft/utils/SizeandStyleUtills.dart';
-import 'package:denta_soft/utils/SizesStatic.dart';
-import 'package:denta_soft/utils/api_routes.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -25,8 +21,7 @@ class ImageExtraoralScreen extends StatefulWidget {
   final PatientModel? patient;
   final AttachmentsController? model;
 
-  const ImageExtraoralScreen({Key? key, this.patient, this.model})
-    : super(key: key);
+  const ImageExtraoralScreen({super.key, this.patient, this.model});
 
   @override
   _ImageExtraoralScreenState createState() => _ImageExtraoralScreenState();
@@ -52,8 +47,8 @@ class _ImageExtraoralScreenState extends State<ImageExtraoralScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 35),
             child: ElevatedButton(
-              child: Text("Pick Images"),
               onPressed: loadAssets,
+              child: Text("Pick Images"),
             ),
           ),
         ],
@@ -82,12 +77,10 @@ class _ImageExtraoralScreenState extends State<ImageExtraoralScreen> {
     String error = 'No Error Detected';
 
     try {
-      final pickedFiles =
-          await _picker.pickMultiImage(); // Pick multiple images
+      final pickedFiles = await _picker
+          .pickMultiImage(); // Pick multiple images
 
-      if (pickedFiles != null) {
-        resultList = pickedFiles;
-      }
+      resultList = pickedFiles;
     } catch (e) {
       error = e.toString();
     }
@@ -111,31 +104,28 @@ class _ImageExtraoralScreenState extends State<ImageExtraoralScreen> {
     for (int i = 0; i < imagesL.length; i++) {
       formData.files.addAll({
         MapEntry(
-          'patientAttachmentViewModels[${i}].AttachmentFile',
-          await MultipartFile.fromFile(imagesL[i], filename: 'file${i}.png'),
+          'patientAttachmentViewModels[$i].AttachmentFile',
+          await MultipartFile.fromFile(imagesL[i], filename: 'file$i.png'),
         ),
         MapEntry(
-          'patientAttachmentViewModels[${i}].AttachmentFileThumb',
+          'patientAttachmentViewModels[$i].AttachmentFileThumb',
           await MultipartFile.fromFile(
             imagesMini[i].path,
-            filename: 'file${i}.png',
+            filename: 'file$i.png',
           ),
         ),
       });
       formData.fields.addAll({
         MapEntry(
-          'patientAttachmentViewModels[${i}].CreateUserId',
+          'patientAttachmentViewModels[$i].CreateUserId',
           GlobalData.accountData!.objectData.userId!,
         ),
         MapEntry(
-          'patientAttachmentViewModels[${i}].PatientId',
+          'patientAttachmentViewModels[$i].PatientId',
           widget.patient!.patientId!,
         ),
-        MapEntry('patientAttachmentViewModels[${i}].Comments', ""),
-        MapEntry(
-          "patientAttachmentViewModels[${i}].AttachmentType",
-          "Extraoral",
-        ),
+        MapEntry('patientAttachmentViewModels[$i].Comments', ""),
+        MapEntry("patientAttachmentViewModels[$i].AttachmentType", "Extraoral"),
       });
     }
 

@@ -12,10 +12,12 @@ import '../../../widgets/buttons/accent_button.dart';
 import '../../../widgets/custom_drop_down_Button_field.dart';
 import '../../../widgets/custom_text_form_field.dart';
 
+// ignore: must_be_immutable
 class EditUserProfileInfo extends StatefulWidget {
   ObjectData userData; // Removed final here
 
   EditUserProfileInfo({
+    super.key,
     required this.userData,
   }); // Required parameter for constructor
 
@@ -24,16 +26,16 @@ class EditUserProfileInfo extends StatefulWidget {
 }
 
 class _EditUserProfileInfoState extends State<EditUserProfileInfo> {
-  var _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   late ObjectData userData;
 
-  TextEditingController _fullNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _workPhoneController = TextEditingController();
-  TextEditingController _idController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _codeController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _workPhoneController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
   String _accountType = '';
   String _calendarView = '';
 
@@ -99,17 +101,16 @@ class _EditUserProfileInfoState extends State<EditUserProfileInfo> {
                   onChanged: (String? v) {
                     _accountType = v!;
                   },
-                  items:
-                      accountType
-                          .map(
-                            (a) => DropdownMenuItem(
-                              child: Text(
-                                AppLocalizations.of(context)!.translate(a),
-                              ),
-                              value: a,
-                            ),
-                          )
-                          .toList(),
+                  items: accountType
+                      .map(
+                        (a) => DropdownMenuItem(
+                          value: a,
+                          child: Text(
+                            AppLocalizations.of(context)!.translate(a),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
                 SpaceHeight_M,
                 _buildTitle(S().CalendarView, isRequired: true),
@@ -127,12 +128,9 @@ class _EditUserProfileInfoState extends State<EditUserProfileInfo> {
                   onChanged: (String? v) {
                     _calendarView = v!;
                   },
-                  items:
-                      calendarType
-                          .map(
-                            (c) => DropdownMenuItem(child: Text(c), value: c),
-                          )
-                          .toList(),
+                  items: calendarType
+                      .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                      .toList(),
                 ),
                 SpaceHeight_M,
                 _buildTitle(S().EmailAddress),
@@ -205,7 +203,10 @@ class _EditUserProfileInfoState extends State<EditUserProfileInfo> {
           TextSpan(text: title),
           if (isRequired) ...[
             TextSpan(text: '  '),
-            TextSpan(text: '*', style: TextStyle(color: Colors.red)),
+            TextSpan(
+              text: '*',
+              style: TextStyle(color: Colors.red),
+            ),
           ],
         ],
       ),

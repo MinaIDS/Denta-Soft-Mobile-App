@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 enum LanguageSite { en, ar, fr }
 
 class ChangeLanguageScreen extends StatelessWidget {
+  const ChangeLanguageScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Using Provider to get the current language model
@@ -25,7 +27,7 @@ class ChangeLanguageScreen extends StatelessWidget {
           title: Text(
             AppLocalizations.of(
               context,
-            )!.translate(model.appLocal.languageCode ?? 'en'),
+            )!.translate(model.appLocal.languageCode),
           ),
           centerTitle: true,
         ),

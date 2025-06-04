@@ -18,6 +18,8 @@ import 'add_patient/AddPatientScreen.dart';
 import '../../../controllers/PatientsScreenController.dart';
 
 class PatientsScreen extends StatefulWidget {
+  const PatientsScreen({super.key});
+
   @override
   _PatientsScreenState createState() => _PatientsScreenState();
 }
@@ -34,55 +36,49 @@ class _PatientsScreenState extends State<PatientsScreen> {
     return BaseWidget<PatientsScreenController>(
       model: PatientsScreenController(context),
       initState: (m) => m.searchForPatient(),
-      builder:
-          (ctx, model, local, _) => Scaffold(
-            appBar: buildAppBar(context, model),
-            drawer: AppDrawer(),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => GoTo.screen(context, AddPatientScreen()),
-              child: Icon(Icons.add),
-            ),
-            body:
-                model.isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : Column(
-                      children: [
-                        if (model.isSearching)
-                          LinearProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.amber,
-                            ),
-                            backgroundColor: Colors.white,
-                          ),
-                        Expanded(
-                          child: SmartRefresher(
-                            controller: model.refreshController,
-                            enablePullDown: true,
-                            onRefresh: model.onRefresh,
-                            child:
-                                model.patientsList.isEmpty
-                                    ? Center(
-                                      child: EmptyScreenWidget(
-                                        assetPath: AssetsRoutes.noDataAvailable,
-                                      ),
-                                    )
-                                    : ListView.separated(
-                                      controller: model.scrollController,
-                                      primary: false,
-                                      itemBuilder:
-                                          (context, index) => PatientItemWidget(
-                                            patientModel:
-                                                model.patientsList[index],
-                                          ),
-                                      separatorBuilder:
-                                          (context, index) => Divider(),
-                                      itemCount: model.patientsList.length,
-                                    ),
-                          ),
-                        ),
-                      ],
+      builder: (ctx, model, local, _) => Scaffold(
+        appBar: buildAppBar(context, model),
+        drawer: AppDrawer(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => GoTo.screen(context, AddPatientScreen()),
+          child: Icon(Icons.add),
+        ),
+        body: model.isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (model.isSearching)
+                    LinearProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+                      backgroundColor: Colors.white,
                     ),
-          ),
+                  Expanded(
+                    child: SmartRefresher(
+                      controller: model.refreshController,
+                      enablePullDown: true,
+                      onRefresh: model.onRefresh,
+                      child: model.patientsList.isEmpty
+                          ? Center(
+                              child: EmptyScreenWidget(
+                                assetPath: AssetsRoutes.noDataAvailable,
+                              ),
+                            )
+                          : ListView.separated(
+                              controller: model.scrollController,
+                              primary: false,
+                              itemBuilder: (context, index) =>
+                                  PatientItemWidget(
+                                    patientModel: model.patientsList[index],
+                                  ),
+                              separatorBuilder: (context, index) => Divider(),
+                              itemCount: model.patientsList.length,
+                            ),
+                    ),
+                  ),
+                ],
+              ),
+      ),
 
       //     RefreshIndicator(
       //   onRefresh: () async {
@@ -169,11 +165,12 @@ class _PatientsScreenState extends State<PatientsScreen> {
       title: S().EC6,
       elevations: 2,
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(80),
         child: Container(
           color: Colors.white,
           padding: EdgeInsets.fromLTRB(15, 0, 15, 12),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
                 child: CustomTextFormField(
@@ -182,15 +179,14 @@ class _PatientsScreenState extends State<PatientsScreen> {
                   filled: true,
                   noborder: true,
                   filledColor: Colors.grey[100]!,
-                  suffixIcon:
-                      model.searchController.text.isNotEmpty
-                          ? GestureDetector(
-                            onTap: () {
-                              model.searchController.clear();
-                            },
-                            child: Icon(Icons.clear),
-                          )
-                          : Icon(Icons.search),
+                  suffixIcon: model.searchController.text.isNotEmpty
+                      ? GestureDetector(
+                          onTap: () {
+                            model.searchController.clear();
+                          },
+                          child: Icon(Icons.clear),
+                        )
+                      : Icon(Icons.search),
                 ),
               ),
               SpaceWidth_L,
@@ -206,17 +202,15 @@ class _PatientsScreenState extends State<PatientsScreen> {
                         topRight: Radius.circular(13),
                       ),
                     ),
-                    builder:
-                        (ctx) => DraggableScrollableSheet(
-                          maxChildSize: 0.95,
-                          initialChildSize: 0.95,
-                          builder:
-                              (ctx, scrollController) => SearchFilterScreen(
-                                onSearch: (v) {
-                                  model.onFilter(searchModel: v);
-                                },
-                              ),
-                        ),
+                    builder: (ctx) => DraggableScrollableSheet(
+                      maxChildSize: 0.95,
+                      initialChildSize: 0.95,
+                      builder: (ctx, scrollController) => SearchFilterScreen(
+                        onSearch: (v) {
+                          model.onFilter(searchModel: v);
+                        },
+                      ),
+                    ),
                   );
                 },
                 child: Icon(

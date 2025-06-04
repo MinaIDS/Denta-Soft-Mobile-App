@@ -11,7 +11,7 @@ class CustomDropdownButtonField<T> extends StatelessWidget {
   final void Function(T?)? onChanged;
 
   const CustomDropdownButtonField({
-    Key? key,
+    super.key,
     this.hint,
     this.validator,
     this.margin = EdgeInsets.zero,
@@ -20,7 +20,7 @@ class CustomDropdownButtonField<T> extends StatelessWidget {
     this.onChanged,
     this.value,
     this.helperText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 class ImagesTab extends StatefulWidget {
   final PatientModel? patient;
 
-  const ImagesTab({Key? key, this.patient}) : super(key: key);
+  const ImagesTab({super.key, this.patient});
 
   @override
   _ImagesTabState createState() => _ImagesTabState();
@@ -25,6 +25,7 @@ class ImagesTab extends StatefulWidget {
 
 class _ImagesTabState extends State<ImagesTab> {
   List<File> images = []; // Store images as File objects
+  // ignore: unused_field
   String _error = 'No Error Dectected';
 
   final picker = ImagePicker(); // ImagePicker instance for image selection
@@ -36,70 +37,65 @@ class _ImagesTabState extends State<ImagesTab> {
       child: ChangeNotifierProvider.value(
         value: AttachmentsController(),
         child: Consumer<AttachmentsController>(
-          builder:
-              (context, model, child) => RefreshIndicator(
-                onRefresh: () async {
-                  await model.getAttachments(
-                    patientId: widget.patient!.patientId,
-                  );
-                },
-                child: OnceFutureBuilder(
-                  future:
-                      () => model.getAttachments(
-                        patientId: widget.patient!.patientId,
-                      ),
-                  builder: (ctx, snapShot) {
-                    if (snapShot.connectionState != ConnectionState.done) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    return Scaffold(
-                      backgroundColor: Colors.white,
-                      body: Column(
-                        children: <Widget>[
-                          // create widgets for each tab bar here
-                          TabBar(
-                            labelColor: Colors.blue,
-                            tabs: [
-                              Container(
-                                width: SizeandStyleUtills().screenWidth * 0.29,
-                                child: Tab(text: S().XRay),
-                              ),
-                              Container(
-                                width: SizeandStyleUtills().screenWidth * 0.29,
-                                child: Tab(text: S().Intraoral),
-                              ),
-                              Container(
-                                width: SizeandStyleUtills().screenWidth * 0.29,
-                                child: Tab(text: S().Extraoral),
-                              ),
-                            ],
-                            labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                            isScrollable: true,
+          builder: (context, model, child) => RefreshIndicator(
+            onRefresh: () async {
+              await model.getAttachments(patientId: widget.patient!.patientId);
+            },
+            child: OnceFutureBuilder(
+              future: () =>
+                  model.getAttachments(patientId: widget.patient!.patientId),
+              builder: (ctx, snapShot) {
+                if (snapShot.connectionState != ConnectionState.done) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return Scaffold(
+                  backgroundColor: Colors.white,
+                  body: Column(
+                    children: <Widget>[
+                      // create widgets for each tab bar here
+                      TabBar(
+                        labelColor: Colors.blue,
+                        tabs: [
+                          SizedBox(
+                            width: SizeandStyleUtills().screenWidth * 0.29,
+                            child: Tab(text: S().XRay),
                           ),
-                          Expanded(
-                            child: TabBarView(
-                              children: [
-                                ImageXrayScreen(
-                                  patient: widget.patient!,
-                                  model: model,
-                                ),
-                                ImageIntraoraolScreen(
-                                  patient: widget.patient!,
-                                  model: model,
-                                ),
-                                ImageExtraoralScreen(
-                                  patient: widget.patient,
-                                  model: model,
-                                ),
-                              ],
-                            ),
+                          SizedBox(
+                            width: SizeandStyleUtills().screenWidth * 0.29,
+                            child: Tab(text: S().Intraoral),
+                          ),
+                          SizedBox(
+                            width: SizeandStyleUtills().screenWidth * 0.29,
+                            child: Tab(text: S().Extraoral),
                           ),
                         ],
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        isScrollable: true,
                       ),
-                    );
-                  },
-                ),
-              ),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            ImageXrayScreen(
+                              patient: widget.patient!,
+                              model: model,
+                            ),
+                            ImageIntraoraolScreen(
+                              patient: widget.patient!,
+                              model: model,
+                            ),
+                            ImageExtraoralScreen(
+                              patient: widget.patient,
+                              model: model,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
@@ -111,7 +107,7 @@ class _ImagesTabState extends State<ImagesTab> {
       // Pick images using the image_picker package
       final pickedFiles = await picker.pickMultiImage();
 
-      if (pickedFiles != null && pickedFiles.isNotEmpty) {
+      if (pickedFiles.isNotEmpty) {
         List<File> selectedFiles = [];
 
         // Load and manipulate images if necessary (e.g., resizing)

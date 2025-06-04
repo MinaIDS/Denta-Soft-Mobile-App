@@ -14,13 +14,13 @@ class TreatmentItemWidget extends StatelessWidget {
 
   // Marking parameters as required for null safety
   const TreatmentItemWidget({
-    Key? key,
+    super.key,
     required this.treatmentModel,
     required this.onAddProcedure,
     required this.onUpdate,
     required this.isActive,
     required this.onProcedureList,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,43 +59,47 @@ class TreatmentItemWidget extends StatelessWidget {
                 // Conditionally render Enable/Disable button
                 !isActive
                     ? InkWell(
-                      onTap: () => onUpdate(),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 8,
+                        onTap: () => onUpdate(),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8.0),
+                            ),
                           ),
-                          child: Text(
-                            S().Enable,
-                            style: TextStyle(color: Colors.white),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 8,
+                            ),
+                            child: Text(
+                              S().Enable,
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
-                      ),
-                    )
+                      )
                     : InkWell(
-                      onTap: () => onUpdate(),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: ThemeColors.danger,
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 8,
+                        onTap: () => onUpdate(),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: ThemeColors.danger,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8.0),
+                            ),
                           ),
-                          child: Text(
-                            S().Disable,
-                            style: TextStyle(color: Colors.white),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 8,
+                            ),
+                            child: Text(
+                              S().Disable,
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
-                    ),
               ],
             ),
             SizedBox(height: 10),
@@ -103,39 +107,39 @@ class TreatmentItemWidget extends StatelessWidget {
             !isActive
                 ? SizedBox()
                 : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    OutlinedButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      OutlinedButton(
+                        style: ButtonStyle(
+                          shape: WidgetStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
                           ),
                         ),
-                      ),
-                      onPressed: () => onProcedureList(),
-                      child: Text(
-                        S().ProcedureList,
-                        style: TextStyle(color: ThemeColors.nearlyBlack),
-                      ),
-                    ),
-                    SpaceWidth_S,
-                    OutlinedButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
+                        onPressed: () => onProcedureList(),
+                        child: Text(
+                          S().ProcedureList,
+                          style: TextStyle(color: ThemeColors.nearlyBlack),
                         ),
                       ),
-                      onPressed: () => onAddProcedure(),
-                      child: Text(
-                        S().AddProcedure,
-                        style: TextStyle(color: ThemeColors.nearlyBlack),
+                      SpaceWidth_S,
+                      OutlinedButton(
+                        style: ButtonStyle(
+                          shape: WidgetStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                        onPressed: () => onAddProcedure(),
+                        child: Text(
+                          S().AddProcedure,
+                          style: TextStyle(color: ThemeColors.nearlyBlack),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
           ],
         ),
       ),

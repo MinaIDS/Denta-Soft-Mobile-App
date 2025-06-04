@@ -7,7 +7,7 @@ import 'package:denta_soft/utils/api_routes.dart';
 
 class UsersServices {
   Future<List<ObjectData>> postSearchUsers({required String username}) async {
-    Map<String, dynamic> jsonValues = new Map<String, dynamic>();
+    Map<String, dynamic> jsonValues = <String, dynamic>{};
     List<ObjectData> usersList = [];
 
     jsonValues.addAll({
@@ -21,7 +21,7 @@ class UsersServices {
       "countryId": "",
     });
     var body = jsonEncode(jsonValues);
-    print("QQQQ::" + body.toString());
+    print("QQQQ::$body");
 
     try {
       GlobalHttpResponse response = await GlobalHttp.post(
@@ -34,15 +34,15 @@ class UsersServices {
       // OK 200
       if (response.statusCode == 200) {
         List<dynamic> object = jsonDecode(response.body!);
-        object.forEach((value) {
-          print("LL::" + value.toString());
-          print("length::" + object.length.toString());
+        for (var value in object) {
+          print("LL::$value");
+          print("length::${object.length}");
           usersList.add((ObjectData.fromJson(value)));
-        });
+        }
       }
       return usersList;
     } catch (e) {
-      print("QQQQ::" + e.toString());
+      print("QQQQ::$e");
 
       return usersList;
     }

@@ -17,127 +17,116 @@ import 'package:provider/provider.dart';
 class DieasesScreen extends StatelessWidget {
   final PatientModel patientModel;
 
-  const DieasesScreen({Key? key, required this.patientModel}) : super(key: key);
+  const DieasesScreen({super.key, required this.patientModel});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: AttachmentsController(),
       child: Consumer<AttachmentsController>(
-        builder:
-            (context, model, child) => OnceFutureBuilder<void>(
-              future: () => model.getDieasesList(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return Container(
-                    height: SizeandStyleUtills().screenHeight,
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                } else {
-                  return GestureDetector(
-                    onTap: () => FocusScope.of(context).unfocus(),
-                    child: Form(
-                      key: model.medicalHistoryKey,
-                      child: ListView(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 5,
-                        ),
-                        children: [
-                          SpaceHeight_XS,
-                          ...List.generate(
-                            model.addedDisease.length,
-                            (index) => DieasesCard(
-                              commentController:
-                                  model.addedDisease[index].comment,
-                              diseasesList: model.diseasesList,
-                              selectedDieases:
-                                  model.addedDisease[index].diseaseId,
-                              onSelectDieases: (v) {
-                                model.updateaddedDisease(index, v!);
-                              },
-                              onDelete: () {
-                                model.deleteaddedDisease(index);
-                              },
-                            ),
-                          ),
-                          Align(
-                            alignment: AlignmentDirectional.bottomEnd,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                              ),
-                              child: TextButton.icon(
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Colors.red,
-                                ),
-                                onPressed: () {
-                                  model.addaddedDisease(PatientDisease());
-                                },
-                                icon: Icon(Icons.add),
-                                label: Text(S().AddDieasesRecords),
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              var body = jsonEncode(
-                                model.addedDisease
-                                    .map(
-                                      (d) => {
-                                        "diseaseTypeId": d.diseaseId,
-                                        "comments": d.comment.text,
-                                        "updateUserId":
-                                            GlobalData
-                                                .accountData!
-                                                .objectData
-                                                .updateUserId,
-                                        "createUserId":
-                                            GlobalData
-                                                .accountData!
-                                                .objectData
-                                                .currentUserId,
-                                        "diseaseId": null,
-                                        "patientId": patientModel.patientId,
-                                        "dieasesName": null,
-                                      },
-                                    )
-                                    .toList(),
-                              );
-
-                              print("editProfile request body::" + body);
-                              PatientController().saveDiseaseProfile(
-                                context,
-                                body,
-                              );
-                            },
-                            child: Container(
-                              height: SizeandStyleUtills()
-                                  .getProportionalHeight(height: 50),
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(25),
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  S().SaveDieases,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+        builder: (context, model, child) => OnceFutureBuilder<void>(
+          future: () => model.getDieasesList(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return SizedBox(
+                height: SizeandStyleUtills().screenHeight,
+                child: Center(child: CircularProgressIndicator()),
+              );
+            } else {
+              return GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Form(
+                  key: model.medicalHistoryKey,
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 5,
                     ),
-                  );
-                }
-              },
-            ),
+                    children: [
+                      SpaceHeight_XS,
+                      ...List.generate(
+                        model.addedDisease.length,
+                        (index) => DieasesCard(
+                          commentController: model.addedDisease[index].comment,
+                          diseasesList: model.diseasesList,
+                          selectedDieases: model.addedDisease[index].diseaseId,
+                          onSelectDieases: (v) {
+                            model.updateaddedDisease(index, v!);
+                          },
+                          onDelete: () {
+                            model.deleteaddedDisease(index);
+                          },
+                        ),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional.bottomEnd,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: TextButton.icon(
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.red,
+                            ),
+                            onPressed: () {
+                              model.addaddedDisease(PatientDisease());
+                            },
+                            icon: Icon(Icons.add),
+                            label: Text(S().AddDieasesRecords),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          var body = jsonEncode(
+                            model.addedDisease
+                                .map(
+                                  (d) => {
+                                    "diseaseTypeId": d.diseaseId,
+                                    "comments": d.comment.text,
+                                    "updateUserId": GlobalData
+                                        .accountData!
+                                        .objectData
+                                        .updateUserId,
+                                    "createUserId": GlobalData
+                                        .accountData!
+                                        .objectData
+                                        .currentUserId,
+                                    "diseaseId": null,
+                                    "patientId": patientModel.patientId,
+                                    "dieasesName": null,
+                                  },
+                                )
+                                .toList(),
+                          );
+
+                          print("editProfile request body::$body");
+                          PatientController().saveDiseaseProfile(context, body);
+                        },
+                        child: Container(
+                          height: SizeandStyleUtills().getProportionalHeight(
+                            height: 50,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                          ),
+                          child: Center(
+                            child: Text(
+                              S().SaveDieases,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }
@@ -151,6 +140,7 @@ class DieasesCard extends StatelessWidget {
   final TextEditingController commentController;
 
   const DieasesCard({
+    super.key,
     required this.onSelectDieases,
     required this.commentController,
     required this.selectedDieases,
@@ -188,15 +178,12 @@ class DieasesCard extends StatelessWidget {
                   }
                   return "";
                 },
-                items:
-                    diseasesList
-                        .map(
-                          (d) => DropdownMenuItem(
-                            child: Text(d.value!),
-                            value: d.id,
-                          ),
-                        )
-                        .toList(),
+                items: diseasesList
+                    .map(
+                      (d) =>
+                          DropdownMenuItem(value: d.id, child: Text(d.value!)),
+                    )
+                    .toList(),
               ),
               SpaceHeight_L,
               CustomTextFormField(

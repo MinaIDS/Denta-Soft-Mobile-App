@@ -6,7 +6,6 @@ import 'package:denta_soft/utils/assets_routes.dart';
 import 'package:denta_soft/widgets/EmptyScreenWidget.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -16,32 +15,28 @@ import '../../../../utils/localization/Localizations.dart';
 import '../../../../widgets/OnceFutureBuilder.dart';
 
 class FinancialScreen extends StatelessWidget {
-  // Nullable variables should be properly initialized
-  late BuildContext _context;
-  late final FinancialController model;
-  late final Size screenSize;
-
-  final style1 = TextStyle(
+  final style1 = const TextStyle(
     fontWeight: FontWeight.bold,
     color: Colors.grey,
     fontSize: 14,
   );
 
-  final style2 = TextStyle(
+  final style2 = const TextStyle(
     fontWeight: FontWeight.bold,
     color: Colors.grey,
     fontSize: 10,
   );
 
+  FinancialScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    _context = context;
-    model = Provider.of<FinancialController>(context, listen: true);
-    screenSize = MediaQuery.of(context).size;
+    final model = Provider.of<FinancialController>(context, listen: true);
+    final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           model.isHaveData = false;
           model.selectedIOCome = IOComeModel();
@@ -56,20 +51,15 @@ class FinancialScreen extends StatelessWidget {
           future: () => model.getIOComes(),
           builder: (context, snapShot) {
             if (snapShot.connectionState != ConnectionState.done) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  // Search
-                  searchWidget(),
-
-                  // Balance Widget
-                  balanceWidget(context),
-
-                  // List Of Data
-                  listOfData(context),
+                  searchWidget(context, model),
+                  balanceWidget(context, model, screenSize),
+                  listOfData(context, model, screenSize),
                 ],
               ),
             );
@@ -79,19 +69,18 @@ class FinancialScreen extends StatelessWidget {
     );
   }
 
-  Widget searchWidget() {
+  Widget searchWidget(BuildContext context, FinancialController model) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(width: 4),
-          // From Date
+          const SizedBox(width: 4),
           Text(S().FROM, style: style2),
           InkWell(
             child: Container(
-              padding: EdgeInsets.all(8),
-              margin: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: Colors.grey[200]!, width: 1),
@@ -103,7 +92,7 @@ class FinancialScreen extends StatelessWidget {
             ),
             onTap: () async {
               DateTime? selectedDate = await showDatePicker(
-                context: _context,
+                context: context,
                 initialDate: DateTime.parse(model.fromDate),
                 firstDate: DateTime(2015, 8),
                 lastDate: DateTime(2101),
@@ -113,13 +102,11 @@ class FinancialScreen extends StatelessWidget {
               }
             },
           ),
-
-          // To Date
           Text(S().TO, style: style2),
           InkWell(
             child: Container(
-              padding: EdgeInsets.all(8),
-              margin: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: Colors.grey[200]!, width: 1),
@@ -131,7 +118,7 @@ class FinancialScreen extends StatelessWidget {
             ),
             onTap: () async {
               DateTime? selectedDate = await showDatePicker(
-                context: _context,
+                context: context,
                 initialDate: DateTime.parse(model.toDate),
                 firstDate: DateTime(2015, 8),
                 lastDate: DateTime(2101),
@@ -141,36 +128,38 @@ class FinancialScreen extends StatelessWidget {
               }
             },
           ),
-
-          // Search button
           InkWell(
+            onTap: () {
+              model.getIOComes();
+            },
             child: Container(
-              padding: EdgeInsets.all(6),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.filter_alt_outlined,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                  Text(S().Search, style: TextStyle(color: Colors.white)),
-                ],
-              ),
+              padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(50),
               ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.filter_alt_outlined,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  Text(S().Search, style: const TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
-            onTap: () {
-              model.getIOComes();
-            },
           ),
         ],
       ),
     );
   }
 
-  Widget balanceWidget(context) {
+  Widget balanceWidget(
+    BuildContext context,
+    FinancialController model,
+    Size screenSize,
+  ) {
     return Card(
       color: ThemeColors.white,
       child: Column(
@@ -183,34 +172,29 @@ class FinancialScreen extends StatelessWidget {
               children: [
                 Text(
                   S().ProfitMargin,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.grey,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 1),
+                const SizedBox(height: 1),
                 Text(
                   "\$${model.totalBalance}",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color:
-                        model.totalBalance < 0
-                            ? ThemeColors.danger
-                            : ThemeColors.success,
+                    color: model.totalBalance < 0
+                        ? ThemeColors.danger
+                        : ThemeColors.success,
                     fontSize: 36,
                   ),
                 ),
               ],
             ),
           ),
-
-          //Line ____________
           Container(width: double.infinity, height: 1, color: Colors.grey[300]),
-
           Row(
             children: [
-              // Total InCome
               Expanded(
                 child: Container(
                   height: screenSize.height * .1,
@@ -226,10 +210,10 @@ class FinancialScreen extends StatelessWidget {
                           fontSize: 24,
                         ),
                       ),
-                      SizedBox(height: 2),
+                      const SizedBox(height: 2),
                       Text(
                         S().TotalIncome,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
                           fontSize: 12,
@@ -239,15 +223,11 @@ class FinancialScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
-              //Line ____________
               Container(
                 width: 1,
                 height: screenSize.height * .1,
                 color: Colors.grey[300],
               ),
-
-              // Total Expanses
               Expanded(
                 child: Container(
                   height: screenSize.height * .1,
@@ -263,10 +243,10 @@ class FinancialScreen extends StatelessWidget {
                           fontSize: 24,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         "Total Expanses",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
                           fontSize: 12,
@@ -283,71 +263,65 @@ class FinancialScreen extends StatelessWidget {
     );
   }
 
-  Widget listOfData(context) {
+  Widget listOfData(
+    BuildContext context,
+    FinancialController model,
+    Size screenSize,
+  ) {
     return Container(
       height: screenSize.height * .5,
-      color: Color(0xffebf0f2),
+      color: const Color(0xffebf0f2),
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(0),
-            topRight: Radius.circular(0),
-          ),
-        ),
-        child:
-            model.isLoading
-                ? Center(child: CircularProgressIndicator())
-                : model.IOComeList.isEmpty
-                ? EmptyScreenWidget(assetPath: AssetsRoutes.noDataAvailable)
-                : ListView.separated(
-                  itemBuilder: (ctx, index) {
-                    IOComeModel ioComeModel = model.IOComeList[index];
-                    return Column(
-                      children: [
-                        itemWidget(ioComeModel),
-                        if (index == model.IOComeList.length - 1)
-                          SizedBox(height: screenSize.height * .08),
-                      ],
-                    );
-                  },
-                  separatorBuilder: (ctx, index) {
-                    return Divider();
-                  },
-                  itemCount: model.IOComeList.length,
-                  shrinkWrap: true,
-                ),
+        decoration: const BoxDecoration(color: Colors.white),
+        child: model.isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : model.IOComeList.isEmpty
+            ? EmptyScreenWidget(assetPath: AssetsRoutes.noDataAvailable)
+            : ListView.separated(
+                itemCount: model.IOComeList.length,
+                separatorBuilder: (_, __) => const Divider(),
+                shrinkWrap: true,
+                itemBuilder: (ctx, index) {
+                  final ioCome = model.IOComeList[index];
+                  return Column(
+                    children: [
+                      itemWidget(context, model, ioCome),
+                      if (index == model.IOComeList.length - 1)
+                        SizedBox(height: screenSize.height * .08),
+                    ],
+                  );
+                },
+              ),
       ),
     );
   }
 
-  Widget itemWidget(IOComeModel ioComeModel) {
+  Widget itemWidget(
+    BuildContext context,
+    FinancialController model,
+    IOComeModel ioComeModel,
+  ) {
     return Container(
-      padding: EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Status (Arrows)
-          Container(
-            width: screenSize.width * .2,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * .2,
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(0),
-                  ),
+                  padding: const EdgeInsets.all(8),
                   child: Icon(
                     ioComeModel.type == 1
                         ? Icons.arrow_circle_down_sharp
                         : Icons.arrow_circle_up_rounded,
-                    color:
-                        ioComeModel.type == 1
-                            ? ThemeColors.success
-                            : ThemeColors.danger,
+                    color: ioComeModel.type == 1
+                        ? ThemeColors.success
+                        : ThemeColors.danger,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   ioComeModel.type == 1 ? S().Income : S().Expanses,
                   style: TextStyle(
@@ -359,90 +333,78 @@ class FinancialScreen extends StatelessWidget {
               ],
             ),
           ),
-
-          // Body
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Theme(
-                  data: Theme.of(
-                    _context,
-                  ).copyWith(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${S().Amount} : ${ioComeModel.amount.toString()}',
-                          style: style1,
-                        ),
-                        Text(
-                          '${S().Category} : ${AppLocalizations.of(_context)!.translate(ioComeModel.category!)}',
-                          style: style1,
-                        ),
-                        Text(
-                          '${S().CreationDate} : ${DateFormat.yMMMd().format(DateTime.parse(ioComeModel.happenDate.toString()))}',
-                          style: style1,
-                        ),
-                      ],
+            child: Theme(
+              data: Theme.of(
+                context,
+              ).copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${S().Amount} : ${ioComeModel.amount}',
+                      style: style1,
                     ),
-                    tilePadding: EdgeInsets.symmetric(horizontal: 12),
-                    expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                    childrenPadding: EdgeInsets.all(8),
-                    expandedAlignment: Alignment.centerLeft,
-                    children: <Widget>[
-                      Text(
-                        'REFERENCEID : ${ioComeModel.referenceId.toString()}',
-                        style: style1,
-                      ),
-                      Text(
-                        '${S().Comments} : ${ioComeModel.comments.toString()}',
-                        style: style1,
-                      ),
-                    ],
-                  ),
+                    Text(
+                      '${S().Category} : ${AppLocalizations.of(context)!.translate(ioComeModel.category!)}',
+                      style: style1,
+                    ),
+                    Text(
+                      '${S().CreationDate} : ${DateFormat.yMMMd().format(ioComeModel.happenDate!)}',
+                      style: style1,
+                    ),
+                  ],
                 ),
-              ],
+                tilePadding: const EdgeInsets.symmetric(horizontal: 12),
+                childrenPadding: const EdgeInsets.all(8),
+                expandedAlignment: Alignment.centerLeft,
+                children: [
+                  Text(
+                    'REFERENCEID : ${ioComeModel.referenceId}',
+                    style: style1,
+                  ),
+                  Text(
+                    '${S().Comments} : ${ioComeModel.comments}',
+                    style: style1,
+                  ),
+                ],
+              ),
             ),
           ),
-          // Edit and Delete buttons
           Column(
             children: [
               InkWell(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                  margin: EdgeInsets.symmetric(horizontal: 8),
-                  child: Icon(Icons.close, color: Colors.red, size: 20),
-                ),
-                onTap: () async {
+                onTap: () {
                   AwesomeDialog(
-                    context: _context,
+                    context: context,
                     dialogType: DialogType.question,
                     animType: AnimType.bottomSlide,
-                    title: "",
                     desc: S().Areyousureyouwanttodelete,
                     btnCancelOnPress: () {},
-                    btnOkOnPress: () async {
+                    btnOkOnPress: () {
                       model.deleteInsuranceCompany(
                         id: ioComeModel.incomexpansesDoctorsId!,
                       );
                     },
-                  )..show();
+                  ).show();
                 },
-              ),
-              SizedBox(height: 4),
-              InkWell(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                  margin: EdgeInsets.symmetric(horizontal: 8),
-                  child: Icon(Icons.edit, color: ThemeColors.primary, size: 20),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: Icon(Icons.close, color: Colors.red, size: 20),
                 ),
+              ),
+              const SizedBox(height: 4),
+              InkWell(
                 onTap: () {
                   model.isHaveData = true;
                   model.selectedIOCome = ioComeModel;
-                  GoTo.screen(_context, AddEditFinancialScreen(isEdit: true));
+                  GoTo.screen(context, AddEditFinancialScreen(isEdit: true));
                 },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Icon(Icons.edit, color: ThemeColors.primary, size: 20),
+                ),
               ),
             ],
           ),

@@ -15,6 +15,8 @@ import 'Widget/bezierContainer.dart';
 import 'home_index.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -40,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     SizeandStyleUtills().updateScreenDimesion(height: height, width: width);
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         width: width,
         height: height,
         child: Stack(

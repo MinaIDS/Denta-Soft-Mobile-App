@@ -12,14 +12,14 @@ class RoundedInputField extends StatelessWidget {
   final ValueChanged<String>? onChanged; // onChanged should be nullable
 
   const RoundedInputField({
-    Key? key,
+    super.key,
     this.hintText,
     this.controller,
     this.validator,
     this.keyboardType = TextInputType.text,
     this.icon,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +33,9 @@ class RoundedInputField extends StatelessWidget {
         validator: validator,
         controller: controller,
         decoration: InputDecoration(
-          icon:
-              icon != null
-                  ? Icon(icon, color: ThemeColors.primary)
-                  : null, // Add null check for icon
+          icon: icon != null
+              ? Icon(icon, color: ThemeColors.primary)
+              : null, // Add null check for icon
           hintText: hintText,
           border: InputBorder.none,
         ),

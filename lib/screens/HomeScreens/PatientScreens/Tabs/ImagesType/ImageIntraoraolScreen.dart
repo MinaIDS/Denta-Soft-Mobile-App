@@ -1,15 +1,16 @@
+// ignore_for_file: unused_local_variable, duplicate_ignore
+
 import 'dart:io';
 import 'dart:async';
 
 import 'package:denta_soft/controllers/AttachmentsController.dart';
-import 'package:denta_soft/controllers/PatientController.dart';
 import 'package:denta_soft/generated/l10n.dart';
 import 'package:denta_soft/models/PatientModel.dart';
 import 'package:denta_soft/screens/ImageViewerScreen.dart';
 import 'package:denta_soft/utils/GlobalData.dart';
 import 'package:denta_soft/utils/GoTo.dart';
 import 'package:denta_soft/utils/SizeandStyleUtills.dart';
-import 'package:denta_soft/utils/SizesStatic.dart';
+
 import 'package:denta_soft/utils/api_routes.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -25,10 +26,10 @@ class ImageIntraoraolScreen extends StatefulWidget {
   final AttachmentsController model;
 
   const ImageIntraoraolScreen({
-    Key? key,
+    super.key,
     required this.patient,
     required this.model,
-  }) : super(key: key);
+  });
 
   @override
   _ImageIntraoraolScreenState createState() => _ImageIntraoraolScreenState();
@@ -47,11 +48,11 @@ class _ImageIntraoraolScreenState extends State<ImageIntraoraolScreen> {
       bottomSheet: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             width: SizeandStyleUtills().screenWidth * 0.9,
             child: ElevatedButton(
-              child: Text(S().Pick_images),
               onPressed: loadAssets,
+              child: Text(S().Pick_images),
             ),
           ),
         ],
@@ -90,17 +91,12 @@ class _ImageIntraoraolScreenState extends State<ImageIntraoraolScreen> {
                           fit: BoxFit.cover,
                           height: 300,
                           width: SizeandStyleUtills().screenWidth * 0.29,
-                          placeholder:
-                              (context, url) => Container(
-                                padding: EdgeInsets.all(15),
-                                child: Image.asset('assets/images/loading.gif'),
-                              ),
-                          errorWidget:
-                              (context, url, error) => Icon(
-                                Icons.error,
-                                size: 35,
-                                color: Colors.grey,
-                              ),
+                          placeholder: (context, url) => Container(
+                            padding: EdgeInsets.all(15),
+                            child: Image.asset('assets/images/loading.gif'),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error, size: 35, color: Colors.grey),
                         ),
                       ),
                       Positioned(
@@ -119,7 +115,7 @@ class _ImageIntraoraolScreenState extends State<ImageIntraoraolScreen> {
                               btnOkOnPress: () async {
                                 widget.model.deleteAttachments(model: img);
                               },
-                            )..show();
+                            ).show();
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -169,12 +165,9 @@ class _ImageIntraoraolScreenState extends State<ImageIntraoraolScreen> {
     String error = 'No Error Detected';
 
     try {
-      final pickedFiles =
-          await _picker
-              .pickMultiImage(); // Use pickMultiImage for multiple images
-      if (pickedFiles != null) {
-        resultList = pickedFiles;
-      }
+      final pickedFiles = await _picker
+          .pickMultiImage(); // Use pickMultiImage for multiple images
+      resultList = pickedFiles;
     } catch (e) {
       error = e.toString();
     }
@@ -193,6 +186,7 @@ class _ImageIntraoraolScreenState extends State<ImageIntraoraolScreen> {
     });
 
     await Future.delayed(Duration(seconds: 3));
+    // ignore: unused_local_variable
     List<Map<String, dynamic>> finalBody = [];
     FormData formData = FormData();
 

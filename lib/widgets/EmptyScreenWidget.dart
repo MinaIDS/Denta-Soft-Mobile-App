@@ -9,7 +9,13 @@ class EmptyScreenWidget extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final String? assetPath;
 
-  EmptyScreenWidget({this.width, this.height, this.margin, this.assetPath});
+  const EmptyScreenWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.margin,
+    this.assetPath,
+  });
 
   @override
   Widget build(BuildContext context) {

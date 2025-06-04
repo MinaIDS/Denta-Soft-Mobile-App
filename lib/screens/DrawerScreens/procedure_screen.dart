@@ -3,7 +3,6 @@ import 'package:denta_soft/widgets/EmptyScreenWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../controllers/InsuranceCompanyController.dart';
 import '../../controllers/ProcedureController.dart';
 import '../../items/ProceduresItemWidget.dart';
 import '../../models/InsuranceModel.dart';
@@ -14,6 +13,8 @@ import '../../widgets/TextFieldWidget.dart';
 import '../app_theme.dart';
 
 class ProcedureScreen extends StatefulWidget {
+  const ProcedureScreen({super.key});
+
   @override
   _ProcedureScreenState createState() => _ProcedureScreenState();
 }
@@ -34,7 +35,7 @@ class _ProcedureScreenState extends State<ProcedureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("DDD::" + GlobalData.accountData!.objectData.branchId.toString());
+    print("DDD::${GlobalData.accountData!.objectData.branchId}");
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -52,20 +53,19 @@ class _ProcedureScreenState extends State<ProcedureScreen> {
           InsuranceModel insuranceModel = InsuranceModel();
           showMaterialModalBottomSheet(
             context: context,
-            builder:
-                (context) => SingleChildScrollView(
-                  controller: ModalScrollController.of(context),
-                  child: EditInsuranceBottomSheet(
-                    S().Add,
-                    insuranceModel,
-                    () async {
-                      final dd = await ProcedureController().getProcedureList();
-                      setState(() {
-                        procedures = dd ?? [];
-                      });
-                    },
-                  ),
-                ),
+            builder: (context) => SingleChildScrollView(
+              controller: ModalScrollController.of(context),
+              child: EditInsuranceBottomSheet(
+                S().Add,
+                insuranceModel,
+                () async {
+                  final dd = await ProcedureController().getProcedureList();
+                  setState(() {
+                    procedures = dd;
+                  });
+                },
+              ),
+            ),
           );
         },
         child: Icon(Icons.add, color: Colors.white),
@@ -74,7 +74,7 @@ class _ProcedureScreenState extends State<ProcedureScreen> {
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async {
-            procedures = await ProcedureController().getProcedureList() ?? [];
+            procedures = await ProcedureController().getProcedureList();
           },
           child: FutureBuilder<List<ProcedureModel>>(
             future: getProcedureList,
@@ -93,22 +93,22 @@ class _ProcedureScreenState extends State<ProcedureScreen> {
                     procedures.isEmpty
                         ? EmptyScreenWidget()
                         : ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (ctx, index) {
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ProceduresItemWidget(
-                                  procedureModel: procedures[index],
-                                  onDelete: () async {},
-                                  onUpdate: () {},
-                                ),
-                              ],
-                            );
-                          },
-                          shrinkWrap: true,
-                          itemCount: procedures.length,
-                        ),
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (ctx, index) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ProceduresItemWidget(
+                                    procedureModel: procedures[index],
+                                    onDelete: () async {},
+                                    onUpdate: () {},
+                                  ),
+                                ],
+                              );
+                            },
+                            shrinkWrap: true,
+                            itemCount: procedures.length,
+                          ),
                     SizedBox(height: SizeHeight_XXXXXL + SizeHeight_XXXXXL),
                   ],
                 );
@@ -121,12 +121,13 @@ class _ProcedureScreenState extends State<ProcedureScreen> {
   }
 }
 
+// ignore: must_be_immutable
 class EditInsuranceBottomSheet extends StatefulWidget {
   String type;
   InsuranceModel insurance;
   Function onSave;
 
-  EditInsuranceBottomSheet(this.type, this.insurance, this.onSave);
+  EditInsuranceBottomSheet(this.type, this.insurance, this.onSave, {super.key});
 
   @override
   _EditInsuranceBottomSheetState createState() =>
@@ -148,7 +149,7 @@ class _EditInsuranceBottomSheetState extends State<EditInsuranceBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * .95,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: SizeWidth_L),
@@ -201,13 +202,11 @@ class _EditInsuranceBottomSheetState extends State<EditInsuranceBottomSheet> {
               children: [
                 ElevatedButton(
                   onPressed: () async {
-                    bool status = await InsuranceCompanyController()
-                        .saveInsuranceCompany(insurances: widget.insurance);
                     widget.onSave();
                     Navigator.pop(context);
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                    backgroundColor: WidgetStateProperty.all(Colors.blue),
                   ),
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 12),
@@ -229,7 +228,7 @@ class _EditInsuranceBottomSheetState extends State<EditInsuranceBottomSheet> {
                     Navigator.pop(context);
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.red),
+                    backgroundColor: WidgetStateProperty.all(Colors.red),
                   ),
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 12),

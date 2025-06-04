@@ -5,7 +5,7 @@ import 'package:country_pickers/country_pickers.dart';
 class CountryPicker extends StatelessWidget {
   final void Function(Country)? onValuePicked;
 
-  CountryPicker({this.onValuePicked});
+  const CountryPicker({super.key, this.onValuePicked});
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -22,13 +22,11 @@ class CountryPicker extends StatelessWidget {
             children: <Widget>[
               Flexible(child: CountryPickerUtils.getDefaultFlagImage(country)),
               SizedBox(width: 15),
-              Flexible(child: Text(country.name))
+              Flexible(child: Text(country.name)),
             ],
           );
         },
-        priorityList: [
-          CountryPickerUtils.getCountryByIsoCode('EG'),
-        ],
+        priorityList: [CountryPickerUtils.getCountryByIsoCode('EG')],
       ),
     );
   }

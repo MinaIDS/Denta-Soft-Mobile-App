@@ -29,22 +29,24 @@ class ProcedureModel {
     if (json['listPriceProcedureViewModelLst'] != null) {
       listPriceProcedureViewModelLst = [];
       json['listPriceProcedureViewModelLst'].forEach((v) {
-        listPriceProcedureViewModelLst
-            ?.add(ListPriceProcedureViewModelLst.fromJson(v));
+        listPriceProcedureViewModelLst?.add(
+          ListPriceProcedureViewModelLst.fromJson(v),
+        );
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'treatmentId': this.treatmentId,
-      'procedureId': this.procedureId,
-      'procedureName': this.procedureName,
-      'updateUserId': this.updateUserId,
-      'createUserId': this.createUserId,
-      'branchId': this.branchId,
-      'listPriceProcedureViewModelLst':
-          this.listPriceProcedureViewModelLst?.map((v) => v.toJson()).toList(),
+      'treatmentId': treatmentId,
+      'procedureId': procedureId,
+      'procedureName': procedureName,
+      'updateUserId': updateUserId,
+      'createUserId': createUserId,
+      'branchId': branchId,
+      'listPriceProcedureViewModelLst': listPriceProcedureViewModelLst
+          ?.map((v) => v.toJson())
+          .toList(),
     };
   }
 }
@@ -77,12 +79,12 @@ class ListPriceProcedureViewModelLst {
 
   Map<String, dynamic> toJson() {
     return {
-      'listProcedureId': this.listProcedureId,
-      'procedureId': this.procedureId,
-      'medicalInsuranceId': this.medicalInsuranceId,
-      'price': this.price,
-      'updateUserId': this.updateUserId,
-      'createUserId': this.createUserId,
+      'listProcedureId': listProcedureId,
+      'procedureId': procedureId,
+      'medicalInsuranceId': medicalInsuranceId,
+      'price': price,
+      'updateUserId': updateUserId,
+      'createUserId': createUserId,
     };
   }
 }

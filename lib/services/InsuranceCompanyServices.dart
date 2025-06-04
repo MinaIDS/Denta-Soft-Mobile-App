@@ -11,23 +11,23 @@ class InsuranceCompanyServices {
     List<InsuranceModel> insurance = [];
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-          ApiRoutes.getInsuranceCompanies +
-              "?clinicId=${GlobalData.accountData!.objectData.clinicId}",
-          contentTypeHeader: "application/json",
-          authorizationHeader: GlobalData.accountData!.token);
+        "${ApiRoutes.getInsuranceCompanies}?clinicId=${GlobalData.accountData!.objectData.clinicId}",
+        contentTypeHeader: "application/json",
+        authorizationHeader: GlobalData.accountData!.token,
+      );
 
-      print("insuranceResponse::" + response.body!);
+      print("insuranceResponse::${response.body!}");
 
       // OK 200
       if (response.statusCode == 200) {
         List<dynamic> object = jsonDecode(response.body!);
-        object.forEach((value) {
+        for (var value in object) {
           // print("LL::" + value.toString());
           // print("length::" + object.length.toString());
           insurance.add((InsuranceModel.fromJson(value)));
-        });
+        }
       }
-      print("WEWE::" + insurance.length.toString());
+      print("WEWE::${insurance.length}");
 
       return insurance;
     } catch (e) {
@@ -39,18 +39,19 @@ class InsuranceCompanyServices {
     InsuranceModel insuranceModel = InsuranceModel();
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-          ApiRoutes.getInsuranceCompany + "?id=$id",
-          contentTypeHeader: "application/json",
-          authorizationHeader: GlobalData.accountData!.token);
+        "${ApiRoutes.getInsuranceCompany}?id=$id",
+        contentTypeHeader: "application/json",
+        authorizationHeader: GlobalData.accountData!.token,
+      );
 
-      print("insuranceCompanyResponse::" + response.body!);
+      print("insuranceCompanyResponse::${response.body!}");
 
       // OK 200
       if (response.statusCode == 200) {
         var object = jsonDecode(response.body!);
         insuranceModel = InsuranceModel.fromJson(object);
         GlobalData.insuranceCompany = insuranceModel.medicalCompany!;
-        print("insuranceCompany::" + GlobalData.insuranceCompany!);
+        print("insuranceCompany::${GlobalData.insuranceCompany!}");
       }
 
       return insuranceModel;
@@ -63,7 +64,7 @@ class InsuranceCompanyServices {
 
   // edit/update insurance company
   Future<bool> saveInsuranceCompany({InsuranceModel? insurances}) async {
-    Map<String, dynamic> jsonValues = new Map<String, dynamic>();
+    Map<String, dynamic> jsonValues = <String, dynamic>{};
 
     jsonValues.addAll({
       "branchId": GlobalData.accountData!.objectData.branchId,
@@ -72,16 +73,17 @@ class InsuranceCompanyServices {
       "medicalCompany": insurances!.medicalCompany,
       "medicalInsuranceId": insurances.medicalInsuranceId,
       "toleranceRatio": insurances.toleranceRatio,
-      "updateUserId": GlobalData.accountData!.objectData.userId
+      "updateUserId": GlobalData.accountData!.objectData.userId,
     });
     var body = jsonEncode(jsonValues);
-    print("QQQQ::" + body);
+    print("QQQQ::$body");
     try {
       GlobalHttpResponse response = await GlobalHttp.post(
-          ApiRoutes.saveInsuranceCompany,
-          body: body,
-          contentTypeHeader: "application/json",
-          authorizationHeader: GlobalData.accountData!.token);
+        ApiRoutes.saveInsuranceCompany,
+        body: body,
+        contentTypeHeader: "application/json",
+        authorizationHeader: GlobalData.accountData!.token,
+      );
 
       // OK 200
       if (response.statusCode == 200) {
@@ -94,17 +96,17 @@ class InsuranceCompanyServices {
   }
 
   // delete insurance company
-  Future<bool> deleteInsuranceCompany(
-      {required String id, required String branchId}) async {
+  Future<bool> deleteInsuranceCompany({
+    required String id,
+    required String branchId,
+  }) async {
     try {
-      GlobalHttpResponse response =
-          await GlobalHttp.delete(ApiRoutes.deleteInsuranceCompany,
-              body: {
-                "medicalInsuranceId": id,
-                "branchId": branchId,
-              },
-              contentTypeHeader: "application/json",
-              authorizationHeader: GlobalData.accountData!.token);
+      GlobalHttpResponse response = await GlobalHttp.delete(
+        ApiRoutes.deleteInsuranceCompany,
+        body: {"medicalInsuranceId": id, "branchId": branchId},
+        contentTypeHeader: "application/json",
+        authorizationHeader: GlobalData.accountData!.token,
+      );
 
       // OK 200
       if (response.statusCode == 200) {

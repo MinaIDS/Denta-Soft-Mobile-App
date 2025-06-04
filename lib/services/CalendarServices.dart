@@ -50,46 +50,42 @@ class CalendarServices {
     Map<String, dynamic> jsonValues = {};
     List<CalendarModel> calendarList = [];
 
-    DateTime startTimeZero =
-        DateTime(
-          appointment.startTime!.year,
-          appointment.startTime!.month,
-          appointment.startTime!.day,
-          0,
-          0,
-          0,
-        ).toUtc();
-    DateTime endTimeimeZero =
-        DateTime(
-          appointment.endTime!.year,
-          appointment.endTime!.month,
-          appointment.endTime!.day,
-          0,
-          0,
-          0,
-        ).toUtc();
+    DateTime startTimeZero = DateTime(
+      appointment.startTime!.year,
+      appointment.startTime!.month,
+      appointment.startTime!.day,
+      0,
+      0,
+      0,
+    ).toUtc();
+    DateTime endTimeimeZero = DateTime(
+      appointment.endTime!.year,
+      appointment.endTime!.month,
+      appointment.endTime!.day,
+      0,
+      0,
+      0,
+    ).toUtc();
 
     jsonValues.addAll({
       "branchId": GlobalData.accountData!.objectData.branchId,
       "clinicId": GlobalData.accountData!.objectData.clinicId,
-      "appointmentId":
-          appointment.appointmentId.isNotEmpty ? appointment.appointmentId : "",
-      "doctorId":
-          GlobalData.accountData!.objectData.userRole == "RL3"
-              ? GlobalData.accountData!.objectData.userId
-              : appointment.doctorId,
+      "appointmentId": appointment.appointmentId.isNotEmpty
+          ? appointment.appointmentId
+          : "",
+      "doctorId": GlobalData.accountData!.objectData.userRole == "RL3"
+          ? GlobalData.accountData!.objectData.userId
+          : appointment.doctorId,
       "patientId": appointment.patientId,
       "isBlock": false,
       "isAllDay": appointment.isAllDay,
       "status": appointment.status,
-      "startTime":
-          appointment.isAllDay
-              ? startTimeZero.toString()
-              : appointment.startTime!.toUtc().toString(),
-      "endTime":
-          appointment.isAllDay
-              ? endTimeimeZero.toString()
-              : appointment.endTime!.toUtc().toString(),
+      "startTime": appointment.isAllDay
+          ? startTimeZero.toString()
+          : appointment.startTime!.toUtc().toString(),
+      "endTime": appointment.isAllDay
+          ? endTimeimeZero.toString()
+          : appointment.endTime!.toUtc().toString(),
       "description": appointment.description,
       "checkIn": appointment.startTime!.toUtc().toString(),
       "checkOut": appointment.endTime!.toUtc().toString(),
@@ -108,11 +104,11 @@ class CalendarServices {
       // OK 200
       if (response.statusCode == 200) {
         List<dynamic> object = jsonDecode(response.body!);
-        object.forEach((value) {
-          print("LL::" + value.toString());
-          print("length::" + object.length.toString());
+        for (var value in object) {
+          print("LL::$value");
+          print("length::${object.length}");
           calendarList.add(CalendarModel.fromJson(value));
-        });
+        }
       }
       return calendarList;
     } catch (e) {
@@ -180,7 +176,7 @@ class CalendarServices {
 
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.sendSMSMessageManual + "?appointmentId=$appointmentId",
+        "${ApiRoutes.sendSMSMessageManual}?appointmentId=$appointmentId",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
@@ -196,32 +192,31 @@ class CalendarServices {
   }
 
   Future<List<RoomModel>> getRooms() async {
+    // ignore: unused_local_variable
     Map<String, dynamic> jsonValues = {};
     List<RoomModel> rooms = [];
 
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getRooms +
-            "?branchId=" +
-            GlobalData.accountData!.objectData.branchId!,
+        "${ApiRoutes.getRooms}?branchId=${GlobalData.accountData!.objectData.branchId!}",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
 
       // OK 200
-      print("getRooms::" + response.body!);
+      print("getRooms::${response.body!}");
 
       if (response.statusCode == 200) {
         List<dynamic> object = jsonDecode(response.body!);
-        object.forEach((value) {
-          print("LL::" + value.toString());
-          print("length::" + object.length.toString());
+        for (var value in object) {
+          print("LL::$value");
+          print("length::${object.length}");
           rooms.add(RoomModel.fromJson(value));
-        });
+        }
       }
       return rooms;
     } catch (e) {
-      print("DDF::" + e.toString());
+      print("DDF::$e");
       return rooms;
     }
   }
@@ -260,8 +255,7 @@ class CalendarServices {
 
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getDoctorsNames +
-            "?branchId=${GlobalData.accountData!.objectData.branchId}",
+        "${ApiRoutes.getDoctorsNames}?branchId=${GlobalData.accountData!.objectData.branchId}",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );

@@ -10,20 +10,21 @@ class NotesServices {
     List<NoteModel> notes = [];
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-          ApiRoutes.getNotes + "?PatientId=$patientId",
-          contentTypeHeader: "application/json",
-          authorizationHeader: GlobalData.accountData!.token);
+        "${ApiRoutes.getNotes}?PatientId=$patientId",
+        contentTypeHeader: "application/json",
+        authorizationHeader: GlobalData.accountData!.token,
+      );
 
-      print("noteResponse::" + response.body!);
+      print("noteResponse::${response.body!}");
 
       // OK 200
       if (response.statusCode == 200) {
         List<dynamic> object = jsonDecode(response.body!);
-        object.forEach((value) {
+        for (var value in object) {
           notes.add((NoteModel.fromJson(value)));
-        });
+        }
       }
-      print("notesLength::" + notes.length.toString());
+      print("notesLength::${notes.length}");
 
       return notes;
     } catch (e) {
@@ -32,26 +33,30 @@ class NotesServices {
     }
   }
 
-  Future<bool> saveNote(
-      {required NoteModel note, required String patientId}) async {
-    Map<String, dynamic> jsonValues = new Map<String, dynamic>();
+  Future<bool> saveNote({
+    required NoteModel note,
+    required String patientId,
+  }) async {
+    Map<String, dynamic> jsonValues = <String, dynamic>{};
 
     jsonValues.addAll({
-      "noteId": note!.noteId ?? "",
+      "noteId": note.noteId ?? "",
       "patientId": patientId,
       "comments": note.comments ?? "",
       "createUserId": GlobalData.accountData!.objectData.userId,
       "updateUserId": GlobalData.accountData!.objectData.userId,
       "createdBy": note.createdBy ?? "",
-      "creationDate": note.creationDate ?? ""
+      "creationDate": note.creationDate ?? "",
     });
     var body = jsonEncode(jsonValues);
-    print("note request body::" + body);
+    print("note request body::$body");
     try {
-      GlobalHttpResponse response = await GlobalHttp.post(ApiRoutes.saveNotes,
-          body: body,
-          contentTypeHeader: "application/json",
-          authorizationHeader: GlobalData.accountData!.token);
+      GlobalHttpResponse response = await GlobalHttp.post(
+        ApiRoutes.saveNotes,
+        body: body,
+        contentTypeHeader: "application/json",
+        authorizationHeader: GlobalData.accountData!.token,
+      );
 
       // OK 200
       if (response.statusCode == 200) {

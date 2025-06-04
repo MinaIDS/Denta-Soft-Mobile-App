@@ -13,7 +13,7 @@ import 'add_patient_viewModel.dart';
 
 class PatientDetails extends StatelessWidget {
   final AddPatientViewModel model;
-  const PatientDetails(this.model);
+  const PatientDetails(this.model, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class PatientDetails extends StatelessWidget {
                       children: [
                         Icon(Icons.keyboard_arrow_down),
                         Text(
-                          model.phoneCode ?? '',
+                          model.phoneCode,
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 18),
                         ),
@@ -116,18 +116,16 @@ class PatientDetails extends StatelessWidget {
                   }
                   return null; // Return null to indicate the field is valid
                 },
-                items:
-                    model.insuranceCompanies
-                        .map(
-                          (c) => DropdownMenuItem(
-                            child: Text(
-                              c.medicalCompany ?? 'Unknown Insurance',
-                            ), // Handle null value
-                            value:
-                                c, // Make sure `c` matches the type of `model.selectedInsurance`
-                          ),
-                        )
-                        .toList(),
+                items: model.insuranceCompanies
+                    .map(
+                      (c) => DropdownMenuItem(
+                        value: c,
+                        child: Text(
+                          c.medicalCompany ?? 'Unknown Insurance',
+                        ), // Make sure `c` matches the type of `model.selectedInsurance`
+                      ),
+                    )
+                    .toList(),
               ),
 
               SpaceHeight_M,
@@ -209,17 +207,14 @@ class PatientDetails extends StatelessWidget {
                 onChanged: (v) {
                   model.maritalStatus = v as String;
                 },
-                items:
-                    materialStatus
-                        .map(
-                          (s) => DropdownMenuItem(
-                            child: Text(
-                              AppLocalizations.of(context)!.translate(s),
-                            ),
-                            value: s,
-                          ),
-                        )
-                        .toList(),
+                items: materialStatus
+                    .map(
+                      (s) => DropdownMenuItem(
+                        value: s,
+                        child: Text(AppLocalizations.of(context)!.translate(s)),
+                      ),
+                    )
+                    .toList(),
               ),
 
               SpaceHeight_M,
@@ -243,17 +238,14 @@ class PatientDetails extends StatelessWidget {
                 onChanged: (v) {
                   model.title = v as String;
                 },
-                items:
-                    title
-                        .map(
-                          (t) => DropdownMenuItem(
-                            child: Text(
-                              AppLocalizations.of(context)!.translate(t),
-                            ),
-                            value: t,
-                          ),
-                        )
-                        .toList(),
+                items: title
+                    .map(
+                      (t) => DropdownMenuItem(
+                        value: t,
+                        child: Text(AppLocalizations.of(context)!.translate(t)),
+                      ),
+                    )
+                    .toList(),
               ),
 
               SpaceHeight_M,
@@ -297,17 +289,14 @@ class PatientDetails extends StatelessWidget {
                 onChanged: (v) {
                   model.patientType = v as String;
                 },
-                items:
-                    patientType
-                        .map(
-                          (t) => DropdownMenuItem(
-                            child: Text(
-                              AppLocalizations.of(context)!.translate(t),
-                            ),
-                            value: t,
-                          ),
-                        )
-                        .toList(),
+                items: patientType
+                    .map(
+                      (t) => DropdownMenuItem(
+                        value: t,
+                        child: Text(AppLocalizations.of(context)!.translate(t)),
+                      ),
+                    )
+                    .toList(),
               ),
 
               SpaceHeight_M,
@@ -333,7 +322,7 @@ class PatientDetails extends StatelessWidget {
                       children: [
                         Icon(Icons.keyboard_arrow_down),
                         Text(
-                          model.phoneWorkCode ?? '',
+                          model.phoneWorkCode,
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 18),
                         ),
@@ -377,7 +366,7 @@ class PatientDetails extends StatelessWidget {
                       children: [
                         Icon(Icons.keyboard_arrow_down),
                         Text(
-                          model.houseHeadPhoneCode ?? '',
+                          model.houseHeadPhoneCode,
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 18),
                         ),

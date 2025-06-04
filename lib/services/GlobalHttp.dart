@@ -6,7 +6,7 @@ import 'package:denta_soft/utils/SharedPrafrance/SharedPrafranceManager.dart';
 import '../utils/SharedPrafrance/SharedPrafranceKeys.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+
 import '../models/AccountModel.dart';
 import '../screens/AccountScreens/login_screen.dart';
 import '../utils/GlobalData.dart';
@@ -30,13 +30,12 @@ class GlobalHttp {
   }) async {
     var dio = Dio();
 
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (
-      HttpClient client,
-    ) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => false;
-      return client;
-    };
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+          client.badCertificateCallback =
+              (X509Certificate cert, String host, int port) => false;
+          return client;
+        };
     Response? response;
     try {
       if (cid == null) {
@@ -100,21 +99,19 @@ class GlobalHttp {
     try {
       // Response response;
 
-      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (
-        HttpClient client,
-      ) {
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) => false;
-        return client;
-      };
+      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+            client.badCertificateCallback =
+                (X509Certificate cert, String host, int port) => false;
+            return client;
+          };
 
       response = await dio.get<String>(
         Uri.encodeFull(url),
         options: Options(
-          headers:
-              (authorizationHeader != null)
-                  ? {"Authorization": authorizationHeader}
-                  : null,
+          headers: (authorizationHeader != null)
+              ? {"Authorization": authorizationHeader}
+              : null,
           receiveDataWhenStatusError: false,
           validateStatus: (stats) {
             print(stats);
@@ -154,23 +151,21 @@ class GlobalHttp {
   }) async {
     var dio = Dio();
 
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (
-      HttpClient client,
-    ) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => false;
-      return client;
-    };
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+          client.badCertificateCallback =
+              (X509Certificate cert, String host, int port) => false;
+          return client;
+        };
     Response? response;
     try {
       response = await dio.delete<String>(
         url,
         data: body,
         options: Options(
-          headers:
-              (authorizationHeader != null)
-                  ? {"Authorization": authorizationHeader}
-                  : null,
+          headers: (authorizationHeader != null)
+              ? {"Authorization": authorizationHeader}
+              : null,
           receiveDataWhenStatusError: false,
           validateStatus: (stats) {
             print(stats);
@@ -215,22 +210,20 @@ class GlobalHttp {
 
     Response? response;
     try {
-      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (
-        HttpClient client,
-      ) {
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) => false;
-        return client;
-      };
+      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+            client.badCertificateCallback =
+                (X509Certificate cert, String host, int port) => false;
+            return client;
+          };
 
       response = await dio.post(
         url,
         data: body,
         options: Options(
-          headers:
-              (authorizationHeader != null)
-                  ? {"Authorization": authorizationHeader}
-                  : null,
+          headers: (authorizationHeader != null)
+              ? {"Authorization": authorizationHeader}
+              : null,
           receiveDataWhenStatusError: false,
           validateStatus: (stats) {
             print(stats);
@@ -239,7 +232,7 @@ class GlobalHttp {
           contentType: contentTypeHeader,
         ),
       );
-    } catch (e, s) {}
+    } catch (e) {}
     // print("RRR:::F" +
     //     response.statusCode.toString() +
     //     "---" +

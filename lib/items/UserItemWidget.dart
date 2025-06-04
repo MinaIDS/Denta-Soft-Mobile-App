@@ -13,7 +13,7 @@ class UserItemWidget extends StatelessWidget {
   final ObjectData?
   userModel; // Make userModel nullable with ? as it can be null.
 
-  UserItemWidget({Key? key, this.userModel}) : super(key: key);
+  const UserItemWidget({super.key, this.userModel});
 
   @override
   Widget build(BuildContext context) {
@@ -36,38 +36,36 @@ class UserItemWidget extends StatelessWidget {
           children: [
             userModel!.photoJson == null
                 ? Container(
-                  child: Text(
-                    userModel!.userName![0].toString(),
-                    style: TextStyle(
-                      fontSize: SizeHeight_XXXL,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                    alignment: Alignment.center,
+                    width: 100,
+                    height: 100,
+                    child: Text(
+                      userModel!.userName![0].toString(),
+                      style: TextStyle(
+                        fontSize: SizeHeight_XXXL,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  )
+                : CachedNetworkImage(
+                    height: 100,
+                    width: 100,
+                    imageUrl: ApiRoutes.userImagePath + userModel!.photoJson!,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      height: 100,
+                      width: 100,
+                      padding: EdgeInsets.all(15),
+                      child: Image.asset('assets/images/loading.gif'),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      height: 100,
+                      width: 100,
+                      alignment: Alignment.center,
+                      child: Icon(Icons.error, size: 35, color: Colors.grey),
                     ),
                   ),
-                  alignment: Alignment.center,
-                  width: 100,
-                  height: 100,
-                )
-                : CachedNetworkImage(
-                  height: 100,
-                  width: 100,
-                  imageUrl: ApiRoutes.userImagePath + userModel!.photoJson!,
-                  fit: BoxFit.cover,
-                  placeholder:
-                      (context, url) => Container(
-                        height: 100,
-                        width: 100,
-                        padding: EdgeInsets.all(15),
-                        child: Image.asset('assets/images/loading.gif'),
-                      ),
-                  errorWidget:
-                      (context, url, error) => Container(
-                        height: 100,
-                        width: 100,
-                        alignment: Alignment.center,
-                        child: Icon(Icons.error, size: 35, color: Colors.grey),
-                      ),
-                ),
             Container(height: 80, width: 1, color: Colors.grey[200]),
             Expanded(
               child: Padding(
@@ -111,16 +109,16 @@ class UserItemWidget extends StatelessWidget {
                     userModel!.phoneWork == null
                         ? Container()
                         : Text(
-                          S().PhoneNumber + ": " + (userModel!.mobile ?? ""),
-                          style: TextStyle(color: Color(0xffCBCBCB)),
-                        ),
+                            "${S().PhoneNumber}: ${userModel!.mobile ?? ""}",
+                            style: TextStyle(color: Color(0xffCBCBCB)),
+                          ),
                     SpaceHeight_XS,
                     userModel!.emailAddress == null
                         ? Container()
                         : Text(
-                          S().Email + ": " + (userModel!.emailAddress ?? ""),
-                          style: TextStyle(color: Color(0xffCBCBCB)),
-                        ),
+                            "${S().Email}: ${userModel!.emailAddress ?? ""}",
+                            style: TextStyle(color: Color(0xffCBCBCB)),
+                          ),
                     SpaceHeight_XS,
                   ],
                 ),

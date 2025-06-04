@@ -16,7 +16,7 @@ import '../../../../widgets/OnceFutureBuilder.dart';
 class MedicalRecordTab extends StatefulWidget {
   final PatientModel? patient;
 
-  const MedicalRecordTab({Key? key, this.patient}) : super(key: key);
+  const MedicalRecordTab({super.key, this.patient});
 
   @override
   _MedicalRecordTabState createState() => _MedicalRecordTabState();
@@ -61,13 +61,12 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
         );
       },
       child: OnceFutureBuilder(
-        future:
-            () => PatientController().getPatientDiseases(
-              patientId: widget.patient!.patientId,
-            ),
+        future: () => PatientController().getPatientDiseases(
+          patientId: widget.patient!.patientId,
+        ),
         builder: (context, snapShot) {
           if (snapShot.connectionState != ConnectionState.done) {
-            return Container(
+            return SizedBox(
               height: scrennSize!.height * .8,
               child: Center(child: CircularProgressIndicator()),
             );
@@ -80,7 +79,7 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         height: scrennSize!.height * .1,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -113,15 +112,13 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(20),
                                   ),
-                                  color:
-                                      tabIndex == 1
-                                          ? Colors.blue
-                                          : Colors.white,
+                                  color: tabIndex == 1
+                                      ? Colors.blue
+                                      : Colors.white,
                                   border: Border.all(
-                                    color:
-                                        tabIndex == 1
-                                            ? Colors.blue
-                                            : Colors.grey,
+                                    color: tabIndex == 1
+                                        ? Colors.blue
+                                        : Colors.grey,
                                   ),
                                 ),
                                 child: Text(
@@ -129,10 +126,9 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 15,
-                                    color:
-                                        tabIndex == 1
-                                            ? Colors.white
-                                            : Colors.grey,
+                                    color: tabIndex == 1
+                                        ? Colors.white
+                                        : Colors.grey,
                                   ),
                                 ),
                               ),
@@ -167,24 +163,21 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(25),
                                   ),
-                                  color:
-                                      tabIndex == 2
-                                          ? Colors.blue
-                                          : Colors.white,
+                                  color: tabIndex == 2
+                                      ? Colors.blue
+                                      : Colors.white,
                                   border: Border.all(
-                                    color:
-                                        tabIndex == 2
-                                            ? Colors.blue
-                                            : Colors.grey,
+                                    color: tabIndex == 2
+                                        ? Colors.blue
+                                        : Colors.grey,
                                   ),
                                 ),
                                 child: Text(
                                   S().Products,
                                   style: TextStyle(
-                                    color:
-                                        tabIndex == 2
-                                            ? Colors.white
-                                            : Colors.grey,
+                                    color: tabIndex == 2
+                                        ? Colors.white
+                                        : Colors.grey,
                                   ),
                                 ),
                               ),
@@ -221,9 +214,9 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
                                   isLoading = true;
                                 });
                                 List<String> ids = [];
-                                dieasesList.forEach((element) {
+                                for (var element in dieasesList) {
                                   ids.add(element.diseaseId!);
-                                });
+                                }
                                 bool status = await PatientController()
                                     .deleteDisease(ids: ids);
                                 if (status) {
@@ -268,11 +261,11 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
                           allDieasesList.addAll(
                             await DiseaseController().getDiseases(),
                           );
-                          dieasesList.forEach((dieases) {
+                          for (var dieases in dieasesList) {
                             allDieasesList.removeWhere(
                               (element) => dieases.diseaseTypeId == element.id,
                             );
-                          });
+                          }
                           setState(() {
                             isLoadingDialog = false;
                           });
@@ -289,104 +282,93 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
                                     topRight: Radius.circular(30.0),
                                   ),
                                 ),
-                                child:
-                                    isLoadingDialog
-                                        ? Center(
-                                          child: CircularProgressIndicator(),
-                                        )
-                                        : allDieasesList.length < 1
-                                        ? Center(
-                                          child: Text(S().showNoDataAvailable),
-                                        )
-                                        : Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: ListView.separated(
-                                            itemBuilder: (ctx, index) {
-                                              DiseaseModel dieaseModel =
-                                                  allDieasesList[index];
-                                              return Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets.all(
-                                                              8.0,
-                                                            ),
-                                                        child: InkWell(
-                                                          onTap: () async {
-                                                            Navigator.pop(
-                                                              context,
-                                                            );
-                                                            setState(() {
-                                                              isLoading = true;
-                                                            });
-                                                            print(
-                                                              dieaseModel.id,
-                                                            );
-                                                            bool
-                                                            status = await DiseaseController()
-                                                                .saveDisease(
-                                                                  diseaseModel:
-                                                                      dieaseModel,
-                                                                  patientId:
-                                                                      widget
-                                                                          .patient!
-                                                                          .patientId!,
-                                                                );
-                                                            if (status) {
-                                                              print("added");
-
-                                                              dieasesList
-                                                                  .clear();
-                                                              dieasesList.addAll(
-                                                                await PatientController()
-                                                                    .getPatientDiseases(
-                                                                      patientId:
-                                                                          widget
-                                                                              .patient!
-                                                                              .patientId,
-                                                                    ),
+                                child: isLoadingDialog
+                                    ? Center(child: CircularProgressIndicator())
+                                    : allDieasesList.isEmpty
+                                    ? Center(
+                                        child: Text(S().showNoDataAvailable),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ListView.separated(
+                                          itemBuilder: (ctx, index) {
+                                            DiseaseModel dieaseModel =
+                                                allDieasesList[index];
+                                            return Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                            8.0,
+                                                          ),
+                                                      child: InkWell(
+                                                        onTap: () async {
+                                                          Navigator.pop(
+                                                            context,
+                                                          );
+                                                          setState(() {
+                                                            isLoading = true;
+                                                          });
+                                                          print(dieaseModel.id);
+                                                          bool
+                                                          status = await DiseaseController()
+                                                              .saveDisease(
+                                                                diseaseModel:
+                                                                    dieaseModel,
+                                                                patientId: widget
+                                                                    .patient!
+                                                                    .patientId!,
                                                               );
-                                                            }
-                                                            isLoading = false;
-                                                            setState(() {});
-                                                          },
-                                                          child: Text(
-                                                            dieaseModel.value!,
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
+                                                          if (status) {
+                                                            print("added");
+
+                                                            dieasesList.clear();
+                                                            dieasesList.addAll(
+                                                              await PatientController()
+                                                                  .getPatientDiseases(
+                                                                    patientId: widget
+                                                                        .patient!
+                                                                        .patientId,
+                                                                  ),
+                                                            );
+                                                          }
+                                                          isLoading = false;
+                                                          setState(() {});
+                                                        },
+                                                        child: Text(
+                                                          dieaseModel.value!,
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                           ),
                                                         ),
                                                       ),
-                                                      // dieaseSelected
-                                                      //     ? Icon(Icons.check)
-                                                      //     : Container(),
-                                                    ],
-                                                  ),
-                                                  if (index ==
-                                                      allDieasesList.length - 1)
-                                                    SizedBox(
-                                                      height:
-                                                          scrennSize!.height *
-                                                          .1,
                                                     ),
-                                                ],
-                                              );
-                                            },
-                                            separatorBuilder: (ctx, index) {
-                                              return Divider();
-                                            },
-                                            itemCount: allDieasesList.length,
-                                            shrinkWrap: true,
-                                          ),
+                                                    // dieaseSelected
+                                                    //     ? Icon(Icons.check)
+                                                    //     : Container(),
+                                                  ],
+                                                ),
+                                                if (index ==
+                                                    allDieasesList.length - 1)
+                                                  SizedBox(
+                                                    height:
+                                                        scrennSize!.height * .1,
+                                                  ),
+                                              ],
+                                            );
+                                          },
+                                          separatorBuilder: (ctx, index) {
+                                            return Divider();
+                                          },
+                                          itemCount: allDieasesList.length,
+                                          shrinkWrap: true,
                                         ),
+                                      ),
                               );
                             },
                           );
@@ -399,39 +381,101 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
                             context: context,
                             builder: (BuildContext context) {
                               return Consumer<SelectProductsProvider>(
-                                builder:
-                                    (
-                                      context,
-                                      selectProductsProvider,
-                                      child,
-                                    ) => Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                          0.9,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(30.0),
-                                          topRight: Radius.circular(30.0),
-                                        ),
-                                      ),
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                children: [
-                                                  // Search Box
-                                                  Container(
-                                                    child: TextFormField(
-                                                      controller:
-                                                          searchController,
-                                                      textInputAction:
-                                                          TextInputAction
-                                                              .search,
-                                                      onFieldSubmitted: (
-                                                        v,
-                                                      ) async {
+                                builder: (context, selectProductsProvider, child) => Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.9,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30.0),
+                                      topRight: Radius.circular(30.0),
+                                    ),
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              // Search Box
+                                              Container(
+                                                margin: EdgeInsets.symmetric(
+                                                  horizontal: 30,
+                                                  vertical: 12,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  border: Border.all(
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                                child: TextFormField(
+                                                  controller: searchController,
+                                                  textInputAction:
+                                                      TextInputAction.search,
+                                                  onFieldSubmitted: (v) async {
+                                                    searchProductsList.clear();
+                                                    setState(() {
+                                                      isLoadingDialog = true;
+                                                    });
+                                                    searchProductsList.addAll(
+                                                      await SearchProductController()
+                                                          .getProducts(
+                                                            searchController
+                                                                .text,
+                                                          ),
+                                                    );
+                                                    selectProductsProvider
+                                                        .setAllProductCheck(
+                                                          List<bool>.filled(
+                                                            searchProductsList
+                                                                .length,
+                                                            false,
+                                                          ),
+                                                        );
+                                                    print(
+                                                      "product List:${searchProductsList.length}",
+                                                    );
+                                                    isLoadingDialog = false;
+                                                    setState(() {});
+                                                    FocusScope.of(
+                                                      context,
+                                                    ).requestFocus(FocusNode());
+                                                  },
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    focusedBorder:
+                                                        InputBorder.none,
+                                                    enabledBorder:
+                                                        InputBorder.none,
+                                                    errorBorder:
+                                                        InputBorder.none,
+                                                    disabledBorder:
+                                                        InputBorder.none,
+                                                    suffixIcon: InkWell(
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Container(
+                                                            width: 1,
+                                                            height: 30,
+                                                            color: Colors
+                                                                .grey[200],
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets.all(
+                                                                  8.0,
+                                                                ),
+                                                            child: Icon(
+                                                              Icons.search,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      onTap: () async {
                                                         searchProductsList
                                                             .clear();
                                                         setState(() {
@@ -464,267 +508,164 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
                                                           FocusNode(),
                                                         );
                                                       },
-                                                      decoration: InputDecoration(
-                                                        border:
-                                                            InputBorder.none,
-                                                        focusedBorder:
-                                                            InputBorder.none,
-                                                        enabledBorder:
-                                                            InputBorder.none,
-                                                        errorBorder:
-                                                            InputBorder.none,
-                                                        disabledBorder:
-                                                            InputBorder.none,
-                                                        suffixIcon: InkWell(
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: [
-                                                              Container(
-                                                                width: 1,
-                                                                height: 30,
-                                                                color:
-                                                                    Colors
-                                                                        .grey[200],
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets.all(
-                                                                      8.0,
-                                                                    ),
-                                                                child: Icon(
-                                                                  Icons.search,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          onTap: () async {
-                                                            searchProductsList
-                                                                .clear();
-                                                            setState(() {
-                                                              isLoadingDialog =
-                                                                  true;
-                                                            });
-                                                            searchProductsList.addAll(
-                                                              await SearchProductController()
-                                                                  .getProducts(
-                                                                    searchController
-                                                                        .text,
-                                                                  ),
-                                                            );
-                                                            selectProductsProvider
-                                                                .setAllProductCheck(
-                                                                  List<
-                                                                    bool
-                                                                  >.filled(
-                                                                    searchProductsList
-                                                                        .length,
-                                                                    false,
-                                                                  ),
-                                                                );
-                                                            print(
-                                                              "product List:${searchProductsList.length}",
-                                                            );
-                                                            isLoadingDialog =
-                                                                false;
-                                                            setState(() {});
-                                                            FocusScope.of(
-                                                              context,
-                                                            ).requestFocus(
-                                                              FocusNode(),
-                                                            );
-                                                          },
-                                                        ),
-                                                        contentPadding:
-                                                            EdgeInsets.only(
-                                                              left: 15,
-                                                              bottom: 11,
-                                                              top: 11,
-                                                              right: 15,
-                                                            ),
-                                                        hintText:
-                                                            S().Search_Here,
-                                                      ),
-                                                      validator: (value) {
-                                                        return value!.isEmpty
-                                                            ? "product name is required"
-                                                            : value.length < 3
-                                                            ? "product name must be 3 character"
-                                                            : null;
-                                                      },
                                                     ),
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                          horizontal: 30,
-                                                          vertical: 12,
+                                                    contentPadding:
+                                                        EdgeInsets.only(
+                                                          left: 15,
+                                                          bottom: 11,
+                                                          top: 11,
+                                                          right: 15,
                                                         ),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            12,
-                                                          ),
-                                                      border: Border.all(
-                                                        color: Colors.blue,
-                                                      ),
-                                                    ),
+                                                    hintText: S().Search_Here,
                                                   ),
+                                                  validator: (value) {
+                                                    return value!.isEmpty
+                                                        ? "product name is required"
+                                                        : value.length < 3
+                                                        ? "product name must be 3 character"
+                                                        : null;
+                                                  },
+                                                ),
+                                              ),
 
-                                                  isLoadingDialog
-                                                      ? Container(
-                                                        height: SizeandStyleUtills()
-                                                            .getProportionalHeight(
-                                                              height: 200,
-                                                            ),
-                                                        child: Center(
-                                                          child:
-                                                              CircularProgressIndicator(),
-                                                        ),
-                                                      )
-                                                      : searchProductsList
-                                                              .length <
-                                                          1
-                                                      ? Container(
-                                                        height: SizeandStyleUtills()
-                                                            .getProportionalHeight(
-                                                              height: 200,
-                                                            ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            S().showNoDataAvailable,
+                                              isLoadingDialog
+                                                  ? SizedBox(
+                                                      height: SizeandStyleUtills()
+                                                          .getProportionalHeight(
+                                                            height: 200,
                                                           ),
-                                                        ),
-                                                      )
-                                                      : ListView.separated(
-                                                        itemBuilder: (
-                                                          ctx,
-                                                          index,
-                                                        ) {
-                                                          SearchProductModel
-                                                          product =
-                                                              searchProductsList[index];
-
-                                                          return Column(
-                                                            children: [
-                                                              CheckboxListTile(
-                                                                title: Text(
-                                                                  product
-                                                                      .productAr!,
-                                                                ),
-                                                                value:
-                                                                    selectProductsProvider
-                                                                        .getProductChecked[index],
-                                                                onChanged: (
-                                                                  value,
-                                                                ) {
-                                                                  print(
-                                                                    "SSS::$value",
-                                                                  );
-                                                                  selectProductsProvider
-                                                                      .setProductCheck(
-                                                                        index,
-                                                                        value!,
-                                                                      );
-                                                                  if (selectProductsProvider
-                                                                      .getProductChecked[index]) {
-                                                                    selectedProductsInSearchList
-                                                                        .add(
-                                                                          product,
-                                                                        );
-                                                                  } else {
-                                                                    selectedProductsInSearchList
-                                                                        .remove(
-                                                                          product,
-                                                                        );
-                                                                  }
-                                                                  setState(
-                                                                    () {},
-                                                                  );
-                                                                },
-                                                              ),
-                                                              if (index ==
-                                                                  searchProductsList
-                                                                          .length -
-                                                                      1)
-                                                                SizedBox(
-                                                                  height:
-                                                                      scrennSize!
-                                                                          .height *
-                                                                      .1,
-                                                                ),
-                                                            ],
-                                                          );
-                                                        },
-                                                        separatorBuilder: (
-                                                          ctx,
-                                                          index,
-                                                        ) {
-                                                          return Divider();
-                                                        },
-                                                        itemCount:
-                                                            searchProductsList
-                                                                .length,
-                                                        shrinkWrap: true,
-                                                        physics:
-                                                            ScrollPhysics(),
+                                                      child: Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
                                                       ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            child: // Add Button
-                                                Container(
-                                              width: 80,
-                                              child: ElevatedButton(
-                                                onPressed: () async {
-                                                  Navigator.of(context).pop();
-                                                  List<int> ids = [];
-                                                  selectedProductsInSearchList
-                                                      .forEach((element) {
-                                                        print(
-                                                          "SSSPP::${selectedProductsInSearchList.length}",
-                                                        );
+                                                    )
+                                                  : searchProductsList.isEmpty
+                                                  ? SizedBox(
+                                                      height: SizeandStyleUtills()
+                                                          .getProportionalHeight(
+                                                            height: 200,
+                                                          ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          S().showNoDataAvailable,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : ListView.separated(
+                                                      itemBuilder: (ctx, index) {
+                                                        SearchProductModel
+                                                        product =
+                                                            searchProductsList[index];
 
-                                                        ids.add(
-                                                          element.productId!,
+                                                        return Column(
+                                                          children: [
+                                                            CheckboxListTile(
+                                                              title: Text(
+                                                                product
+                                                                    .productAr!,
+                                                              ),
+                                                              value: selectProductsProvider
+                                                                  .getProductChecked[index],
+                                                              onChanged: (value) {
+                                                                print(
+                                                                  "SSS::$value",
+                                                                );
+                                                                selectProductsProvider
+                                                                    .setProductCheck(
+                                                                      index,
+                                                                      value!,
+                                                                    );
+                                                                if (selectProductsProvider
+                                                                    .getProductChecked[index]) {
+                                                                  selectedProductsInSearchList
+                                                                      .add(
+                                                                        product,
+                                                                      );
+                                                                } else {
+                                                                  selectedProductsInSearchList
+                                                                      .remove(
+                                                                        product,
+                                                                      );
+                                                                }
+                                                                setState(() {});
+                                                              },
+                                                            ),
+                                                            if (index ==
+                                                                searchProductsList
+                                                                        .length -
+                                                                    1)
+                                                              SizedBox(
+                                                                height:
+                                                                    scrennSize!
+                                                                        .height *
+                                                                    .1,
+                                                              ),
+                                                          ],
                                                         );
-                                                        print("ids:$ids");
-                                                      });
-                                                  bool status =
-                                                      await SearchProductController()
-                                                          .saveProductDiease(
-                                                            productIds: ids,
-                                                            patientId:
-                                                                widget
-                                                                    .patient!
-                                                                    .patientId!,
-                                                          );
-                                                  if (status) {
-                                                    print("added");
-
-                                                    productsList =
-                                                        await PatientController()
-                                                            .getPatientProducts(
-                                                              patientId:
-                                                                  widget
-                                                                      .patient!
-                                                                      .patientId!,
-                                                            );
-                                                  }
-                                                  isLoading = false;
-                                                  setState(() {});
-                                                },
-                                                child: Text(S().Add),
-                                              ),
-                                            ),
-                                            bottom: 12,
-                                            left: 0,
-                                            right: 0,
+                                                      },
+                                                      separatorBuilder:
+                                                          (ctx, index) {
+                                                            return Divider();
+                                                          },
+                                                      itemCount:
+                                                          searchProductsList
+                                                              .length,
+                                                      shrinkWrap: true,
+                                                      physics: ScrollPhysics(),
+                                                    ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                      Positioned(
+                                        bottom: 12,
+                                        left: 0,
+                                        right: 0,
+                                        child: // Add Button
+                                        SizedBox(
+                                          width: 80,
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              Navigator.of(context).pop();
+                                              List<int> ids = [];
+                                              for (var element
+                                                  in selectedProductsInSearchList) {
+                                                print(
+                                                  "SSSPP::${selectedProductsInSearchList.length}",
+                                                );
+
+                                                ids.add(element.productId!);
+                                                print("ids:$ids");
+                                              }
+                                              bool status =
+                                                  await SearchProductController()
+                                                      .saveProductDiease(
+                                                        productIds: ids,
+                                                        patientId: widget
+                                                            .patient!
+                                                            .patientId!,
+                                                      );
+                                              if (status) {
+                                                print("added");
+
+                                                productsList =
+                                                    await PatientController()
+                                                        .getPatientProducts(
+                                                          patientId: widget
+                                                              .patient!
+                                                              .patientId!,
+                                                        );
+                                              }
+                                              isLoading = false;
+                                              setState(() {});
+                                            },
+                                            child: Text(S().Add),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               );
                             },
                           );
@@ -773,28 +714,27 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
             topRight: Radius.circular(24),
           ),
         ),
-        child:
-            isLoading
-                ? Center(child: CircularProgressIndicator())
-                : dieasesList.length < 1
-                ? Center(child: Text(S().showNoDataAvailable))
-                : ListView.separated(
-                  itemBuilder: (ctx, index) {
-                    Diease dieaseModel = dieasesList[index];
-                    return Column(
-                      children: [
-                        itemWidget(dieaseModel),
-                        if (index == dieasesList.length - 1)
-                          SizedBox(height: scrennSize!.height * .2),
-                      ],
-                    );
-                  },
-                  separatorBuilder: (ctx, index) {
-                    return Divider();
-                  },
-                  itemCount: dieasesList.length,
-                  shrinkWrap: true,
-                ),
+        child: isLoading
+            ? Center(child: CircularProgressIndicator())
+            : dieasesList.isEmpty
+            ? Center(child: Text(S().showNoDataAvailable))
+            : ListView.separated(
+                itemBuilder: (ctx, index) {
+                  Diease dieaseModel = dieasesList[index];
+                  return Column(
+                    children: [
+                      itemWidget(dieaseModel),
+                      if (index == dieasesList.length - 1)
+                        SizedBox(height: scrennSize!.height * .2),
+                    ],
+                  );
+                },
+                separatorBuilder: (ctx, index) {
+                  return Divider();
+                },
+                itemCount: dieasesList.length,
+                shrinkWrap: true,
+              ),
       ),
     );
   }
@@ -811,28 +751,27 @@ class _MedicalRecordTabState extends State<MedicalRecordTab> {
             topRight: Radius.circular(24),
           ),
         ),
-        child:
-            isLoading
-                ? Center(child: CircularProgressIndicator())
-                : productsList.length < 1
-                ? Center(child: Text(S().showNoDataAvailable))
-                : ListView.separated(
-                  itemBuilder: (ctx, index) {
-                    ProductViewModel productModel = productsList[index];
-                    return Column(
-                      children: [
-                        itemProductWidget(productModel),
-                        if (index == productsList.length - 1)
-                          SizedBox(height: scrennSize!.height * .2),
-                      ],
-                    );
-                  },
-                  separatorBuilder: (ctx, index) {
-                    return Divider();
-                  },
-                  itemCount: productsList.length,
-                  shrinkWrap: true,
-                ),
+        child: isLoading
+            ? Center(child: CircularProgressIndicator())
+            : productsList.isEmpty
+            ? Center(child: Text(S().showNoDataAvailable))
+            : ListView.separated(
+                itemBuilder: (ctx, index) {
+                  ProductViewModel productModel = productsList[index];
+                  return Column(
+                    children: [
+                      itemProductWidget(productModel),
+                      if (index == productsList.length - 1)
+                        SizedBox(height: scrennSize!.height * .2),
+                    ],
+                  );
+                },
+                separatorBuilder: (ctx, index) {
+                  return Divider();
+                },
+                itemCount: productsList.length,
+                shrinkWrap: true,
+              ),
       ),
     );
   }

@@ -18,10 +18,8 @@ class UsersScreenController extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      final _usersList = await UsersServices().postSearchUsers(
-        username: username,
-      );
-      usersList = _usersList;
+      var usersList = await UsersServices().postSearchUsers(username: username);
+      usersList = usersList;
     } catch (e) {
       print(e);
     } finally {
@@ -33,8 +31,8 @@ class UsersScreenController extends ChangeNotifier {
   // Refresh the users list
   Future<void> onRefresh() async {
     try {
-      final _usersList = await UsersServices().postSearchUsers(username: "");
-      usersList = _usersList;
+      var usersList = await UsersServices().postSearchUsers(username: "");
+      usersList = usersList;
       notifyListeners();
     } catch (e) {
       print(e);

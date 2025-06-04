@@ -13,7 +13,7 @@ import '../../../../models/PatientModel.dart';
 class OverviewTab extends StatefulWidget {
   final PatientModel? patientModel;
 
-  const OverviewTab({Key? key, this.patientModel}) : super(key: key);
+  const OverviewTab({super.key, this.patientModel});
 
   @override
   _OverviewTabState createState() => _OverviewTabState();
@@ -29,14 +29,14 @@ class _OverviewTabState extends State<OverviewTab> {
     //     .getPatientDetails(patientId: widget.patientModel.patientId);
     // InsuranceCompanyController()
     //     .getInsuranceCompany(widget.patientModel.medicalInsuranceId);
-    ApptStatusList.forEach((elementAppStatus) {
+    for (var elementAppStatus in ApptStatusList) {
       int Obj = 0;
-      widget.patientModel!.calendarViewModels!.forEach((element) {
+      for (var element in widget.patientModel!.calendarViewModels!) {
         // Obj = ApptStatusList.firstWhere((x) => x['Code'] == element.status)['Count']+1;
         if (element.status == elementAppStatus['Code']) {
           Obj += 1;
         }
-      });
+      }
       // print('obj $Obj');
 
       String color = ApptStatusList.firstWhere(
@@ -46,11 +46,11 @@ class _OverviewTabState extends State<OverviewTab> {
       Obj == 0
           ? null
           : OverViewItem.add({
-            'Color': color,
-            'Code': elementAppStatus['Code'],
-            'Count': Obj,
-          });
-    });
+              'Color': color,
+              'Code': elementAppStatus['Code'],
+              'Count': Obj,
+            });
+    }
     super.initState();
   }
 
@@ -501,56 +501,57 @@ class _OverviewTabState extends State<OverviewTab> {
           // ),
 
           //Center(child: EmptyScreenWidget()) OverViewItem.length
-          OverViewItem.length > 0
+          OverViewItem.isNotEmpty
               ? GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  // childAspectRatio: 2 / 2.2,
-                  crossAxisCount: 2,
-                  childAspectRatio: 4,
-                  crossAxisSpacing: 4,
-                  mainAxisSpacing: 4,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    // childAspectRatio: 2 / 2.2,
+                    crossAxisCount: 2,
+                    childAspectRatio: 4,
+                    crossAxisSpacing: 4,
+                    mainAxisSpacing: 4,
 
-                  mainAxisExtent: SizeandStyleUtills().screenWidth * 0.5,
-                ),
-                itemBuilder: (_, index) {
-                  var title = OverViewItem[index];
-                  // String title = ApptStatusList[index]['Code'];
-                  //
-                  // int Obj = 0;
-                  // widget.patientModel.calendarViewModels.forEach((element) {
-                  //   // Obj = ApptStatusList.firstWhere((x) => x['Code'] == element.status)['Count']+1;
-                  //   if (element.status == title) {
-                  //     Obj += 1;
-                  //   }
-                  // });
-                  // print('obj $Obj');
-                  //
-                  // // int count = ApptStatusList
-                  // //     .firstWhere((element) => element['Code'] == widget.patientModel.calendarViewModels[0].status)['Count']+1;
-                  // // print('count $count');
-                  // String color = ApptStatusList.firstWhere(
-                  //         (element) => element['Code'] == title)['Color']
-                  //     .replaceAll("#", "");
-                  // return Obj == 0
-                  //     ? SizedBox()
-                  //     : buildOverViewCompouant(
-                  //         title: '${AppLocalizations.of(context).translate(title)}',
-                  //         count: Obj,
-                  //         color: Color(int.parse("0xff$color")));
+                    mainAxisExtent: SizeandStyleUtills().screenWidth * 0.5,
+                  ),
+                  itemBuilder: (_, index) {
+                    var title = OverViewItem[index];
+                    // String title = ApptStatusList[index]['Code'];
+                    //
+                    // int Obj = 0;
+                    // widget.patientModel.calendarViewModels.forEach((element) {
+                    //   // Obj = ApptStatusList.firstWhere((x) => x['Code'] == element.status)['Count']+1;
+                    //   if (element.status == title) {
+                    //     Obj += 1;
+                    //   }
+                    // });
+                    // print('obj $Obj');
+                    //
+                    // // int count = ApptStatusList
+                    // //     .firstWhere((element) => element['Code'] == widget.patientModel.calendarViewModels[0].status)['Count']+1;
+                    // // print('count $count');
+                    // String color = ApptStatusList.firstWhere(
+                    //         (element) => element['Code'] == title)['Color']
+                    //     .replaceAll("#", "");
+                    // return Obj == 0
+                    //     ? SizedBox()
+                    //     : buildOverViewCompouant(
+                    //         title: '${AppLocalizations.of(context).translate(title)}',
+                    //         count: Obj,
+                    //         color: Color(int.parse("0xff$color")));
 
-                  return buildOverViewCompouant(
-                    title:
-                        '${AppLocalizations.of(context)!.translate(title['Code'])}',
-                    count: title['Count'],
-                    color: Color(int.parse("0xff${title['Color']}")),
-                  );
-                },
-                // itemCount: ApptStatusList.length,
-                itemCount: OverViewItem.length,
-              )
+                    return buildOverViewCompouant(
+                      title: AppLocalizations.of(
+                        context,
+                      )!.translate(title['Code']),
+                      count: title['Count'],
+                      color: Color(int.parse("0xff${title['Color']}")),
+                    );
+                  },
+                  // itemCount: ApptStatusList.length,
+                  itemCount: OverViewItem.length,
+                )
               : EmptyScreenWidget(assetPath: AssetsRoutes.noBoxDataAvailable),
 
           // buildOverViewCompouant(
@@ -914,7 +915,7 @@ class _OverviewTabState extends State<OverviewTab> {
                   vertical: 8,
                 ),
                 child: Text(
-                  "${count}",
+                  "$count",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,

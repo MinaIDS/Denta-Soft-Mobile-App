@@ -21,7 +21,7 @@ import 'package:provider/provider.dart';
 class ProcedureListScreen extends StatefulWidget {
   final TreatmentModel? model;
 
-  const ProcedureListScreen({Key? key, this.model}) : super(key: key);
+  const ProcedureListScreen({super.key, this.model});
 
   @override
   _ProcedureListScreenState createState() => _ProcedureListScreenState();
@@ -30,7 +30,7 @@ class ProcedureListScreen extends StatefulWidget {
 class _ProcedureListScreenState extends State<ProcedureListScreen> {
   @override
   Widget build(BuildContext context) {
-    print("DDD::" + GlobalData.accountData!.objectData.branchId!);
+    print("DDD::${GlobalData.accountData!.objectData.branchId!}");
     return ChangeNotifierProvider.value(
       value: TreatmentController(),
       child: Scaffold(
@@ -47,99 +47,90 @@ class _ProcedureListScreenState extends State<ProcedureListScreen> {
           ),
         ),
         body: Consumer<TreatmentController>(
-          builder:
-              (context, model, child) => RefreshIndicator(
-                onRefresh: () async {
-                  await model.getProceduresList(
-                    treatmentbranchId: widget.model!.treatmentBranchId!,
-                  );
-                },
-                child: OnceFutureBuilder(
-                  future: () async {
-                    await model.getProceduresList(
-                      treatmentbranchId: widget.model!.treatmentBranchId!,
-                    );
-                  },
-                  builder: (ctx, snapShot) {
-                    if (snapShot.connectionState != ConnectionState.done) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    return SafeArea(
-                      child: ListView(
-                        children: [
-                          SizedBox(height: 12),
-                          model.getProceduresModel.isEmpty
-                              ? Container(
-                                height: SizeandStyleUtills().screenHeight - 150,
-                                child: EmptyScreenWidget(
-                                  assetPath: AssetsRoutes.noBoxDataAvailable,
-                                ),
-                              )
-                              : ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (ctx, index) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ProcedureItemWidget(
-                                        proceduresModel:
-                                            model.getProceduresModel[index],
-                                        deleteProcedure: () async {
-                                          AwesomeDialog(
-                                            context: context,
-                                            dialogType: DialogType.question,
-                                            animType: AnimType.bottomSlide,
-                                            title: "",
-                                            desc: S().Areyousureyouwanttodelete,
-                                            btnCancelOnPress: () {},
-                                            btnOkOnPress: () async {
-                                              model.deleteProcedure(
-                                                model:
-                                                    model
-                                                        .getProceduresModel[index],
-                                              );
-                                            },
-                                          )..show();
-                                        },
-                                        editProcedure: () {
-                                          showMaterialModalBottomSheet(
-                                            context: context,
-                                            builder:
-                                                (
-                                                  context,
-                                                ) => SingleChildScrollView(
-                                                  controller:
-                                                      ModalScrollController.of(
-                                                        context,
-                                                      ),
-                                                  child: EdiProcedureBottomSheet(
-                                                    model: model,
-                                                    modelProcedures:
-                                                        model
-                                                            .getProceduresModel[index],
-                                                    modelInsuranceCompaniesModel:
-                                                        model
-                                                            .getInsuranceCompaniesModel,
-                                                  ),
-                                                ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                                shrinkWrap: true,
-                                itemCount: model.getProceduresModel.length,
+          builder: (context, model, child) => RefreshIndicator(
+            onRefresh: () async {
+              await model.getProceduresList(
+                treatmentbranchId: widget.model!.treatmentBranchId!,
+              );
+            },
+            child: OnceFutureBuilder(
+              future: () async {
+                await model.getProceduresList(
+                  treatmentbranchId: widget.model!.treatmentBranchId!,
+                );
+              },
+              builder: (ctx, snapShot) {
+                if (snapShot.connectionState != ConnectionState.done) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return SafeArea(
+                  child: ListView(
+                    children: [
+                      SizedBox(height: 12),
+                      model.getProceduresModel.isEmpty
+                          ? SizedBox(
+                              height: SizeandStyleUtills().screenHeight - 150,
+                              child: EmptyScreenWidget(
+                                assetPath: AssetsRoutes.noBoxDataAvailable,
                               ),
-                          SizedBox(
-                            height: SizeHeight_XXXXXL + SizeHeight_XXXXXL,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
+                            )
+                          : ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (ctx, index) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ProcedureItemWidget(
+                                      proceduresModel:
+                                          model.getProceduresModel[index],
+                                      deleteProcedure: () async {
+                                        AwesomeDialog(
+                                          context: context,
+                                          dialogType: DialogType.question,
+                                          animType: AnimType.bottomSlide,
+                                          title: "",
+                                          desc: S().Areyousureyouwanttodelete,
+                                          btnCancelOnPress: () {},
+                                          btnOkOnPress: () async {
+                                            model.deleteProcedure(
+                                              model: model
+                                                  .getProceduresModel[index],
+                                            );
+                                          },
+                                        ).show();
+                                      },
+                                      editProcedure: () {
+                                        showMaterialModalBottomSheet(
+                                          context: context,
+                                          builder: (context) => SingleChildScrollView(
+                                            controller:
+                                                ModalScrollController.of(
+                                                  context,
+                                                ),
+                                            child: EdiProcedureBottomSheet(
+                                              model: model,
+                                              modelProcedures: model
+                                                  .getProceduresModel[index],
+                                              modelInsuranceCompaniesModel: model
+                                                  .getInsuranceCompaniesModel,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                              shrinkWrap: true,
+                              itemCount: model.getProceduresModel.length,
+                            ),
+                      SizedBox(height: SizeHeight_XXXXXL + SizeHeight_XXXXXL),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
@@ -152,6 +143,7 @@ class ProcedureItemWidget extends StatelessWidget {
   final Function editProcedure;
 
   const ProcedureItemWidget({
+    super.key,
     this.proceduresModel,
     required this.deleteProcedure,
     required this.editProcedure,
@@ -205,7 +197,7 @@ class ProcedureItemWidget extends StatelessWidget {
               children: [
                 OutlinedButton(
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -220,7 +212,7 @@ class ProcedureItemWidget extends StatelessWidget {
                 SpaceWidth_S,
                 OutlinedButton(
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -248,11 +240,11 @@ class EdiProcedureBottomSheet extends StatelessWidget {
   final List<InsuranceModel> modelInsuranceCompaniesModel;
 
   const EdiProcedureBottomSheet({
-    Key? key,
+    super.key,
     required this.model,
     required this.modelProcedures,
     required this.modelInsuranceCompaniesModel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -261,10 +253,9 @@ class EdiProcedureBottomSheet extends StatelessWidget {
       listen: true,
     );
     return OnceFutureBuilder(
-      future:
-          () => modelSingleProcedure.getSingleProcedure(
-            singleProcedureId: modelProcedures.procedureId!,
-          ),
+      future: () => modelSingleProcedure.getSingleProcedure(
+        singleProcedureId: modelProcedures.procedureId!,
+      ),
       builder: (ctx, snapShot) {
         if (snapShot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());

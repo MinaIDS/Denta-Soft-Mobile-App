@@ -11,7 +11,7 @@ import '../../../widgets/custom_text_form_field.dart';
 
 class SearchFilterScreen extends StatefulWidget {
   final ValueSetter<SearchModel>? onSearch;
-  const SearchFilterScreen({this.onSearch});
+  const SearchFilterScreen({super.key, this.onSearch});
 
   @override
   _SearchFilterScreenState createState() => _SearchFilterScreenState();
@@ -28,7 +28,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
   var _codeController;
 
   var _searchModel;
-  var _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -131,54 +131,45 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                       ),
                       FutureBuilder<List<InsuranceModel>>(
                         future: getInsurance,
-                        builder:
-                            (context, snapshot) =>
-                                snapshot.connectionState ==
-                                        ConnectionState.waiting
-                                    ? Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 13,
-                                        horizontal: 20,
-                                      ),
-                                      margin: EdgeInsets.symmetric(
-                                        vertical: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(color: Colors.grey),
-                                      ),
-                                      child: Text(
-                                        S().Loading,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Color(0x8e78849e),
-                                        ),
+                        builder: (context, snapshot) =>
+                            snapshot.connectionState == ConnectionState.waiting
+                            ? Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 13,
+                                  horizontal: 20,
+                                ),
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                                child: Text(
+                                  S().Loading,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0x8e78849e),
+                                  ),
+                                ),
+                              )
+                            : CustomDropdownButtonField(
+                                hint: S().MedicalInsuranceName,
+                                value: _searchModel.medicalInsuranceId,
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                onChanged: (v) {
+                                  setState(() {
+                                    _searchModel.medicalInsuranceId = v;
+                                  });
+                                },
+                                items: snapshot.data!
+                                    .map(
+                                      (i) => DropdownMenuItem(
+                                        value: i.medicalInsuranceId,
+                                        child: Text(i.medicalCompany!),
                                       ),
                                     )
-                                    : CustomDropdownButtonField(
-                                      hint: S().MedicalInsuranceName,
-                                      value: _searchModel.medicalInsuranceId,
-                                      margin: EdgeInsets.symmetric(
-                                        vertical: 10,
-                                      ),
-                                      onChanged: (v) {
-                                        setState(() {
-                                          _searchModel.medicalInsuranceId = v;
-                                        });
-                                      },
-                                      items:
-                                          snapshot.data!
-                                              .map(
-                                                (i) => DropdownMenuItem(
-                                                  child: Text(
-                                                    i.medicalCompany!,
-                                                  ),
-                                                  value: i.medicalInsuranceId,
-                                                ),
-                                              )
-                                              .toList(),
-                                    ),
+                                    .toList(),
+                              ),
                       ),
                       SwitchListTile(
                         value: _searchModel.isActive,
@@ -222,8 +213,8 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
-                              child: Text(S().Clear),
                               onPressed: _onClear,
+                              child: Text(S().Clear),
                             ),
                           ),
                         ],

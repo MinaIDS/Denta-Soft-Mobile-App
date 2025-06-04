@@ -1,8 +1,9 @@
+// ignore_for_file: unused_field, unused_element
+
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:denta_soft/controllers/AttachmentsController.dart';
-import 'package:denta_soft/controllers/PatientController.dart';
+
 import 'package:denta_soft/generated/l10n.dart';
 import 'package:denta_soft/models/PatientModel.dart';
 import 'package:denta_soft/screens/ImageViewerScreen.dart';
@@ -23,8 +24,11 @@ class ImageXrayScreen extends StatefulWidget {
   final PatientModel patient;
   final AttachmentsController model;
 
-  const ImageXrayScreen({Key? key, required this.patient, required this.model})
-    : super(key: key);
+  const ImageXrayScreen({
+    super.key,
+    required this.patient,
+    required this.model,
+  });
 
   @override
   _ImageXrayScreenState createState() => _ImageXrayScreenState();
@@ -44,11 +48,11 @@ class _ImageXrayScreenState extends State<ImageXrayScreen> {
       bottomSheet: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             width: SizeandStyleUtills().screenWidth * 0.9,
             child: ElevatedButton(
-              child: Text(S().Pick_images),
               onPressed: loadAssets,
+              child: Text(S().Pick_images),
             ),
           ),
         ],
@@ -87,14 +91,12 @@ class _ImageXrayScreenState extends State<ImageXrayScreen> {
                         fit: BoxFit.cover,
                         height: 300,
                         width: SizeandStyleUtills().screenWidth * 0.29,
-                        placeholder:
-                            (context, url) => Container(
-                              padding: EdgeInsets.all(15),
-                              child: Image.asset('assets/images/loading.gif'),
-                            ),
-                        errorWidget:
-                            (context, url, error) =>
-                                Icon(Icons.error, size: 35, color: Colors.grey),
+                        placeholder: (context, url) => Container(
+                          padding: EdgeInsets.all(15),
+                          child: Image.asset('assets/images/loading.gif'),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            Icon(Icons.error, size: 35, color: Colors.grey),
                       ),
                     ),
                     Positioned(
@@ -113,7 +115,7 @@ class _ImageXrayScreenState extends State<ImageXrayScreen> {
                             btnOkOnPress: () async {
                               widget.model.deleteAttachments(model: img);
                             },
-                          )..show();
+                          ).show();
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -162,12 +164,9 @@ class _ImageXrayScreenState extends State<ImageXrayScreen> {
     String error = 'No Error Detected';
 
     try {
-      final pickedFiles =
-          await _picker
-              .pickMultiImage(); // Use pickMultiImage for multiple images
-      if (pickedFiles != null) {
-        resultList = pickedFiles;
-      }
+      final pickedFiles = await _picker
+          .pickMultiImage(); // Use pickMultiImage for multiple images
+      resultList = pickedFiles;
     } catch (e) {
       error = e.toString();
     }
@@ -187,34 +186,35 @@ class _ImageXrayScreenState extends State<ImageXrayScreen> {
     }
 
     await Future.delayed(Duration(seconds: 3));
+    // ignore: unused_local_variable
     List<Map<String, dynamic>> finalBody = [];
     FormData formData = FormData();
 
     for (int i = 0; i < imagesL.length; i++) {
       formData.files.addAll({
         MapEntry(
-          'patientAttachmentViewModels[${i}].AttachmentFile',
-          await MultipartFile.fromFile(imagesL[i], filename: 'file${i}.png'),
+          'patientAttachmentViewModels[$i].AttachmentFile',
+          await MultipartFile.fromFile(imagesL[i], filename: 'file$i.png'),
         ),
         MapEntry(
-          'patientAttachmentViewModels[${i}].AttachmentFileThumb',
+          'patientAttachmentViewModels[$i].AttachmentFileThumb',
           await MultipartFile.fromFile(
             imagesMini[i].path,
-            filename: 'file${i}.png',
+            filename: 'file$i.png',
           ),
         ),
       });
       formData.fields.addAll({
         MapEntry(
-          'patientAttachmentViewModels[${i}].CreateUserId',
+          'patientAttachmentViewModels[$i].CreateUserId',
           GlobalData.accountData!.objectData.userId!,
         ),
         MapEntry(
-          'patientAttachmentViewModels[${i}].PatientId',
+          'patientAttachmentViewModels[$i].PatientId',
           widget.patient.patientId!,
         ),
-        MapEntry('patientAttachmentViewModels[${i}].Comments', ""),
-        MapEntry("patientAttachmentViewModels[${i}].AttachmentType", "XRay"),
+        MapEntry('patientAttachmentViewModels[$i].Comments', ""),
+        MapEntry("patientAttachmentViewModels[$i].AttachmentType", "XRay"),
       });
     }
 

@@ -3,14 +3,12 @@ import 'package:denta_soft/models/SearchDoctorModel.dart';
 import 'package:denta_soft/models/SearchPatientModel.dart';
 import 'package:denta_soft/utils/General.dart';
 import 'package:denta_soft/utils/GlobalData.dart';
-import 'package:denta_soft/utils/GoTo.dart';
 import 'package:denta_soft/utils/SizesStatic.dart';
 import 'package:denta_soft/utils/ToastM.dart';
 import 'package:denta_soft/utils/const_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
 import '../models/CalendarModel.dart';
 import '../models/RoomModel.dart';
 import '../services/CalendarServices.dart';
@@ -68,7 +66,7 @@ class MCalendarController extends ChangeNotifier {
   Future getRooms() async {
     List<RoomModel> rooms = [];
     rooms = await CalendarServices().getRooms();
-    rooms.forEach((element) {
+    for (var element in rooms) {
       resourseRooms.add(
         CalendarResource(
           displayName: element.roomName,
@@ -76,7 +74,7 @@ class MCalendarController extends ChangeNotifier {
           color: Colors.blue,
         ),
       );
-    });
+    }
     notifyListeners();
   }
 
@@ -96,22 +94,22 @@ class MCalendarController extends ChangeNotifier {
     appointmentList.clear();
 
     // Processing the fetched appointments
-    appointments.forEach((element) {
+    for (var element in appointments) {
       Map color = ApptStatusList.firstWhere(
         (st) => st['Code'] == element.status,
       );
       Color eventColor = Color(
-        int.parse("0xff" + color['Color'].toString().replaceAll("#", "")),
+        int.parse("0xff${color['Color'].toString().replaceAll("#", "")}"),
       );
 
       // Adding the processed appointments to the appointment list
       appointmentList.add(
         CalendarModel(
-          appointmentId: element.appointmentId ?? "",
-          branchId: element.branchId ?? "",
-          doctorId: element.doctorId ?? "",
-          patientId: element.patientId ?? "",
-          status: element.status ?? "",
+          appointmentId: element.appointmentId,
+          branchId: element.branchId,
+          doctorId: element.doctorId,
+          patientId: element.patientId,
+          status: element.status,
           startTime: element.startTime!.toLocal(),
           endTime: element.endTime!.toLocal(),
           background: eventColor,
@@ -125,7 +123,7 @@ class MCalendarController extends ChangeNotifier {
           doctorName: element.doctorName,
         ),
       );
-    });
+    }
 
     // Notify listeners for UI updates
     notifyListeners();
@@ -235,7 +233,7 @@ class MCalendarController extends ChangeNotifier {
     }
 
     if (calendarTapDetails.appointments != null &&
-        calendarTapDetails.appointments!.length > 0) {
+        calendarTapDetails.appointments!.isNotEmpty) {
       calendar = calendarTapDetails.appointments![0];
     }
 
@@ -251,8 +249,8 @@ class MCalendarController extends ChangeNotifier {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (calendarTapDetails.appointments != null &&
-                  calendarTapDetails.appointments!.length > 0)
-                Container(
+                  calendarTapDetails.appointments!.isNotEmpty)
+                SizedBox(
                   width: double.infinity,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -260,7 +258,7 @@ class MCalendarController extends ChangeNotifier {
                       children: [
                         // Doctor Name
                         Text(
-                          calendar!.patientName ?? "",
+                          calendar!.patientName,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
@@ -271,9 +269,7 @@ class MCalendarController extends ChangeNotifier {
                         Divider(height: 1),
                         SpaceHeight_M,
                         Text(
-                          convertDateTimeFormat(calendar!.startTime!) +
-                              " - " +
-                              convertDateTimeFormat(calendar!.endTime!),
+                          "${convertDateTimeFormat(calendar.startTime!)} - ${convertDateTimeFormat(calendar.endTime!)}",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey[800],
@@ -283,7 +279,7 @@ class MCalendarController extends ChangeNotifier {
                         ),
                         SpaceHeight_XS,
                         Text(
-                          S().RL3 + " : " + calendar.doctorName ?? "",
+                          "${S().RL3} : ${calendar.doctorName}",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey[800],
@@ -293,7 +289,7 @@ class MCalendarController extends ChangeNotifier {
                         ),
                         SpaceHeight_XS,
                         Text(
-                          calendar.description ?? "",
+                          calendar.description,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey[600],
@@ -307,7 +303,7 @@ class MCalendarController extends ChangeNotifier {
                     ),
                   ),
                 ),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: InkWell(
                   onTap: () async {
@@ -335,8 +331,8 @@ class MCalendarController extends ChangeNotifier {
                 ),
               ),
               if (calendarTapDetails.appointments != null &&
-                  calendarTapDetails.appointments!.length > 0)
-                Container(
+                  calendarTapDetails.appointments!.isNotEmpty)
+                SizedBox(
                   width: double.infinity,
                   child: InkWell(
                     onTap: () {
@@ -356,8 +352,8 @@ class MCalendarController extends ChangeNotifier {
                   ),
                 ),
               if (calendarTapDetails.appointments != null &&
-                  calendarTapDetails.appointments!.length > 0)
-                Container(
+                  calendarTapDetails.appointments!.isNotEmpty)
+                SizedBox(
                   width: double.infinity,
                   child: InkWell(
                     onTap: () async {

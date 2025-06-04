@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:denta_soft/generated/l10n.dart';
 import 'package:denta_soft/screens/ThemeColors.dart';
 import 'package:denta_soft/screens/Widget/fieldHeader.dart';
@@ -11,10 +13,11 @@ import 'package:provider/provider.dart';
 
 import '../../../../controllers/FinancialController.dart';
 
+// ignore: must_be_immutable
 class AddEditFinancialScreen extends StatelessWidget {
   bool? isEdit = false;
 
-  AddEditFinancialScreen({this.isEdit});
+  AddEditFinancialScreen({super.key, this.isEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +72,14 @@ class AddEditFinancialScreen extends StatelessWidget {
               FieldHeader(S().Type),
               CustomDropdownButtonField(
                 margin: EdgeInsets.symmetric(vertical: 10),
-                items:
-                    model.typeData
-                        .map(
-                          (c) => DropdownMenuItem(
-                            child: Text(c["Value"]),
-                            value: c["Code"],
-                          ),
-                        )
-                        .toList(),
+                items: model.typeData
+                    .map(
+                      (c) => DropdownMenuItem(
+                        value: c["Code"],
+                        child: Text(c["Value"]),
+                      ),
+                    )
+                    .toList(),
                 hint: S().Type,
                 value: model.selectedIOCome.type,
                 onChanged: (v) {
@@ -88,15 +90,14 @@ class AddEditFinancialScreen extends StatelessWidget {
               FieldHeader(S().Category),
               CustomDropdownButtonField(
                 margin: EdgeInsets.symmetric(vertical: 10),
-                items:
-                    model.categoryData
-                        .map(
-                          (c) => DropdownMenuItem(
-                            child: Text(c["Value"]),
-                            value: c["Code"],
-                          ),
-                        )
-                        .toList(),
+                items: model.categoryData
+                    .map(
+                      (c) => DropdownMenuItem(
+                        value: c["Code"],
+                        child: Text(c["Value"]),
+                      ),
+                    )
+                    .toList(),
                 value: model.selectedIOCome.category,
                 hint: S().Category,
                 onChanged: (v) {
@@ -110,10 +111,9 @@ class AddEditFinancialScreen extends StatelessWidget {
               FieldHeader(S().Amount),
               CustomTextFormField(
                 margin: EdgeInsets.symmetric(vertical: 10),
-                initialValue:
-                    model.isHaveData
-                        ? replaceNumberNoZero(model.selectedIOCome.amount!)
-                        : "",
+                initialValue: model.isHaveData
+                    ? replaceNumberNoZero(model.selectedIOCome.amount!)
+                    : "",
                 keyboardType: TextInputType.number,
                 onChanged: (v) {
                   model.selectAmount(double.parse(v));
@@ -126,10 +126,9 @@ class AddEditFinancialScreen extends StatelessWidget {
               CustomTextFormField(
                 margin: EdgeInsets.symmetric(vertical: 10),
                 keyboardType: TextInputType.text,
-                initialValue:
-                    model.isHaveData
-                        ? model.selectedIOCome.referenceId.toString()
-                        : "",
+                initialValue: model.isHaveData
+                    ? model.selectedIOCome.referenceId.toString()
+                    : "",
                 onChanged: (v) {
                   model.selectReferenceID(v);
                 },
@@ -138,10 +137,9 @@ class AddEditFinancialScreen extends StatelessWidget {
               FieldHeader(S().DateOfBirth),
               CustomTextFormField(
                 controller: TextEditingController(
-                  text:
-                      model.isHaveData
-                          ? convertDateFormat(model.selectedIOCome.happenDate!)
-                          : "",
+                  text: model.isHaveData
+                      ? convertDateFormat(model.selectedIOCome.happenDate!)
+                      : "",
                 ),
                 keyboardType: TextInputType.number,
                 margin: EdgeInsets.symmetric(vertical: 10),
@@ -154,10 +152,9 @@ class AddEditFinancialScreen extends StatelessWidget {
               FieldHeader(S().Comment),
               CustomTextFormField(
                 margin: EdgeInsets.symmetric(vertical: 10),
-                initialValue:
-                    model.isHaveData
-                        ? model.selectedIOCome.comments.toString()
-                        : "",
+                initialValue: model.isHaveData
+                    ? model.selectedIOCome.comments.toString()
+                    : "",
                 keyboardType: TextInputType.text,
                 onChanged: (v) {
                   model.selectComment(v);

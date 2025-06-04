@@ -11,11 +11,11 @@ class InsuranceItemWidget extends StatelessWidget {
   final Function onUpdate;
 
   const InsuranceItemWidget({
-    Key? key,
+    super.key,
     required this.insuranceModel,
     required this.onDelete,
     required this.onUpdate,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +60,12 @@ class InsuranceItemWidget extends StatelessWidget {
                 ),
                 !insuranceModel.isDefault!
                     ? TextButton(
-                      onPressed: () => onDelete(),
-                      child: Text(
-                        S().delete,
-                        style: TextStyle(color: ThemeColors.danger),
-                      ),
-                    )
+                        onPressed: () => onDelete(),
+                        child: Text(
+                          S().delete,
+                          style: TextStyle(color: ThemeColors.danger),
+                        ),
+                      )
                     : SizedBox(),
               ],
             ),

@@ -9,13 +9,13 @@ class RoundedButton extends StatelessWidget {
   final Color color, textColor;
 
   const RoundedButton({
-    Key? key, // Mark Key as nullable since it's optional in the constructor
+    super.key, // Mark Key as nullable since it's optional in the constructor
     required this.text, // Make text required
     required this.busy, // Make busy required
     this.press, // Make press required
     this.color = ThemeColors.primary,
     this.textColor = Colors.white,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -13,66 +13,56 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'AddUserScreen.dart';
 
 class UsersScreen extends StatelessWidget {
+  const UsersScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UsersScreenController>(
-      builder:
-          (context, model, child) => Scaffold(
-            appBar: AppBar(title: Text(S().Users)),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => GoTo.screen(context, AddUserScreen()),
-              child: Icon(Icons.add),
-            ),
-            body: OnceFutureBuilder(
-              future: () => model.searchForUsers(username: ""),
-              builder:
-                  (ctx, snpShot) =>
-                      model.isLoading
-                          ? Center(child: CircularProgressIndicator())
-                          : Column(
-                            children: [
-                              buildAppBar(context, model),
-                              if (model.isSearching)
-                                LinearProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.amber,
-                                  ),
-                                  backgroundColor: Colors.white,
+      builder: (context, model, child) => Scaffold(
+        appBar: AppBar(title: Text(S().Users)),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => GoTo.screen(context, AddUserScreen()),
+          child: Icon(Icons.add),
+        ),
+        body: OnceFutureBuilder(
+          future: () => model.searchForUsers(username: ""),
+          builder: (ctx, snpShot) => model.isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Column(
+                  children: [
+                    buildAppBar(context, model),
+                    if (model.isSearching)
+                      LinearProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+                        backgroundColor: Colors.white,
+                      ),
+                    Expanded(
+                      child: SmartRefresher(
+                        controller: model.refreshController,
+                        enablePullDown: true,
+                        onRefresh: model.onRefresh,
+                        child: model.usersList.isEmpty
+                            ? Center(
+                                child: EmptyScreenWidget(
+                                  assetPath: AssetsRoutes.noDataAvailable,
                                 ),
-                              Expanded(
-                                child: SmartRefresher(
-                                  controller: model.refreshController,
-                                  enablePullDown: true,
-                                  onRefresh: model.onRefresh,
-                                  child:
-                                      model.usersList.isEmpty
-                                          ? Center(
-                                            child: EmptyScreenWidget(
-                                              assetPath:
-                                                  AssetsRoutes.noDataAvailable,
-                                            ),
-                                          )
-                                          : ListView.separated(
-                                            controller: model.scrollController,
-                                            primary: false,
-                                            addAutomaticKeepAlives: true,
-                                            itemBuilder:
-                                                (context, index) =>
-                                                    UserItemWidget(
-                                                      userModel:
-                                                          model
-                                                              .usersList[index],
-                                                    ),
-                                            separatorBuilder:
-                                                (context, index) => Divider(),
-                                            itemCount: model.usersList.length,
-                                          ),
+                              )
+                            : ListView.separated(
+                                controller: model.scrollController,
+                                primary: false,
+                                addAutomaticKeepAlives: true,
+                                itemBuilder: (context, index) => UserItemWidget(
+                                  userModel: model.usersList[index],
                                 ),
+                                separatorBuilder: (context, index) => Divider(),
+                                itemCount: model.usersList.length,
                               ),
-                            ],
-                          ),
-            ),
-          ),
+                      ),
+                    ),
+                  ],
+                ),
+        ),
+      ),
     );
   }
 
@@ -94,16 +84,15 @@ class UsersScreen extends StatelessWidget {
                   model.searchForUsers(username: v);
                 },
                 filledColor: Colors.grey[100]!,
-                suffixIcon:
-                    model.searchController.text.isNotEmpty
-                        ? GestureDetector(
-                          onTap: () {
-                            model.searchController.clear();
-                            model.searchForUsers(username: "");
-                          },
-                          child: Icon(Icons.clear),
-                        )
-                        : Icon(Icons.search),
+                suffixIcon: model.searchController.text.isNotEmpty
+                    ? GestureDetector(
+                        onTap: () {
+                          model.searchController.clear();
+                          model.searchForUsers(username: "");
+                        },
+                        child: Icon(Icons.clear),
+                      )
+                    : Icon(Icons.search),
               ),
             ),
             // SpaceWidth_L,

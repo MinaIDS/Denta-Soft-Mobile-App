@@ -12,7 +12,7 @@ class AttachmentsServices {
     List<AttachmentsModel> attachmentsModel = [];
     try {
       GlobalHttpResponse response = await GlobalHttp.get(
-        ApiRoutes.getAttachments + "?patientId=$patientId",
+        "${ApiRoutes.getAttachments}?patientId=$patientId",
         contentTypeHeader: "application/json",
         authorizationHeader: GlobalData.accountData!.token,
       );
@@ -23,7 +23,7 @@ class AttachmentsServices {
       }
       return attachmentsModel;
     } catch (e) {
-      print("QQQQ::: " + e.toString());
+      print("QQQQ::: $e");
 
       return attachmentsModel;
     }
@@ -46,7 +46,7 @@ class AttachmentsServices {
       }
       return false;
     } catch (e) {
-      print("QQQQ::: " + e.toString());
+      print("QQQQ::: $e");
 
       return false;
     }
